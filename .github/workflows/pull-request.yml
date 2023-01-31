@@ -1,12 +1,16 @@
 name: Pull Request Action
 on: [pull_request]
 jobs:
-  Checks:
+  checks:
     runs-on: ubuntu-latest
     steps:
-      uses: actions/checkout@v3
-      name: Run checks
-      run: npx tsc -p tsconfig.json --noEmit
-      run: npx eslint --cache --fix
-      run: npx prettier --check ./src
-      run: echo "🍏 Done"
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: yarn
+      - name: Run checks
+        run: npx tsc -p tsconfig.json --noEmit
+      - run: npx eslint
+      - run: npx prettier --check ./src
+      - run: echo "🍏 Done"
