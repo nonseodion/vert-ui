@@ -10,8 +10,6 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^8.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -23,7 +21,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prepare": "husky install"
+    "prepare": "!is-ci || husky install",
+    "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "eslintConfig": {
     "extends": [
@@ -51,11 +50,16 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": ">=6",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.6.0",
+    "is-ci": "^3.0.1",
     "lint-staged": ">=10",
     "prettier": "^2.8.3"
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix",
-    "*.ts?(x)": "eslint --cache --fix"
+    "*.ts?(x)": [
+      "eslint --cache --fix --cache-location ./node_modules/.cache",
+      "prettier --write --ignore-unknown"
+    ]
   }
 }
