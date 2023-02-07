@@ -1,25 +1,25 @@
-import React from "react"
-import logo from "./logo.svg"
-import "./App.css"
+import React, { useState, useMemo } from "react"
+import { Footer, TopNav } from "./components/navigation"
+import AuthContext from "./contexts/AuthContext"
+import Routes from "./Routes"
 
 function App() {
+  const [authState, setAuthState] = useState({
+    isAuthenticated: false,
+  })
+
+  const value = useMemo(() => ({ authState, setAuthState }), [authState])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContext.Provider value={value}>
+      <div className="bg-black min-h-screen">
+        <div className="max-w-[1500px] mx-auto">
+          <TopNav />
+          <Routes />
+          <Footer />
+        </div>
+      </div>
+    </AuthContext.Provider>
   )
 }
 
