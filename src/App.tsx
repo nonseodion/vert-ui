@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react"
 import clsx from "classnames"
 import { BrowserRouter as Router } from "react-router-dom"
 import { Banner } from "./components/general"
-import { Footer, TopNav } from "./components/navigation"
+import { Footer } from "./components/navigation"
 import AuthContext from "./contexts/AuthContext"
 import Routes from "./Routes"
 
@@ -22,7 +22,6 @@ function App() {
           <div
             className={clsx("max-w-[1500px] mx-auto", { "pt-10": showBanner })}
           >
-            <TopNav />
             <Routes />
             <Footer />
           </div>

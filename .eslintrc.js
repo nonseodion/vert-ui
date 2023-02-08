@@ -11,6 +11,7 @@ module.exports = {
   },
   rules: {
     "react/function-component-definition": "off",
-    "import/no-named-as-default": "off"
+    "import/no-named-as-default": "off",
+    "react/jsx-props-no-spreading": "off"
   }
 }
