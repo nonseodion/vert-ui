@@ -1,13 +1,14 @@
 import React from "react"
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
+import SignInWithEmail from "./pages/auth/SignInWithEmail"
 import Home from "./pages/main/Home"
+import { routes } from "./utils/constants"
 
-const Routes: React.FC = () => (
-  <Router>
-    <Switch>
-      <Route path="/" component={Home} />
-    </Switch>
-  </Router>
+const AppRoutes: React.FC = () => (
+  <Routes>
+    <Route path={routes.home} element={<Home />} />
+    <Route path={routes.sign_in_with_email} element={<SignInWithEmail />} />
+  </Routes>
 )
 
-export default Routes
+export default AppRoutes

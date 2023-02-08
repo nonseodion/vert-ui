@@ -1,9 +1,13 @@
-import BNB from "../assets/icons/bnb.png"
-import NGN from "../assets/icons/ngn.png"
-import { Currency } from "../interfaces/transactions"
+import BNB from "../dummy/icons/bnb.png"
+import NGN from "../dummy/icons/ngn.png"
 
-export const sellableCurrencies: Currency[] = [
+export const sellableCurrencies = [
   { label: "BNB", icon: BNB },
   { label: "BNB", icon: BNB },
 ]
-export const buyableCurrencies: Currency[] = [{ label: "NGN", icon: NGN }]
+export const buyableCurrencies = [{ label: "NGN", icon: NGN }]
+
+export const routes = {
+  home: "/",
+  sign_in_with_email: "/sign-in/email",
+}

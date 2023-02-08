@@ -1,9 +1,16 @@
 import React from "react"
 import clsx from "classnames"
-import { ButtonProps } from "../../interfaces/buttons"
+
+export interface ButtonProps {
+  text: string
+  background?: "primary" | "transparent"
+  textColor?: "white" | "dark"
+  bordered?: boolean
+  onClick: () => void
+}
 
 const Button: React.FC<ButtonProps> = ({
-  background,
+  background = "primary",
   textColor,
   text,
   bordered,
@@ -22,5 +29,11 @@ const Button: React.FC<ButtonProps> = ({
     {text}
   </button>
 )
+
+Button.defaultProps = {
+  background: "primary",
+  textColor: "white",
+  bordered: false,
+}
 
 export default Button

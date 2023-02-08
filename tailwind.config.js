@@ -15,7 +15,8 @@ module.exports = {
         border: "#BBBBBB",
         borderLight: '#E8EAED',
         purple: '#6C86AD',
-        cta: '#B0CDAB'
+        cta: '#B0CDAB',
+        yellow: '#F3BA2F'
       },
       borderRadius: {
         10: "10px"

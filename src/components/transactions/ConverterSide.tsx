@@ -1,7 +1,10 @@
 import React, { useMemo } from "react"
-import { ConverterSideProps } from "../../interfaces/transactions"
 import { buyableCurrencies, sellableCurrencies } from "../../utils/constants"
 import { ReactComponent as DropdownIcon } from "../../assets/icons/arrow-down.svg"
+
+export interface ConverterSideProps {
+  side: "sell" | "buy"
+}
 
 const ConverterSide: React.FC<ConverterSideProps> = ({ side }) => {
   const isBuySide = useMemo(() => side === "buy", [side])
@@ -13,7 +16,6 @@ const ConverterSide: React.FC<ConverterSideProps> = ({ side }) => {
           <input
             className="w-full border-none outline-none focus:outline-none placeholder:text-placeholder text-xl"
             placeholder="0.0"
-            disabled={isBuySide}
           />
         </div>
         <button type="button" className="flex-shrink-0 ml-3">
