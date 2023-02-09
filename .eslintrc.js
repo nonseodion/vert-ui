@@ -9,4 +9,8 @@ module.exports = {
   parserOptions: {
     project: "./tsconfig.eslint.json",
   },
+  rules: {
+    "import/no-named-as-default": "off",
+    "react/jsx-props-no-spreading": "off"
+  }
 }
