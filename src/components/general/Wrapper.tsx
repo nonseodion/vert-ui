@@ -2,12 +2,15 @@ import React, { useEffect } from "react"
 import clsx from "classnames"
 import { TopNav } from "../navigation"
 
-export interface WrapperProps {
+interface WrapperProps {
   children: React.ReactNode
   hideTopNav?: boolean
 }
 
-const Wrapper: React.FC<WrapperProps> = ({ children, hideTopNav = false }) => {
+export default function Wrapper({
+  children,
+  hideTopNav = false,
+}: WrapperProps) {
   useEffect(() => {
     window.scroll(0, 0)
   }, [])
@@ -28,5 +31,3 @@ const Wrapper: React.FC<WrapperProps> = ({ children, hideTopNav = false }) => {
 Wrapper.defaultProps = {
   hideTopNav: false,
 }
-
-export default Wrapper

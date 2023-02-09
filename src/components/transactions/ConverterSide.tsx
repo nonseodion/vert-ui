@@ -1,12 +1,12 @@
 import React, { useMemo } from "react"
-import { buyableCurrencies, sellableCurrencies } from "../../utils/constants"
+import { buyableCurrencies, sellableCurrencies } from "../../dummy/currencies"
 import { ReactComponent as DropdownIcon } from "../../assets/icons/arrow-down.svg"
 
 export interface ConverterSideProps {
   side: "sell" | "buy"
 }
 
-const ConverterSide: React.FC<ConverterSideProps> = ({ side }) => {
+export default function ConverterSide({ side }: ConverterSideProps) {
   const isBuySide = useMemo(() => side === "buy", [side])
   return (
     <div className="bg-white min-h-[104px] rounded-xl py-[13.5px] px-4">
@@ -49,5 +49,3 @@ const ConverterSide: React.FC<ConverterSideProps> = ({ side }) => {
     </div>
   )
 }
-
-export default ConverterSide

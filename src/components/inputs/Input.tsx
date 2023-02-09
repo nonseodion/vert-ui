@@ -8,7 +8,7 @@ interface InputProps {
   [key: string]: any
 }
 
-const Input: React.FC<InputProps> = ({ placeholder, type, ...rest }) => {
+export default function Input({ placeholder, type, ...rest }: InputProps) {
   const [isVisiblePassword, setIsVisiblePassword] = useState(false)
   const togglePasswordVisibility = () => {
     setIsVisiblePassword((visibility) => !visibility)
@@ -33,5 +33,3 @@ const Input: React.FC<InputProps> = ({ placeholder, type, ...rest }) => {
 Input.defaultProps = {
   type: "text",
 }
-
-export default Input

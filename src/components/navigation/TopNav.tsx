@@ -5,7 +5,7 @@ import { routes } from "../../utils/constants"
 import { doNothing } from "../../utils/functions"
 import Button from "../general/Button"
 
-const TopNav: React.FC = () => {
+export default function TopNav() {
   const navigate = useNavigate()
   return (
     <div className="flex items-center justify-between bg-nav h-[100px] pl-[80px] pr-[95px] py-[13px]">
@@ -22,5 +22,3 @@ const TopNav: React.FC = () => {
     </div>
   )
 }
-
-export default TopNav

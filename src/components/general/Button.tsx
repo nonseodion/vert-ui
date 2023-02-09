@@ -1,7 +1,7 @@
 import React from "react"
 import clsx from "classnames"
 
-export interface ButtonProps {
+interface ButtonProps {
   text: string
   background?: "primary" | "transparent"
   textColor?: "white" | "dark"
@@ -11,7 +11,7 @@ export interface ButtonProps {
   className?: string
 }
 
-const Button: React.FC<ButtonProps> = ({
+export default function Button({
   background = "primary",
   textColor,
   text,
@@ -19,22 +19,24 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   fullWidth,
   className,
-}) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={clsx(
-      "text-white bg-primary py-[14px] px-4 rounded-xl",
-      { "bg-transparent": background === "transparent" },
-      { "text-black": textColor === "dark" },
-      { "border border-primary": bordered },
-      { "w-full": fullWidth },
-      className
-    )}
-  >
-    {text}
-  </button>
-)
+}: ButtonProps) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={clsx(
+        "text-white bg-primary py-[14px] px-4 rounded-xl",
+        { "bg-transparent": background === "transparent" },
+        { "text-black": textColor === "dark" },
+        { "border border-primary": bordered },
+        { "w-full": fullWidth },
+        className
+      )}
+    >
+      {text}
+    </button>
+  )
+}
 
 Button.defaultProps = {
   background: "primary",
@@ -43,5 +45,3 @@ Button.defaultProps = {
   fullWidth: false,
   className: "",
 }
-
-export default Button

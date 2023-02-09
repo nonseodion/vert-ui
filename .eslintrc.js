@@ -10,7 +10,6 @@ module.exports = {
     project: "./tsconfig.eslint.json",
   },
   rules: {
-    "react/function-component-definition": "off",
     "import/no-named-as-default": "off",
     "react/jsx-props-no-spreading": "off"
   }
