@@ -24,7 +24,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prepare": "!is-ci || husky install",
-    "typecheck": "tsc --project tsconfig.json --noEmit"
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "prettier": "prettier --write --ignore-unknown --cache ./src",
+    "eslint": "eslint ./src"
   },
   "eslintConfig": {
     "extends": [
@@ -63,7 +65,10 @@
   "lint-staged": {
     "*.ts?(x)": [
       "eslint --cache --fix --cache-location ./node_modules/.cache",
-      "prettier --write --ignore-unknown"
+      "prettier --write --ignore-unknown --cache"
+    ],
+    "*.css": [
+      "prettier --write --ignore-unknown --cache"
     ]
   }
 }
