@@ -1,13 +1,18 @@
 import React, { useEffect } from "react"
 import clsx from "classnames"
-import { TopNav } from "../navigation"
+import { Footer, TopNav } from "../navigation"
 
 interface WrapperProps {
   children: React.ReactNode
   hideTopNav?: boolean
+  hideFooter?: boolean
 }
 
-export default function Wrapper({ children, hideTopNav }: WrapperProps) {
+export default function Wrapper({
+  children,
+  hideTopNav,
+  hideFooter,
+}: WrapperProps) {
   useEffect(() => {
     window.scroll(0, 0)
   }, [])
@@ -21,10 +26,12 @@ export default function Wrapper({ children, hideTopNav }: WrapperProps) {
     >
       {!hideTopNav && <TopNav />}
       {children}
+      {!hideFooter && <Footer />}
     </div>
   )
 }
 
 Wrapper.defaultProps = {
   hideTopNav: false,
+  hideFooter: true,
 }

@@ -4,7 +4,6 @@ import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { Button, Loader } from "../general"
 import { providers } from "../../dummy/providers"
 import { doNothing } from "../../utils/functions"
-import { Footer } from "../navigation"
 
 interface ConnectWalletProps {
   visible: boolean
@@ -105,9 +104,6 @@ export default function ConnectWallet({
             </div>
           )}
         </div>
-      </div>
-      <div className="mt-[176px]">
-        <Footer />
       </div>
     </div>
   )
