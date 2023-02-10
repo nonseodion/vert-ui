@@ -21,7 +21,7 @@ export default function EmailVerification() {
             <p className="text-[#27303D] text-sm text-center leading-6 mb-[60.5px]">
               Please enter the OTP sent to the email address you provided
             </p>
-            <div className="my-[50px] flex items-center justify-center">
+            <div className="my-[50px] flex items-center justify-center otp-input-container">
               <OtpInput
                 value={otp}
                 inputStyle="!w-[49px] h-[62px] outline-none mr-[10px] rounded-[10px] border border-lightGreen focus:border-primary"
