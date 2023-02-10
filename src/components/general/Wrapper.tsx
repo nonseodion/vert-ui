@@ -7,10 +7,7 @@ interface WrapperProps {
   hideTopNav?: boolean
 }
 
-export default function Wrapper({
-  children,
-  hideTopNav = false,
-}: WrapperProps) {
+export default function Wrapper({ children, hideTopNav }: WrapperProps) {
   useEffect(() => {
     window.scroll(0, 0)
   }, [])

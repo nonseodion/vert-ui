@@ -1,28 +1,34 @@
 import React from "react"
 import clsx from "classnames"
+import Loader from "./Loader"
+import { doNothing } from "../../utils/functions"
 
 interface ButtonProps {
   text: string
   background?: "primary" | "transparent"
   textColor?: "white" | "dark"
   bordered?: boolean
-  onClick: () => void
+  onClick?: (_: any) => void
   fullWidth?: boolean
   className?: string
+  loading?: boolean
+  type?: "button" | "submit"
 }
 
 export default function Button({
-  background = "primary",
+  background,
+  type,
   textColor,
   text,
   bordered,
   onClick,
   fullWidth,
   className,
+  loading,
 }: ButtonProps) {
   return (
     <button
-      type="button"
+      type={type === "submit" ? "submit" : "button"}
       onClick={onClick}
       className={clsx(
         "text-white bg-primary py-[14px] px-4 rounded-xl",
@@ -33,7 +39,16 @@ export default function Button({
         className
       )}
     >
-      {text}
+      <div>
+        {loading ? (
+          <div className="flex items-center space-x-[5px] justify-center">
+            <span className="text-black/[.4]">Loading...</span>
+            <Loader className="h-4 w-4" />
+          </div>
+        ) : (
+          <span>{text}</span>
+        )}
+      </div>
     </button>
   )
 }
@@ -44,4 +59,7 @@ Button.defaultProps = {
   bordered: false,
   fullWidth: false,
   className: "",
+  loading: false,
+  onClick: doNothing,
+  type: "button",
 }
