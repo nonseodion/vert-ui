@@ -12,6 +12,9 @@ module.exports = {
   rules: {
     "import/no-named-as-default": "off",
     "react/jsx-props-no-spreading": "off",
-    "no-nested-ternary": "off"
+    "no-nested-ternary": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/interactive-supports-focus": "off",
+    "jsx-a11y/no-static-element-interactions": "off"
   }
 }

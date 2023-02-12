@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react"
+import { handleBodyScroll } from "../utils/functions"
 
 export default function useConnectWallet() {
   const [showConnectWallet, setShowConnectWallet] = useState(false)
 
   useEffect(() => {
-    if (showConnectWallet) {
-      document.body.style.overflowY = "hidden"
-    } else {
-      document.body.style.overflowY = "visible"
-    }
+    handleBodyScroll(showConnectWallet ? "disable" : "enable")
   }, [showConnectWallet])
 
   return {

@@ -4,7 +4,7 @@ import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { ReactComponent as Settings } from "../../assets/icons/settings.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { ReactComponent as Search } from "../../assets/icons/search.svg"
-import { doNothing } from "../../utils/functions"
+import { doNothing, handleBodyScroll } from "../../utils/functions"
 import userTokens, { availableTokens } from "../../dummy/user-tokens"
 import UserToken from "./UserToken"
 import { Button } from "../general"
@@ -27,17 +27,15 @@ export default function TokenModal({ visible, onClose }: TokenModalProps) {
   const [currentStep, setCurrentStep] = useState<string>(steps.DEFAULT)
   const addressIsEmpty = useMemo(() => address.trim().length === 0, [address])
   useEffect(() => {
-    if (visible) {
-      document.body.style.overflowY = "hidden"
-    } else {
-      document.body.style.overflowY = "visible"
+    handleBodyScroll(visible ? "disable" : "enable")
+    if (!visible) {
       setAddress("")
     }
   }, [visible])
   return (
     <div
       className={clsx(
-        "fixed top-0 transition-all duration-150 z-[51] left-0 h-full w-full overflow-y-scroll backdrop-blur-[5px]",
+        "fixed top-0 transition-all duration-150 z-[51] left-0 h-full w-full overflow-y-auto backdrop-blur-[5px]",
         { "opacity-0 pointer-events-none": !visible }
       )}
     >
@@ -112,7 +110,7 @@ export default function TokenModal({ visible, onClose }: TokenModalProps) {
             </div>
             <div className="mx-2 h-[1px] bg-lightBlue" />
             {addressIsEmpty ? (
-              <ul className="px-6 pt-6 max-h-[320px] overflow-y-scroll scrollbar-hide">
+              <ul className="px-6 pt-6 max-h-[320px] overflow-y-auto scrollbar-hide">
                 {availableTokens.map((token) => (
                   <div
                     className="flex space-x-4 items-center mb-8"

@@ -2,13 +2,15 @@ import React, { useState, useMemo } from "react"
 import clsx from "classnames"
 import { BrowserRouter as Router } from "react-router-dom"
 import { Banner } from "./components/general"
-import AuthContext from "./contexts/AuthContext"
+import AuthContext, { AuthStateValues } from "./contexts/AuthContext"
 import Routes from "./Routes"
+import { handleProfileDropdown } from "./utils/functions"
 
 function App() {
   const [showBanner] = useState(true)
-  const [authState, setAuthState] = useState({
+  const [authState, setAuthState] = useState<AuthStateValues>({
     isAuthenticated: false,
+    user: null,
   })
 
   const value = useMemo(() => ({ authState, setAuthState }), [authState])
@@ -16,7 +18,10 @@ function App() {
   return (
     <AuthContext.Provider value={value}>
       <Router>
-        <div className="bg-black min-h-screen">
+        <div
+          className="bg-black min-h-screen"
+          onClick={() => handleProfileDropdown("hide")}
+        >
           {showBanner && <Banner />}
           <div
             className={clsx("max-w-[1500px] mx-auto", { "pt-10": showBanner })}
