@@ -13,6 +13,8 @@ interface ButtonProps {
   className?: string
   loading?: boolean
   type?: "button" | "submit"
+  disabled?: boolean
+  showLoadingText?: boolean
 }
 
 export default function Button({
@@ -25,9 +27,12 @@ export default function Button({
   fullWidth,
   className,
   loading,
+  disabled,
+  showLoadingText,
 }: ButtonProps) {
   return (
     <button
+      disabled={disabled}
       type={type === "submit" ? "submit" : "button"}
       onClick={onClick}
       className={clsx(
@@ -42,7 +47,9 @@ export default function Button({
       <div>
         {loading ? (
           <div className="flex items-center space-x-[5px] justify-center">
-            <span className="text-black/[.4]">Loading...</span>
+            {showLoadingText && (
+              <span className="text-black/[.4]">Loading...</span>
+            )}
             <Loader className="h-4 w-4" />
           </div>
         ) : (
@@ -62,4 +69,6 @@ Button.defaultProps = {
   loading: false,
   onClick: doNothing,
   type: "button",
+  disabled: false,
+  showLoadingText: true,
 }
