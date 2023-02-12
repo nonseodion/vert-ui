@@ -4,7 +4,7 @@ import Converter from "../../components/transactions/Converter"
 
 export default function Home() {
   return (
-    <Wrapper>
+    <Wrapper hideFooter={false}>
       <div className="flex pt-[114px] pb-[242px] px-[80px]  space-x-[100px]">
         <div className="max-w-[60%]">
           <h1 className="text-white text-[54px] font-bold leading-[81px]">

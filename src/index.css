@@ -10,3 +10,15 @@ html,
 body {
   scroll-behavior: smooth;
 }
+
+.otp-input-container > div div:nth-of-type(3) {
+  margin-right: 15px;
+}
+
+.otp-input-container > div div:nth-of-type(3) > input {
+  margin-right: 0;
+}
+
+.otp-input-container > div div:nth-of-type(4) {
+  margin-left: 15px;
+}

@@ -1,14 +1,20 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { ReactComponent as LoneLogo } from "../../assets/icons/logo-lone.svg"
-import { Button, Wrapper } from "../../components/general"
+import { Button, Glow, Wrapper } from "../../components/general"
 import Input from "../../components/inputs/Input"
+import ConnectWallet from "../../components/transactions/ConnectWallet"
+import useConnectWallet from "../../hooks/useConnectWallet"
 import { routes } from "../../utils/constants"
 import { doNothing } from "../../utils/functions"
 
 export default function SignInWithEmail() {
+  const { visible, closeHandler, displayHandler } = useConnectWallet()
+
   return (
     <Wrapper hideTopNav>
+      <ConnectWallet visible={visible} onClose={closeHandler} />
+      <Glow />
       <div className="flex justify-center pt-[58px]">
         <div className="flex flex-col justify-center items-center space-y-[50.75px] mb-[276px]">
           <LoneLogo />
@@ -42,7 +48,7 @@ export default function SignInWithEmail() {
                   <Button
                     text="Connect Wallet"
                     background="transparent"
-                    onClick={doNothing}
+                    onClick={displayHandler}
                     fullWidth
                     className="text-[14.48px] font-semibold"
                     textColor="dark"

@@ -3,4 +3,6 @@ export const routes = {
   home: "/",
   sign_in_with_email: "/sign-in/email",
   sign_up_with_email: "/sign-up/email",
+  sign_up_with_wallet: "/sign-up/wallet",
+  email_verification: "/verify-email",
 }
