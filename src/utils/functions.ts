@@ -27,5 +27,8 @@ export const handleMobileNavDropdown = (action: ActionType) =>
   handleDropdown(".mobile-navigator-dropdown", action)
 
 export const handleBodyScroll = (action: "enable" | "disable" = "enable") => {
-  document.body.style.overflowY = action === "enable" ? "visible" : "hidden"
+  const el = document.querySelector("html")
+  if (el) {
+    el.style.overflowY = action === "enable" ? "visible" : "hidden"
+  }
 }
