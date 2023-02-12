@@ -4,7 +4,10 @@ import { BrowserRouter as Router } from "react-router-dom"
 import { Banner } from "./components/general"
 import AuthContext, { AuthStateValues } from "./contexts/AuthContext"
 import Routes from "./Routes"
-import { handleProfileDropdown } from "./utils/functions"
+import {
+  handleMobileNavDropdown,
+  handleProfileDropdown,
+} from "./utils/functions"
 
 function App() {
   const [showBanner] = useState(true)
@@ -20,11 +23,16 @@ function App() {
       <Router>
         <div
           className="bg-black min-h-screen"
-          onClick={() => handleProfileDropdown("hide")}
+          onClick={() => {
+            handleProfileDropdown("hide")
+            handleMobileNavDropdown("hide")
+          }}
         >
           {showBanner && <Banner />}
           <div
-            className={clsx("max-w-[1500px] mx-auto", { "pt-10": showBanner })}
+            className={clsx("max-w-[1500px] mx-auto", {
+              "pt-7 md:pt-10": showBanner,
+            })}
           >
             <Routes />
           </div>

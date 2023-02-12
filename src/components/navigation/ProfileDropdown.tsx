@@ -6,13 +6,14 @@ import { ReactComponent as Settings } from "../../assets/icons/settings-white.sv
 import { ReactComponent as SignOut } from "../../assets/icons/sign-out.svg"
 import useAuth from "../../hooks/useAuth"
 import { routes } from "../../utils/constants"
+import { doNothing, handleProfileDropdown } from "../../utils/functions"
 import Button from "../general/Button"
 
 export default function ProfileDropdown() {
   const { user, logOut } = useAuth()
   const navigate = useNavigate()
   const links = [
-    { icon: <Profile />, text: "Profile" },
+    { icon: <Profile />, text: "Profile", page: routes.profile_settings },
     {
       icon: <Retry />,
       text: "Transactions",
@@ -20,6 +21,7 @@ export default function ProfileDropdown() {
     {
       icon: <Settings />,
       text: "Account settings",
+      page: routes.profile_settings,
     },
     {
       icon: <SignOut />,
@@ -30,10 +32,16 @@ export default function ProfileDropdown() {
       },
     },
   ]
+
+  const onClick = (page: string) => {
+    navigate(page)
+    handleProfileDropdown("hide")
+  }
+
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="opacity-0 transition-all duration-150 pointer-events-none absolute backdrop-blur-[5px] top-[120px] rounded-3xl right-[77px] w-[283px] bg-[#292929]/[.62] profile-dropdown p-[30px] py-8"
+      className="opacity-0 transition-all duration-150 pointer-events-none absolute backdrop-blur-[5px] top-[120px] rounded-3xl right-4 lg:right-[77px] w-[283px] bg-[#292929]/[.62] profile-dropdown p-[30px] py-8"
     >
       <p className="text-primary font-medium text-base">
         Hello {user?.username}!
@@ -43,7 +51,13 @@ export default function ProfileDropdown() {
           <li key={link.text}>
             <button
               type="button"
-              onClick={link.onClick}
+              onClick={() =>
+                link.onClick
+                  ? link.onClick()
+                  : link.page
+                  ? onClick(link.page)
+                  : doNothing()
+              }
               className="h-11 space-x-[15px] flex items-center"
             >
               {link.icon}
@@ -61,6 +75,7 @@ export default function ProfileDropdown() {
         className="text-[13px]"
         bordered
         fullWidth
+        onClick={() => onClick(routes.manage_wallets)}
       />
     </div>
   )

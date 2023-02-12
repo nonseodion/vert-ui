@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { ReactComponent as Logo } from "../../assets/icons/logo.svg"
 import { ReactComponent as USD } from "../../assets/icons/usd.svg"
 import { ReactComponent as Dropdown } from "../../assets/icons/dropdown.svg"
+import { ReactComponent as Hamburger } from "../../assets/icons/hamburger.svg"
 import { ReactComponent as User } from "../../assets/icons/user.svg"
 import useAuth from "../../hooks/useAuth"
 import { routes } from "../../utils/constants"
@@ -15,8 +16,8 @@ export default function TopNav() {
   const { isAuthenticated, user } = useAuth()
 
   return (
-    <div className="relative flex items-center justify-between bg-nav h-[100px] pl-[80px] pr-[95px] py-[13px]">
-      <Logo />
+    <div className="relative flex items-center justify-between bg-nav h-[60px] px-4 lg:h-[100px] lg:pl-[80px] lg:pr-[95px] lg:py-[13px]">
+      <Logo className="h-10 w-[52px] lg:h-[74.44px] lg:w-[96.98px]" />
       {isAuthenticated ? (
         <div className="flex items-center space-x-[41px]">
           <button
@@ -35,25 +36,30 @@ export default function TopNav() {
               handleProfileDropdown("toggle")
             }}
             type="button"
-            className="h-[52px] rounded-xl bg-[#D7FFD0]/[.25] flex items-center px-2"
+            className="h-[30px] lg:h-[52px] rounded-xl bg-[#D7FFD0]/[.25] flex items-center px-2"
           >
-            <User className="mr-[7px]" />
+            <User className="mr-0 lg:mr-[7px]" />
             <Button
               text={user ? user.username : ""}
-              className="h-9 text-[15px] rounded-[10px] px-[10px] py-0 max-w-[121px]"
+              className="lg:block hidden h-9 text-[15px] rounded-[10px] px-[10px] py-0 max-w-[121px]"
             />
             <Dropdown className="ml-[13.41px] h-3 w-3" />
           </button>
         </div>
       ) : (
-        <div className="flex items-center space-x-[15px]">
-          <Button
-            bordered
-            text="sign in"
-            onClick={() => navigate(routes.sign_in_with_email)}
-            background="transparent"
-          />
-          <Button text="Connect Wallet" onClick={doNothing} />
+        <div>
+          <button className="lg:hidden" type="button">
+            <Hamburger />
+          </button>
+          <div className="hidden lg:flex items-center space-x-[15px]">
+            <Button
+              bordered
+              text="sign in"
+              onClick={() => navigate(routes.sign_in_with_email)}
+              background="transparent"
+            />
+            <Button text="Connect Wallet" onClick={doNothing} />
+          </div>
         </div>
       )}
       {isAuthenticated && <ProfileDropdown />}

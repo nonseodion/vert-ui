@@ -102,6 +102,7 @@ export default function TokenModal({ visible, onClose }: TokenModalProps) {
             <div className="mx-6 flex flex-wrap pb-[9px]">
               {userTokens.map((token) => (
                 <UserToken
+                  key={token.token}
                   token={token.token}
                   icon={token.icon}
                   className="mb-1 mr-[6px]"
