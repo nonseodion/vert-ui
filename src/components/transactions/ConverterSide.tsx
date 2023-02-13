@@ -4,9 +4,13 @@ import { ReactComponent as DropdownIcon } from "../../assets/icons/arrow-down.sv
 
 export interface ConverterSideProps {
   side: "sell" | "buy"
+  onTokenSelect: () => void
 }
 
-export default function ConverterSide({ side }: ConverterSideProps) {
+export default function ConverterSide({
+  side,
+  onTokenSelect,
+}: ConverterSideProps) {
   const isBuySide = useMemo(() => side === "buy", [side])
   return (
     <div className="bg-white min-h-[104px] rounded-xl py-[13.5px] px-4">
@@ -18,7 +22,11 @@ export default function ConverterSide({ side }: ConverterSideProps) {
             placeholder="0.0"
           />
         </div>
-        <button type="button" className="flex-shrink-0 ml-3">
+        <button
+          type="button"
+          className="flex-shrink-0 ml-3"
+          onClick={onTokenSelect}
+        >
           <div className="w-[130px] h-[40px] flex space-x-[10.1px] justify-center items-center rounded border border-borderLight">
             <div className="flex space-x-4 items-center">
               <img

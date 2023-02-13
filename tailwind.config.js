@@ -15,15 +15,19 @@ module.exports = {
         border: "#BBBBBB",
         borderLight: '#E8EAED',
         purple: '#6C86AD',
-        cta: '#B0CDAB',
+        disabled: '#B0CDAB',
         yellow: '#F3BA2F',
-        lightBlue: '#98A1C0'
+        lightBlue: '#98A1C0',
+        lightGrey: '#ECF0F9',
+        danger: '#E3402A',
+        dark: '#222222',
       },
       borderRadius: {
         10: "10px"
       },
       fontSize: {
-        12: "12px"
+        12: "12px",
+        13: '13px'
       }
     },
   },

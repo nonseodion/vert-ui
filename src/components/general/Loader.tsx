@@ -10,7 +10,7 @@ export default function Loader({ className }: LoaderProps) {
     <svg
       aria-hidden="true"
       className={clsx(
-        "text-gray-200 animate-spin dark:text-gray-600 fill-primary",
+        "text-white animate-spin dark:text-gray-600 fill-primary",
         className
       )}
       viewBox="0 0 100 101"

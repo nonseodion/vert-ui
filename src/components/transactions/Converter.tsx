@@ -1,11 +1,18 @@
-import React from "react"
+import React, { useState } from "react"
 import { ReactComponent as Retry } from "../../assets/icons/retry.svg"
 import { ReactComponent as Retry2 } from "../../assets/icons/retry-2.svg"
 import ConverterSide from "./ConverterSide"
+import TokenModal from "./TokenModal"
+import { doNothing } from "../../utils/functions"
 
 export default function Converter() {
+  const [tokenModalActive, setTokenModalActive] = useState(false)
   return (
     <div className="w-[418px] rounded-3xl bg-lightGreen">
+      <TokenModal
+        visible={tokenModalActive}
+        onClose={() => setTokenModalActive(false)}
+      />
       <div className="h-[53px] flex items-center justify-between border-b border-border">
         <div className="ml-auto flex space-x-[21.01px] items-center mr-[22px]">
           <button type="button">
@@ -23,11 +30,14 @@ export default function Converter() {
           <span>206,611.10 NGN</span>
         </p>
         <div className="flex flex-col space-y-4 mb-[30px]">
-          <ConverterSide side="sell" />
-          <ConverterSide side="buy" />
+          <ConverterSide
+            side="sell"
+            onTokenSelect={() => setTokenModalActive(true)}
+          />
+          <ConverterSide side="buy" onTokenSelect={doNothing} />
         </div>
         <button
-          className="bg-cta py-[17px] h-[48px] w-full rounded disabled:text-[black]/[.3] text-sm font-semibold leading-[2px] disabled:cursor-not-allowed"
+          className="bg-disabled py-[17px] h-[48px] w-full rounded disabled:text-[black]/[.3] text-sm font-semibold leading-[2px] disabled:cursor-not-allowed"
           disabled
           type="button"
         >
