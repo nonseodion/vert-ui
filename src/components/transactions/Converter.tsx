@@ -3,6 +3,7 @@ import { ReactComponent as Retry } from "../../assets/icons/retry.svg"
 import { ReactComponent as Retry2 } from "../../assets/icons/retry-2.svg"
 import ConverterSide from "./ConverterSide"
 import TokenModal from "./TokenModal"
+import { doNothing } from "../../utils/functions"
 
 export default function Converter() {
   const [tokenModalActive, setTokenModalActive] = useState(false)
@@ -33,10 +34,7 @@ export default function Converter() {
             side="sell"
             onTokenSelect={() => setTokenModalActive(true)}
           />
-          <ConverterSide
-            side="buy"
-            onTokenSelect={() => setTokenModalActive(true)}
-          />
+          <ConverterSide side="buy" onTokenSelect={doNothing} />
         </div>
         <button
           className="bg-disabled py-[17px] h-[48px] w-full rounded disabled:text-[black]/[.3] text-sm font-semibold leading-[2px] disabled:cursor-not-allowed"

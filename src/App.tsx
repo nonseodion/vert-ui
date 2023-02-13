@@ -21,6 +21,7 @@ function App() {
         <div
           className="bg-black min-h-screen"
           onClick={() => handleProfileDropdown("hide")}
+          role="presentation"
         >
           {showBanner && <Banner />}
           <div
