@@ -2,12 +2,25 @@ import { useContext } from "react"
 import AuthContext from "../contexts/AuthContext"
 
 const useAuth = () => {
-  const {
-    authState: { isAuthenticated },
-  } = useContext(AuthContext)
+  const { authState, setAuthState } = useContext(AuthContext)
+
+  const updateAuthState = (data: object) =>
+    setAuthState({ ...authState, ...data })
+
+  const authenticateUser = () =>
+    updateAuthState({
+      isAuthenticated: true,
+      user: { username: "sketchbreezy" },
+    })
+
+  const logOut = () => updateAuthState({ isAuthenticated: false, user: null })
 
   return {
-    isAuthenticated,
+    isAuthenticated: authState.isAuthenticated,
+    user: authState.user,
+    updateAuthState,
+    authenticateUser,
+    logOut,
   }
 }
 

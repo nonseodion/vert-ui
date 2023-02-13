@@ -18,7 +18,7 @@ export default function ConnectWallet({
   return (
     <div
       className={clsx(
-        "fixed z-[1] top-0 left-0 h-full w-full overflow-y-scroll bg-black",
+        "fixed z-[1] top-0 left-0 h-full w-full overflow-y-auto bg-black",
         { "opacity-0 pointer-events-none": !visible }
       )}
     >

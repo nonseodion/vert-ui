@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import clsx from "classnames"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import { doNothing } from "../../utils/functions"
+import { doNothing, handleBodyScroll } from "../../utils/functions"
 import TokenImport from "./TokenImport"
 import CustomTokens from "./CustomTokens"
 import SelectToken from "./SelectToken"
@@ -23,17 +23,15 @@ export default function TokenModal({ visible, onClose }: TokenModalProps) {
   const [address, setAddress] = useState<string>("")
 
   useEffect(() => {
-    if (visible) {
-      document.body.style.overflowY = "hidden"
-    } else {
-      document.body.style.overflowY = "visible"
+    handleBodyScroll(visible ? "disable" : "enable")
+    if (!visible) {
       setAddress("")
     }
   }, [visible])
   return (
     <div
       className={clsx(
-        "fixed top-0 transition-all duration-150 z-[51] left-0 h-full w-full overflow-y-scroll backdrop-blur-[5px]",
+        "fixed top-0 transition-all duration-150 z-[51] left-0 h-full w-full overflow-y-auto backdrop-blur-[5px]",
         { "opacity-0 pointer-events-none": !visible }
       )}
     >
@@ -72,7 +70,6 @@ export default function TokenModal({ visible, onClose }: TokenModalProps) {
             </button>
           )}
         </div>
-
         {currentStep === steps.DEFAULT && (
           <SelectToken {...{ setAddress, address, steps, setCurrentStep }} />
         )}

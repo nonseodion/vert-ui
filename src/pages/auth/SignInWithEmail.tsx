@@ -1,15 +1,23 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { ReactComponent as LoneLogo } from "../../assets/icons/logo-lone.svg"
 import { Button, Glow, Wrapper } from "../../components/general"
 import Input from "../../components/inputs/Input"
 import ConnectWallet from "../../components/transactions/ConnectWallet"
+import useAuth from "../../hooks/useAuth"
 import useConnectWallet from "../../hooks/useConnectWallet"
 import { routes } from "../../utils/constants"
-import { doNothing } from "../../utils/functions"
 
 export default function SignInWithEmail() {
   const { visible, closeHandler, displayHandler } = useConnectWallet()
+  const { authenticateUser } = useAuth()
+  const navigate = useNavigate()
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    authenticateUser()
+    navigate(routes.home)
+  }
 
   return (
     <Wrapper hideTopNav>
@@ -23,13 +31,13 @@ export default function SignInWithEmail() {
               Sign in to Vert finance
             </p>
             <div className="bg-lightGreen rounded-xl w-[349px] p-7">
-              <form className="flex flex-col space-y-4">
+              <form className="flex flex-col space-y-4" onSubmit={onSubmit}>
                 <Input placeholder="Enter your email" autoFocus />
                 <Input placeholder="Enter password" type="password" />
                 <div className="mt-[30px]">
                   <Button
                     text="Sign In"
-                    onClick={doNothing}
+                    type="submit"
                     fullWidth
                     className="text-[14.48px]"
                   />
