@@ -28,7 +28,7 @@ export default function SelectToken({
           <Search />
         </div>
         <input
-          className="h-12 flex-1 text-sm text-lightBlue bg-transparent outline-none border-none"
+          className="h-12 w-full flex-1 text-sm text-lightBlue bg-transparent outline-none border-none"
           placeholder="Search name or paste address"
           value={address}
           onChange={({ target: { value } }) => setAddress(value)}

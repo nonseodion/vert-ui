@@ -19,7 +19,7 @@ export default function UnlinkWalletModal({
     <Modal visible={visible}>
       <div className="pt-[192px] justify-center flex">
         {unlinking ? (
-          <div className="bg-white relative px-5 pt-[23px] pb-[30px] w-[392px] rounded-3xl border border-primary/[.3]">
+          <div className="bg-white max-w-[calc(100vw_-_30px)] relative px-5 pt-[23px] pb-[30px] lg:w-[392px] rounded-3xl border border-primary/[.3]">
             <h3 className="text-black font-semibold text-[21px] text-center">
               Unlinking wallet
             </h3>
@@ -34,7 +34,7 @@ export default function UnlinkWalletModal({
             </div>
           </div>
         ) : (
-          <div className="relative px-[27px] pt-[52px] bg-white w-[452px] rounded-2xl border border-primary/[.3]">
+          <div className="relative px-[27px] pt-[52px] bg-white lg:w-[452px] max-w-[calc(100vw_-_30px)]  rounded-2xl border border-primary/[.3]">
             <button
               type="button"
               onClick={onClose}

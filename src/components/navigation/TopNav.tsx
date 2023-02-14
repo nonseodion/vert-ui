@@ -19,7 +19,7 @@ export default function TopNav() {
   const { isAuthenticated, user } = useAuth()
 
   return (
-    <div className="fixed w-full flex items-center justify-between bg-nav h-[60px] px-4 lg:h-[100px] lg:pl-[80px] lg:pr-[95px] lg:py-[13px]">
+    <div className="z-[999] fixed w-full flex items-center justify-between bg-nav h-[60px] px-4 lg:h-[100px] lg:pl-[80px] lg:pr-[95px] lg:py-[13px]">
       <Link to={routes.home}>
         <Logo className="h-10 w-[52px] lg:h-[74.44px] lg:w-[96.98px]" />
       </Link>

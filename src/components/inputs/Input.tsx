@@ -37,12 +37,16 @@ export default function Input({
           }
           placeholder={placeholder}
           className={clsx(
-            "flex-1 h-full placeholder:text-black/[.4] bg-transparent placeholder:text-[11px] text-black border-none focus:outline-none outline-none",
+            "flex-1 h-full w-full placeholder:text-black/[.4] bg-transparent placeholder:text-[11px] text-black border-none focus:outline-none outline-none",
             className
           )}
         />
         {rest?.type === "password" && (
-          <button type="button" onClick={togglePasswordVisibility}>
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="flex-shrink-0"
+          >
             {isVisiblePassword ? <EyeSlash /> : <Eye />}
           </button>
         )}

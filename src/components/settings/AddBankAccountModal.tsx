@@ -43,7 +43,7 @@ export default function AddBankAccountModal({
   return (
     <Modal visible={visible} onCloseCallback={reset}>
       <div className="pt-[22vh] pb-[10vh] flex justify-center">
-        <div className="bg-white w-[508px] rounded-3xl relative pt-[52px] pb-[30px] px-[30px]">
+        <div className="bg-white max-w-[calc(100vw_-_30px)]  lg:w-[508px] rounded-3xl relative pt-[52px] pb-[30px] px-[30px]">
           <button
             type="button"
             onClick={onClose}

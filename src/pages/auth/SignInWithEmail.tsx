@@ -32,7 +32,7 @@ export default function SignInWithEmail() {
             </p>
             <div className="bg-lightGreen rounded-xl w-[349px] p-7">
               <form className="flex flex-col space-y-4" onSubmit={onSubmit}>
-                <Input placeholder="Enter your email" autoFocus />
+                <Input placeholder="Enter your email" autoFocus type="email" />
                 <Input placeholder="Enter password" type="password" />
                 <div className="mt-[30px]">
                   <Button

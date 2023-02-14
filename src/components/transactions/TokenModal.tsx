@@ -24,7 +24,7 @@ export default function TokenModal({ visible, onClose }: TokenModalProps) {
 
   return (
     <Modal visible={visible} onCloseCallback={() => setAddress("")}>
-      <div className="mx-auto transition-all duration-150 mt-[80px] mb-6 bg-white rounded-3xl w-[434px] pt-[30px]">
+      <div className="mx-auto z-[51] transition-all duration-150 mt-[68px] lg:mt-[80px] mb-6 bg-white rounded-3xl max-w-[calc(100vw_-_30px)] lg:w-[434px] pt-[30px]">
         <div className="flex items-center justify-between mb-[21px] px-6">
           <button
             type="button"

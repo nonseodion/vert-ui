@@ -17,7 +17,7 @@ export default function BankAccount({
   return (
     <div className="p-[21px] flex justify-between items-center bg-white rounded-lg">
       <div className="flex space-x-[10px] items-center">
-        <div className="flex items-center justify-center h-[50px] w-[50px] rounded-full bg-primary/[.15]">
+        <div className="flex items-center flex-shrink-0 justify-center h-[50px] w-[50px] rounded-full bg-primary/[.15]">
           <Bank className="stroke-primary" />
         </div>
         <div className="flex flex-col space-y-[7px]">
@@ -27,7 +27,7 @@ export default function BankAccount({
           </p>
         </div>
       </div>
-      <div className="flex items-center space-x-[24.72px]">
+      <div className="flex items-center space-x-[24.72px] flex-shrink-0 ml-3">
         <button type="button">
           <Pencil />
         </button>
