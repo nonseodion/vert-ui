@@ -28,7 +28,9 @@ export default function Wrapper({
       )}
     >
       {!hideTopNav && <TopNav />}
-      {children}
+      <div className={clsx({ "pt-[60px] lg:pt-[100px]": !hideTopNav })}>
+        {children}
+      </div>
       {!hideFooter && <Footer />}
     </div>
   )

@@ -8,6 +8,8 @@ import {
   handleMobileNavDropdown,
   handleProfileDropdown,
 } from "./utils/functions"
+import ToastContext, { Toast } from "./contexts/ToastContext"
+import ToastDisplay from "./components/general/ToastDisplay"
 
 function App() {
   const [showBanner] = useState(true)
@@ -15,29 +17,35 @@ function App() {
     isAuthenticated: false,
     user: null,
   })
+  const [toast, setToast] = useState<Toast>(null)
 
   const value = useMemo(() => ({ authState, setAuthState }), [authState])
+  const toastValue = useMemo(() => ({ toast, setToast }), [toast])
 
   return (
     <AuthContext.Provider value={value}>
-      <Router>
-        <div
-          className="bg-black min-h-screen"
-          onClick={() => {
-            handleProfileDropdown("hide")
-            handleMobileNavDropdown("hide")
-          }}
-        >
-          {showBanner && <Banner />}
+      <ToastContext.Provider value={toastValue}>
+        <Router>
+          <ToastDisplay />
           <div
-            className={clsx("max-w-[1500px] mx-auto", {
-              "pt-7 md:pt-10": showBanner,
-            })}
+            className="bg-black min-h-screen"
+            onClick={() => {
+              handleProfileDropdown("hide")
+              handleMobileNavDropdown("hide")
+            }}
+            role="presentation"
           >
-            <Routes />
+            {showBanner && <Banner />}
+            <div
+              className={clsx("max-w-[1500px] mx-auto", {
+                "pt-7 md:pt-10": showBanner,
+              })}
+            >
+              <Routes />
+            </div>
           </div>
-        </div>
-      </Router>
+        </Router>
+      </ToastContext.Provider>
     </AuthContext.Provider>
   )
 }

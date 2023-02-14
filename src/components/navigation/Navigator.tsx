@@ -1,38 +1,46 @@
-import React from "react"
+import React, { useMemo } from "react"
 import clsx from "classnames"
-import { useNavigate, NavLink } from "react-router-dom"
+import { useNavigate, NavLink, useLocation } from "react-router-dom"
 import { ReactComponent as Dropdown } from "../../assets/icons/dropdown.svg"
 import { ReactComponent as Profile } from "../../assets/icons/profile.svg"
 import { ReactComponent as Wallet } from "../../assets/icons/wallet.svg"
 import { ReactComponent as Bank } from "../../assets/icons/bank.svg"
 import { ReactComponent as Currency } from "../../assets/icons/currency.svg"
-import { ReactComponent as USD } from "../../assets/icons/usd.svg"
 import { ReactComponent as Security } from "../../assets/icons/security.svg"
 import { routes } from "../../utils/constants"
 import { handleMobileNavDropdown } from "../../utils/functions"
-
-interface MobileNavigatorProps {
-  currPage:
-    | "Profile"
-    | "Settings"
-    | "Wallet"
-    | "Bank Accounts"
-    | "Default Currency"
-    | "Security"
-}
+import ActiveCurrency from "./ActiveCurrency"
 
 const navigatorLinks = [
-  { route: routes.profile_settings, text: "Profile" },
-  { route: routes.manage_wallets, text: "Wallet" },
-  { route: routes.profile_settings, text: "Bank Accounts" },
-  { route: routes.profile_settings, text: "Default Currency" },
-  { route: routes.profile_settings, text: "Security" },
+  { route: routes.profile_settings, text: "Profile", icon: <Profile /> },
+  { route: routes.manage_wallets, text: "Wallet", icon: <Wallet /> },
+  { route: routes.bank_accounts, text: "Bank Accounts", icon: <Bank /> },
+  {
+    route: routes.default_currency,
+    text: "Default Currency",
+    icon: <Currency />,
+    extra: <ActiveCurrency />,
+  },
+  { route: routes.profile_settings, text: "Security", icon: <Security /> },
 ]
 
-export default function MobileNavigator({ currPage }: MobileNavigatorProps) {
+export default function MobileNavigator() {
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+
+  const currPage = useMemo(() => {
+    const activeLink = navigatorLinks.find((link) => link.route === pathname)
+    if (activeLink) {
+      return activeLink.text
+    }
+    return ""
+  }, [pathname])
+
   return (
-    <div>
+    <div className="flex flex-col space-y-[30px] lg:fixed flex-shrink-0 lg:min-w-[247px]">
+      <h3 className="font-bold text-2xl text-white lg:text-[40px]">
+        My Account
+      </h3>
       <div className="relative lg:hidden">
         <button
           onClick={(e) => {
@@ -65,69 +73,22 @@ export default function MobileNavigator({ currPage }: MobileNavigatorProps) {
         </ul>
       </div>
       <div className="hidden lg:flex flex-col space-y-3">
-        <NavLink
-          to={routes.profile_settings}
-          className={({ isActive }) =>
-            clsx(
-              "flex items-center h-11 space-x-[15px] text-white/[.4] stroke-white/[.4]",
-              { "!stroke-white !text-white": isActive }
-            )
-          }
-        >
-          <Profile className="h-4 w-4" />
-          <span className="font-medium text-xl">Profile</span>
-        </NavLink>
-        <NavLink
-          to={routes.manage_wallets}
-          className={({ isActive }) =>
-            clsx(
-              "flex items-center h-11 space-x-[15px] text-white/[.4] stroke-white/[.4]",
-              { "!stroke-white !text-white": isActive }
-            )
-          }
-        >
-          <Wallet />
-          <span className="font-medium text-xl">Wallet</span>
-        </NavLink>
-        <NavLink
-          to={routes.profile_settings}
-          className={({ isActive }) =>
-            clsx(
-              "flex items-center h-11 space-x-[15px] text-white/[.4] stroke-white/[.4]",
-              { "!stroke-white !text-white": isActive }
-            )
-          }
-        >
-          <Bank />
-          <span className="font-medium text-xl">Bank accounts</span>
-        </NavLink>
-        <NavLink
-          to={routes.profile_settings}
-          className={() =>
-            clsx(
-              "flex items-center h-11 space-x-[15px] text-white/[.4]"
-              // { "!stroke-white !text-white": isActive }
-            )
-          }
-        >
-          <Currency />
-          <span className="font-medium text-xl">Default Currency</span>
-          <div className="px-[6px] h-6 bg-white/[.15] rounded-lg flex items-center space-x-[2px]">
-            <USD />
-            <span className="text-[#B0B0B0] text-[8px] font-semibold">USD</span>
-          </div>
-        </NavLink>
-        <NavLink
-          to={routes.profile_settings}
-          className={({ isActive }) =>
-            clsx("flex items-center h-11 space-x-[15px] text-white/[.4]", {
-              "!stroke-white !text-white": isActive,
-            })
-          }
-        >
-          <Security />
-          <span className="font-medium text-xl">Security</span>
-        </NavLink>
+        {navigatorLinks.map((link) => (
+          <NavLink
+            key={`${link.route}-${link.text}`}
+            to={link.route}
+            className={({ isActive }) =>
+              clsx(
+                "flex items-center h-11 space-x-[15px] text-white/[.4] inactive-link",
+                { "active-link !text-white": isActive }
+              )
+            }
+          >
+            {link.icon}
+            <span className="font-medium text-xl">{link.text}</span>
+            {link.extra && link.extra}
+          </NavLink>
+        ))}
       </div>
     </div>
   )

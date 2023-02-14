@@ -7,4 +7,7 @@ export const routes = {
   email_verification: "/verify-email",
   profile_settings: "/settings/profile",
   manage_wallets: "/settings/wallet",
+  default_currency: "/settings/default-currency",
+  bank_accounts: "/settings/bank-accounts",
+  security_settings: "/settings/security",
 }

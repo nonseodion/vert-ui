@@ -1,5 +1,5 @@
 import React from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { ReactComponent as Logo } from "../../assets/icons/logo.svg"
 import { ReactComponent as USD } from "../../assets/icons/usd.svg"
 import { ReactComponent as Dropdown } from "../../assets/icons/dropdown.svg"
@@ -16,8 +16,10 @@ export default function TopNav() {
   const { isAuthenticated, user } = useAuth()
 
   return (
-    <div className="relative flex items-center justify-between bg-nav h-[60px] px-4 lg:h-[100px] lg:pl-[80px] lg:pr-[95px] lg:py-[13px]">
-      <Logo className="h-10 w-[52px] lg:h-[74.44px] lg:w-[96.98px]" />
+    <div className="fixed w-full flex items-center justify-between bg-nav h-[60px] px-4 lg:h-[100px] lg:pl-[80px] lg:pr-[95px] lg:py-[13px]">
+      <Link to={routes.home}>
+        <Logo className="h-10 w-[52px] lg:h-[74.44px] lg:w-[96.98px]" />
+      </Link>
       {isAuthenticated ? (
         <div className="flex items-center space-x-[41px]">
           <button

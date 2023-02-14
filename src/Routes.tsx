@@ -8,7 +8,12 @@ import {
   EmailVerification,
 } from "./pages/auth"
 import Home from "./pages/main/Home"
-import { ManageWallets, ProfileSettings } from "./pages/settings"
+import {
+  BankAccounts,
+  DefaultCurrency,
+  ManageWallets,
+  ProfileSettings,
+} from "./pages/settings"
 import NotFound from "./pages/utils/NotFound"
 import { routes } from "./utils/constants"
 
@@ -33,6 +38,22 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <ManageWallets />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={routes.default_currency}
+        element={
+          <ProtectedRoute>
+            <DefaultCurrency />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={routes.bank_accounts}
+        element={
+          <ProtectedRoute>
+            <BankAccounts />
           </ProtectedRoute>
         }
       />

@@ -8,12 +8,7 @@ export default function ProfileSettings() {
   return (
     <Wrapper>
       <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
-        <div className="flex flex-col space-y-[30px]">
-          <h3 className="font-bold text-2xl text-white lg:text-[40px]">
-            My Account
-          </h3>
-          <Navigator currPage="Profile" />
-        </div>
+        <Navigator />
         <SettingsContent title="Profile settings">
           <div className="flex flex-col space-y-[30px]">
             <div className="flex flex-col space-y-[10px]">
