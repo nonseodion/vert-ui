@@ -13,7 +13,7 @@ export default function RemoveTokenApprovalModal({
   return (
     <Modal visible={visible}>
       <div className="pt-[19vh] flex justify-center">
-        <div className="bg-white relative max-w-[392px] border border-primary/[.25] rounded-2xl py-[23px] px-5">
+        <div className="bg-white relative max-w-[calc(100vw_-_30px)] lg:max-w-[392px] border border-primary/[.25] rounded-2xl py-[23px] px-5">
           <h3 className="text-black text-center font-semibold text-[21px]">
             Revoking
           </h3>

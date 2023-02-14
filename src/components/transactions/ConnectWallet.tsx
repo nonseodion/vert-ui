@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import clsx from "classnames"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import { Button, Loader } from "../general"
+import { Button, Loader, Modal } from "../general"
 import { providers } from "../../dummy/providers"
 import { doNothing } from "../../utils/functions"
 
@@ -16,16 +16,11 @@ export default function ConnectWallet({
 }: ConnectWalletProps) {
   const [selectedProvider, setSelectedProvider] = useState<null | string>(null)
   return (
-    <div
-      className={clsx(
-        "fixed z-[1] top-0 left-0 h-full w-full overflow-y-auto bg-black",
-        { "opacity-0 pointer-events-none": !visible }
-      )}
-    >
+    <Modal visible={visible}>
       <div className="flex items-center justify-center">
         <div
           className={clsx(
-            "transition-all w-[424px] mt-[150px] mb-[176px] duration-200 bg-white rounded-xl px-[30px] pt-[33.5px] pb-9 relative",
+            "transition-all max-w-[calc(100vw_-_30px)] lg:w-[424px] mt-[150px] mb-[176px] duration-200 bg-white rounded-xl px-[30px] pt-[33.5px] pb-9 relative",
             { "opacity-0 pointer-events-none": !visible },
             { "pt-[23px] pb-[30px]": selectedProvider }
           )}
@@ -105,6 +100,6 @@ export default function ConnectWallet({
           )}
         </div>
       </div>
-    </div>
+    </Modal>
   )
 }
