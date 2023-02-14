@@ -1,6 +1,8 @@
-import React from "react"
+import React, { useState } from "react"
+import clsx from "classnames"
 import { useNavigate, Link } from "react-router-dom"
 import { ReactComponent as Logo } from "../../assets/icons/logo.svg"
+import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { ReactComponent as USD } from "../../assets/icons/usd.svg"
 import { ReactComponent as Dropdown } from "../../assets/icons/dropdown.svg"
 import { ReactComponent as Hamburger } from "../../assets/icons/hamburger.svg"
@@ -13,6 +15,7 @@ import ProfileDropdown from "./ProfileDropdown"
 
 export default function TopNav() {
   const navigate = useNavigate()
+  const [showSlider, setShowSlider] = useState<boolean>(false)
   const { isAuthenticated, user } = useAuth()
 
   return (
@@ -50,7 +53,11 @@ export default function TopNav() {
         </div>
       ) : (
         <div>
-          <button className="lg:hidden" type="button">
+          <button
+            className="lg:hidden"
+            type="button"
+            onClick={() => setShowSlider(true)}
+          >
             <Hamburger />
           </button>
           <div className="hidden lg:flex items-center space-x-[15px]">
@@ -65,6 +72,35 @@ export default function TopNav() {
         </div>
       )}
       {isAuthenticated && <ProfileDropdown />}
+      <div
+        className={clsx(
+          "fixed lg:hidden top-0 left-[-100vw] px-[61px] flex flex-col space-y-[22px] bg-[#1E1E1E] h-screen w-screen pt-[14vh] transition-all duration-150",
+          { "!left-0": showSlider }
+        )}
+      >
+        <button
+          type="button"
+          className="absolute top-[48.1px] right-[25.1px]"
+          onClick={() => setShowSlider(false)}
+        >
+          <Exit />
+        </button>
+        <Button
+          text="Sign in"
+          fullWidth
+          background="transparent"
+          bordered
+          className="text-primary"
+          onClick={() => navigate(routes.sign_in_with_email)}
+        />
+        <Button
+          text="Connect Wallet"
+          fullWidth
+          bordered
+          textColor="white"
+          onClick={() => navigate(routes.sign_up_with_wallet)}
+        />
+      </div>
     </div>
   )
 }

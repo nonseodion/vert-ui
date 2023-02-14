@@ -10,4 +10,7 @@ export const routes = {
   default_currency: "/settings/default-currency",
   bank_accounts: "/settings/bank-accounts",
   security_settings: "/settings/security",
+  change_password: "/settings/security/change-password",
+  set_password: "/settings/security/set-password",
+  manage_token_approvals: "/settings/security/manage-token-approvals",
 }

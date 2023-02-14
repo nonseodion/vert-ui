@@ -1,10 +1,11 @@
 import React, { useState } from "react"
+import { SingleValue } from "react-select"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { BankAccountDetails, banks } from "../../dummy/currencies"
 import { Modal, Button } from "../general"
 import { ModalProps } from "../general/Modal"
 import { Input } from "../inputs"
-import Select from "../inputs/Select"
+import Select, { OptionType } from "../inputs/Select"
 
 interface AddBankAccountModalProps extends Omit<ModalProps, "children"> {
   adding: boolean
@@ -19,7 +20,7 @@ export default function AddBankAccountModal({
   onClose,
 }: AddBankAccountModalProps) {
   const [bankInfo, setBankInfo] = useState<BankAccountDetails>({
-    bank_name: "Access bank",
+    bank_name: "",
     account_name: "",
     account_number: "",
   })
@@ -35,12 +36,9 @@ export default function AddBankAccountModal({
     setBankInfo({ bank_name: "", account_name: "", account_number: "" })
   }
 
-  //   const onBankChange = (bank: SingleValue<OptionType>) => {
-  //     if (!bank) {
-  //       return
-  //     }
-  //     onChange("bank_name", bank.value)
-  //   }
+  const onBankChange = (bank: SingleValue<OptionType> | unknown | any) => {
+    onChange("bank_name", bank?.value ?? "")
+  }
 
   return (
     <Modal visible={visible} onCloseCallback={reset}>
@@ -59,9 +57,9 @@ export default function AddBankAccountModal({
           <form className="flex flex-col space-y-[30px]">
             <div className="flex flex-col space-y-[10px]">
               <Select
-                // label="Bank name"
+                label="Bank name"
                 options={banks}
-                // onChange={onBankChange}
+                onChange={onBankChange}
               />
               <div />
               <Input

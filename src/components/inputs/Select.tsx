@@ -46,18 +46,18 @@ export default function Select<
 >(props: Props<Option, IsMulti, Group> & SelectProps) {
   const { label, ...rest } = props
   return (
-    // <div>
-    //   {label && <p className="text-black font-medium mb-[10px]">{label}</p>}
-    <ReactSelect
-      placeholder=""
-      classNames={customClassNames}
-      components={{
-        DropdownIndicator: Indicator,
-        IndicatorSeparator: null,
-      }}
-      {...rest}
-    />
-    // </div>
+    <div>
+      {label && <p className="text-black font-medium mb-[10px]">{label}</p>}
+      <ReactSelect
+        placeholder=""
+        classNames={customClassNames}
+        components={{
+          DropdownIndicator: Indicator,
+          IndicatorSeparator: null,
+        }}
+        {...rest}
+      />
+    </div>
   )
 }
 

@@ -44,17 +44,19 @@ export default function BankAccounts() {
               <span className="text-sm text-white">Add new bank details</span>
             </button>
           </div>
-          <ul className="mt-[44px] flex flex-col space-y-4">
-            {accounts.map((account) => (
-              <li key={account.account_number}>
-                <BankAccount
-                  bank_name={account.bank_name}
-                  account_name={account.account_name}
-                  account_number={account.account_number}
-                />
-              </li>
-            ))}
-          </ul>
+          {accounts.length > 0 && (
+            <ul className="mt-[44px] flex flex-col space-y-4">
+              {accounts.map((account) => (
+                <li key={account.account_number}>
+                  <BankAccount
+                    bank_name={account.bank_name}
+                    account_name={account.account_name}
+                    account_number={account.account_number}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
         </SettingsContent>
       </div>
     </Wrapper>

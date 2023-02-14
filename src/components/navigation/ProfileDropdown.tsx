@@ -63,7 +63,7 @@ export default function ProfileDropdown() {
     <div
       onClick={(e) => e.stopPropagation()}
       role="presentation"
-      className="opacity-0 transition-all duration-150 pointer-events-none absolute backdrop-blur-[5px] top-[120px] rounded-3xl right-4 lg:right-[77px] w-[283px] bg-[#292929]/[.62] profile-dropdown p-[30px] py-8 z-[3]"
+      className="opacity-0 transition-all duration-150 pointer-events-none absolute backdrop-blur-[5px] top-[95px] lg:top-[120px] rounded-3xl right-4 lg:right-[77px] w-[283px] bg-[#292929]/[.62] profile-dropdown p-[30px] py-8 z-[3]"
     >
       <p className="text-primary font-medium text-base">
         Hello {user?.username}!

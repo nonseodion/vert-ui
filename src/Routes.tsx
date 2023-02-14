@@ -10,9 +10,13 @@ import {
 import Home from "./pages/main/Home"
 import {
   BankAccounts,
+  ChangePassword,
   DefaultCurrency,
+  ManageTokenApprovals,
   ManageWallets,
   ProfileSettings,
+  SecuritySettings,
+  SetPassword,
 } from "./pages/settings"
 import NotFound from "./pages/utils/NotFound"
 import { routes } from "./utils/constants"
@@ -54,6 +58,38 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <BankAccounts />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={routes.security_settings}
+        element={
+          <ProtectedRoute>
+            <SecuritySettings />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={routes.change_password}
+        element={
+          <ProtectedRoute>
+            <ChangePassword />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={routes.manage_token_approvals}
+        element={
+          <ProtectedRoute>
+            <ManageTokenApprovals />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={routes.set_password}
+        element={
+          <ProtectedRoute>
+            <SetPassword />
           </ProtectedRoute>
         }
       />

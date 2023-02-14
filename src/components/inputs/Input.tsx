@@ -31,11 +31,11 @@ export default function Input({
         )}
       >
         <input
+          {...rest}
           type={
             rest?.type === "password" && isVisiblePassword ? "text" : rest?.type
           }
           placeholder={placeholder}
-          {...rest}
           className={clsx(
             "flex-1 h-full placeholder:text-black/[.4] bg-transparent placeholder:text-[11px] text-black border-none focus:outline-none outline-none",
             className

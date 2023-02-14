@@ -21,7 +21,7 @@ const navigatorLinks = [
     icon: <Currency />,
     extra: <ActiveCurrency />,
   },
-  { route: routes.profile_settings, text: "Security", icon: <Security /> },
+  { route: routes.security_settings, text: "Security", icon: <Security /> },
 ]
 
 export default function MobileNavigator() {
