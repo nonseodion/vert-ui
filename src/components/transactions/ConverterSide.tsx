@@ -4,7 +4,7 @@ import { ReactComponent as DropdownIcon } from "../../assets/icons/arrow-down.sv
 
 export interface ConverterSideProps {
   side: "sell" | "buy"
-  onTokenSelect: () => void
+  onTokenSelect: (_: any) => void
 }
 
 export default function ConverterSide({

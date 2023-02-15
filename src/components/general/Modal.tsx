@@ -1,42 +1,59 @@
 import React, { useEffect } from "react"
 import clsx from "classnames"
-import { handleBodyScroll } from "../../utils/functions"
+import useModal from "../../hooks/useModal"
+import { doNothing } from "../../utils/functions"
 
 export interface ModalProps {
   children: React.ReactNode
-  visible: boolean
-  onCloseCallback?: () => void
+  bodyClassNames?: string
+  onClose?: () => void
 }
 
 export default function Modal({
   children,
-  visible,
-  onCloseCallback,
+  bodyClassNames,
+  onClose,
 }: ModalProps) {
+  const { isVisible } = useModal()
+
   useEffect(() => {
-    handleBodyScroll(visible ? "disable" : "enable")
-    if (!visible && onCloseCallback) {
-      onCloseCallback()
+    if (!isVisible && onClose) {
+      if (typeof onClose === "function") {
+        onClose()
+      }
     }
-  }, [visible])
+  }, [isVisible])
+
   return (
     <>
-      {visible && (
+      {isVisible && (
         <div className="fixed top-0 transition-all duration-150 bg-black/[.7] overflow-y-hidden left-0 h-screen w-screen " />
       )}
-
       <div
         className={clsx(
-          "fixed top-0 overflow-x-hidden transition-all duration-150 z-[999] left-0 h-full w-full overflow-y-auto backdrop-blur-[5px]",
-          { "opacity-0 pointer-events-none": !visible }
+          "fixed top-0 overflow-x-hidden z-[999] left-0 h-full w-full overflow-y-auto backdrop-blur-[5px]",
+          { "opacity-0 pointer-events-none": !isVisible }
         )}
       >
-        <div className="h-screen">{children}</div>
+        <div className="h-screen">
+          <div className="flex items-center justify-center">
+            <div
+              className={clsx(
+                "transition-all max-w-[calc(100vw_-_30px)] lg:w-[424px] mt-[150px] mb-[176px] duration-200 bg-white rounded-xl px-[30px] pt-[33.5px] pb-9 relative",
+                { "opacity-0 pointer-events-none": !isVisible },
+                bodyClassNames
+              )}
+            >
+              {children}
+            </div>
+          </div>
+        </div>
       </div>
     </>
   )
 }
 
 Modal.defaultProps = {
-  onCloseCallback: null,
+  bodyClassNames: "",
+  onClose: doNothing,
 }

@@ -9,7 +9,7 @@ import { ReactComponent as Hamburger } from "../../assets/icons/hamburger.svg"
 import { ReactComponent as User } from "../../assets/icons/user.svg"
 import useAuth from "../../hooks/useAuth"
 import { routes } from "../../utils/constants"
-import { doNothing, handleProfileDropdown } from "../../utils/functions"
+import { handleProfileDropdown } from "../../utils/functions"
 import Button from "../general/Button"
 import ProfileDropdown from "./ProfileDropdown"
 
@@ -67,7 +67,10 @@ export default function TopNav() {
               onClick={() => navigate(routes.sign_in_with_email)}
               background="transparent"
             />
-            <Button text="Connect Wallet" onClick={doNothing} />
+            <Button
+              text="Connect Wallet"
+              onClick={() => navigate(routes.sign_up_with_wallet)}
+            />
           </div>
         </div>
       )}

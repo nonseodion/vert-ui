@@ -31,30 +31,32 @@ export default function DefaultCurrency() {
           </div>
           <ul>
             {filteredCurrencies.map((currency) => (
-              <li
-                key={currency.label}
-                className="mb-[19px] flex justify-between items-center"
-              >
-                <div className="flex space-x-[10px] items-center">
-                  <img
-                    src={currency.icon}
-                    alt={currency.name}
-                    className="h-10 w-10 rounded-full"
-                  />
-                  <div className="flex flex-col space-y-1">
-                    <h3 className="text-sm font-medium text-white">
-                      {currency.label}
-                    </h3>
-                    <p className="text-[10px] text-[#8994A1]">
-                      {currency.name}
-                    </p>
+              <li key={currency.label}>
+                <button
+                  type="button"
+                  className="border-none outline-none w-full mb-[19px] flex justify-between items-center"
+                >
+                  <div className="flex space-x-[10px] items-center">
+                    <img
+                      src={currency.icon}
+                      alt={currency.name}
+                      className="h-10 w-10 rounded-full"
+                    />
+                    <div className="flex flex-col space-y-1">
+                      <h3 className="text-sm text-left font-medium text-white">
+                        {currency.label}
+                      </h3>
+                      <p className="text-[10px] text-left text-[#8994A1]">
+                        {currency.name}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                {currency.is_connected && (
-                  <div className="h-4 w-4 rounded-full bg-[#E7FFE3] flex items-center justify-center">
-                    <Right />
-                  </div>
-                )}
+                  {currency.is_connected && (
+                    <div className="h-4 w-4 rounded-full bg-[#E7FFE3] flex items-center justify-center">
+                      <Right />
+                    </div>
+                  )}
+                </button>
               </li>
             ))}
           </ul>

@@ -6,15 +6,15 @@ import { Button, Glow, Wrapper } from "../../components/general"
 import Input from "../../components/inputs/Input"
 import { routes } from "../../utils/constants"
 import ConnectWallet from "../../components/transactions/ConnectWallet"
-import useConnectWallet from "../../hooks/useConnectWallet"
+import useModal from "../../hooks/useModal"
 
 export default function SignUpWithWallet() {
   const navigate = useNavigate()
-  const { visible, closeHandler, displayHandler } = useConnectWallet()
+  const { showModal } = useModal()
   return (
     <Wrapper hideTopNav>
       <Glow />
-      <ConnectWallet visible={visible} onClose={closeHandler} />
+      <ConnectWallet />
       <div className="flex justify-center pt-[58px]">
         <div className="flex flex-col justify-center items-center space-y-[50.75px] mb-[276px]">
           <LoneLogo />
@@ -43,7 +43,7 @@ export default function SignUpWithWallet() {
                 </p>
                 <Button
                   text="Sign up with Wallet"
-                  onClick={displayHandler}
+                  onClick={showModal}
                   fullWidth
                   bordered
                   textColor="dark"

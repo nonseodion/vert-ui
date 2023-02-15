@@ -1,25 +1,27 @@
 import React, { useState } from "react"
+import { toast } from "react-hot-toast"
 import { ReactComponent as Plus } from "../../assets/icons/plus.svg"
 import { Wrapper } from "../../components/general"
 import { Navigator } from "../../components/navigation"
 import { AddBankAccountModal, SettingsContent } from "../../components/settings"
 import BankAccount from "../../components/transactions/BankAccount"
 import { BankAccountDetails } from "../../dummy/currencies"
-import useToast from "../../hooks/useToast"
+import useModal from "../../hooks/useModal"
 
 export default function BankAccounts() {
-  const { toast } = useToast()
   const [accounts, setAccounts] = useState<BankAccountDetails[]>([])
-  const [showAddModal, setShowAddModal] = useState<boolean>(false)
   const [adding, setAdding] = useState<boolean>(false)
+  const { showModal, hideModal } = useModal()
 
   const onConfirm = (bank_info: BankAccountDetails) => {
     setAdding(true)
     setTimeout(() => {
       setAdding(false)
-      setShowAddModal(false)
+      hideModal()
       setAccounts([...accounts, bank_info])
-      toast("Bank account information added successfully.")
+      toast("Bank account information added successfully.", {
+        duration: 1000000,
+      })
     }, 3000)
   }
 
@@ -27,9 +29,8 @@ export default function BankAccounts() {
     <Wrapper>
       <AddBankAccountModal
         onConfirm={onConfirm}
-        visible={showAddModal}
         adding={adding}
-        onClose={() => setShowAddModal(false)}
+        onClose={hideModal}
       />
       <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
         <Navigator />
@@ -38,7 +39,7 @@ export default function BankAccounts() {
             <button
               className="ml-auto flex items-center px-[13px] py-[14px] rounded-lg bg-primary/[.1] space-x-[7.7px]"
               type="button"
-              onClick={() => setShowAddModal(true)}
+              onClick={() => showModal()}
             >
               <Plus />
               <span className="text-sm text-white">Add new bank details</span>

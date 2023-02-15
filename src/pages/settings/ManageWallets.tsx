@@ -1,16 +1,17 @@
 import React, { useState } from "react"
+import { toast } from "react-hot-toast"
 import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
 import { Button, Wrapper } from "../../components/general"
 import { Navigator } from "../../components/navigation"
 import { SettingsContent, UnlinkWalletModal } from "../../components/settings"
 import { userWallets } from "../../dummy/currencies"
-import useToast from "../../hooks/useToast"
+import useModal from "../../hooks/useModal"
 
 export default function ManageWallets() {
+  const { showModal, hideModal } = useModal()
   const [wallets, setWallets] = useState(userWallets)
   const [walletToUnlink, setWalletToUnlink] = useState<string | null>(null)
   const [unlinkingWallet, setUnlinkingWallet] = useState<boolean>(false)
-  const { toast } = useToast()
 
   const unlinkWallet = () => {
     setUnlinkingWallet(true)
@@ -19,17 +20,13 @@ export default function ManageWallets() {
       setUnlinkingWallet(false)
       setWalletToUnlink(null)
       toast("Wallet unlinked successfully")
+      hideModal()
     }, 3000)
   }
 
   return (
     <Wrapper>
-      <UnlinkWalletModal
-        onClose={() => setWalletToUnlink(null)}
-        visible={!!walletToUnlink}
-        onConfirm={unlinkWallet}
-        unlinking={unlinkingWallet}
-      />
+      <UnlinkWalletModal unlinking={unlinkingWallet} />
       <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
         <Navigator />
         <SettingsContent title="Manage Wallets">
@@ -70,7 +67,11 @@ export default function ManageWallets() {
                 </div>
                 <Button
                   text="Unlink"
-                  onClick={() => setWalletToUnlink(wallet.address)}
+                  onClick={() =>
+                    showModal({
+                      onConfirm: unlinkWallet,
+                    })
+                  }
                   bordered
                   background="transparent"
                   className="border-dark h-10 py-0 text-[#010304] font-semibold text-sm"

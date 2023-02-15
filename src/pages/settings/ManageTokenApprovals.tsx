@@ -7,6 +7,7 @@ import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { Button, Loader, Wrapper } from "../../components/general"
 import SettingsContent from "../../components/settings/SettingsContent"
 import { RemoveTokenApprovalModal } from "../../components/settings"
+import useModal from "../../hooks/useModal"
 
 interface TokenApproval {
   asset: string
@@ -43,6 +44,7 @@ const tokenApprovals = [
 
 export default function ManageTokenApprovals() {
   const navigate = useNavigate()
+  const { showModal } = useModal()
   const [approvals] = useState<TokenApproval[]>(tokenApprovals)
   const [tokenToRevoke, setTokenToRevoke] = useState<TokenApproval | null>(null)
   return (
@@ -154,7 +156,12 @@ export default function ManageTokenApprovals() {
                         text="Revoke"
                         className="h-[35px] py-0 bg-primary/[.15] text-primary"
                         bordered
-                        onClick={() => setTokenToRevoke(approval)}
+                        onClick={() => {
+                          setTokenToRevoke(approval)
+                          showModal({
+                            onCloseCallback: () => setTokenToRevoke(null),
+                          })
+                        }}
                       />
                     </div>
                   </li>
@@ -164,10 +171,7 @@ export default function ManageTokenApprovals() {
           </div>
         </SettingsContent>
       </div>
-      <RemoveTokenApprovalModal
-        visible={!!tokenToRevoke}
-        onClose={() => setTokenToRevoke(null)}
-      />
+      <RemoveTokenApprovalModal />
     </Wrapper>
   )
 }

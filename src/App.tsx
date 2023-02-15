@@ -5,11 +5,12 @@ import { Banner } from "./components/general"
 import AuthContext, { AuthStateValues } from "./contexts/AuthContext"
 import Routes from "./Routes"
 import {
+  doNothing,
   handleMobileNavDropdown,
   handleProfileDropdown,
 } from "./utils/functions"
-import ToastContext, { Toast } from "./contexts/ToastContext"
 import ToastDisplay from "./components/general/ToastDisplay"
+import ModalContext, { ModalStateValues } from "./contexts/ModalContext"
 
 function App() {
   const [showBanner] = useState(true)
@@ -17,16 +18,24 @@ function App() {
     isAuthenticated: false,
     user: null,
   })
-  const [toast, setToast] = useState<Toast>(null)
+
+  const [modalState, setModalState] = useState<ModalStateValues>({
+    isVisible: false,
+    onCloseCallback: doNothing,
+    onConfirm: doNothing,
+  })
 
   const value = useMemo(() => ({ authState, setAuthState }), [authState])
-  const toastValue = useMemo(() => ({ toast, setToast }), [toast])
+  const modalStateValue = useMemo(
+    () => ({ modalState, setModalState }),
+    [modalState]
+  )
 
   return (
     <AuthContext.Provider value={value}>
-      <ToastContext.Provider value={toastValue}>
+      <ModalContext.Provider value={modalStateValue}>
+        <ToastDisplay />
         <Router>
-          <ToastDisplay />
           <div
             className="bg-black min-h-screen"
             onClick={() => {
@@ -45,7 +54,7 @@ function App() {
             </div>
           </div>
         </Router>
-      </ToastContext.Provider>
+      </ModalContext.Provider>
     </AuthContext.Provider>
   )
 }

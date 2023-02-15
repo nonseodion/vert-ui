@@ -49,7 +49,7 @@ export default function SelectToken({
             key={token.token}
             token={token.token}
             icon={token.icon}
-            className="mb-1 mr-[6px]"
+            className="mb-1 mr-[6px] cursor-pointer"
           />
         ))}
       </div>

@@ -5,11 +5,11 @@ import { Button, Glow, Wrapper } from "../../components/general"
 import Input from "../../components/inputs/Input"
 import ConnectWallet from "../../components/transactions/ConnectWallet"
 import useAuth from "../../hooks/useAuth"
-import useConnectWallet from "../../hooks/useConnectWallet"
+import useModal from "../../hooks/useModal"
 import { routes } from "../../utils/constants"
 
 export default function SignInWithEmail() {
-  const { visible, closeHandler, displayHandler } = useConnectWallet()
+  const { showModal } = useModal()
   const { authenticateUser } = useAuth()
   const navigate = useNavigate()
 
@@ -21,7 +21,7 @@ export default function SignInWithEmail() {
 
   return (
     <Wrapper hideTopNav>
-      <ConnectWallet visible={visible} onClose={closeHandler} />
+      <ConnectWallet />
       <Glow />
       <div className="flex justify-center pt-[58px]">
         <div className="flex flex-col justify-center items-center space-y-[50.75px] mb-[276px]">
@@ -56,7 +56,7 @@ export default function SignInWithEmail() {
                   <Button
                     text="Connect Wallet"
                     background="transparent"
-                    onClick={displayHandler}
+                    onClick={showModal}
                     fullWidth
                     className="text-[14.48px] font-semibold"
                     textColor="dark"
