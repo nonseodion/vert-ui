@@ -1,10 +1,12 @@
 import React, { useState, useMemo } from "react"
 import clsx from "classnames"
+import { WagmiConfig } from "wagmi"
 import { BrowserRouter as Router } from "react-router-dom"
 import { Banner } from "./components/general"
 import AuthContext, { AuthStateValues } from "./contexts/AuthContext"
 import Routes from "./Routes"
 import { handleProfileDropdown } from "./utils/functions"
+import { client } from "./utils/config"
 
 function App() {
   const [showBanner] = useState(true)
@@ -17,20 +19,24 @@ function App() {
 
   return (
     <AuthContext.Provider value={value}>
-      <Router>
-        <div
-          className="bg-black min-h-screen"
-          onClick={() => handleProfileDropdown("hide")}
-          role="presentation"
-        >
-          {showBanner && <Banner />}
+      <WagmiConfig client={client}>
+        <Router>
           <div
-            className={clsx("max-w-[1500px] mx-auto", { "pt-10": showBanner })}
+            className="bg-black min-h-screen"
+            onClick={() => handleProfileDropdown("hide")}
+            role="presentation"
           >
-            <Routes />
+            {showBanner && <Banner />}
+            <div
+              className={clsx("max-w-[1500px] mx-auto", {
+                "pt-10": showBanner,
+              })}
+            >
+              <Routes />
+            </div>
           </div>
-        </div>
-      </Router>
+        </Router>
+      </WagmiConfig>
     </AuthContext.Provider>
   )
 }
