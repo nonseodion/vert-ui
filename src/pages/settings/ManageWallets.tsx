@@ -69,6 +69,7 @@ export default function ManageWallets() {
                   text="Unlink"
                   onClick={() =>
                     showModal({
+                      modal: "unlink_wallet",
                       onConfirm: unlinkWallet,
                     })
                   }

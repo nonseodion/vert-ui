@@ -56,7 +56,7 @@ export default function SignInWithEmail() {
                   <Button
                     text="Connect Wallet"
                     background="transparent"
-                    onClick={showModal}
+                    onClick={() => showModal({ modal: "connect_wallet" })}
                     fullWidth
                     className="text-[14.48px] font-semibold"
                     textColor="dark"

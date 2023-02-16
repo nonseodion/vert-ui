@@ -43,7 +43,7 @@ export default function SignUpWithWallet() {
                 </p>
                 <Button
                   text="Sign up with Wallet"
-                  onClick={showModal}
+                  onClick={() => showModal({ modal: "connect_wallet" })}
                   fullWidth
                   bordered
                   textColor="dark"

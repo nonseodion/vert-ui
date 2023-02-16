@@ -39,7 +39,7 @@ export default function BankAccounts() {
             <button
               className="ml-auto flex items-center px-[13px] py-[14px] rounded-lg bg-primary/[.1] space-x-[7.7px]"
               type="button"
-              onClick={() => showModal()}
+              onClick={() => showModal({ modal: "bank_account" })}
             >
               <Plus />
               <span className="text-sm text-white">Add new bank details</span>

@@ -1,4 +1,3 @@
-export const nil = 0
 export const routes = {
   home: "/",
   sign_in_with_email: "/sign-in/email",
@@ -13,4 +12,12 @@ export const routes = {
   change_password: "/settings/security/change-password",
   set_password: "/settings/security/set-password",
   manage_token_approvals: "/settings/security/manage-token-approvals",
+}
+
+export const modals = {
+  connect_wallet: "connect_wallet",
+  token_modal: "token_modal",
+  bank_account: "bank_account",
+  remove_token_approval: "remove_token_approval",
+  unlink_wallet: "unlink_wallet",
 }

@@ -1,30 +1,24 @@
 import { useContext } from "react"
 import ModalContext from "../contexts/ModalContext"
+import { modals } from "../utils/constants"
 import { doNothing, handleBodyScroll } from "../utils/functions"
 
 interface ShowModalAttributes {
   onCloseCallback?: () => void
   onConfirm?: () => void
+  modal: keyof typeof modals
 }
 
 const useModal = () => {
   const { modalState, setModalState } = useContext(ModalContext)
 
-  const showModal = (attrs?: ShowModalAttributes) => {
-    if (attrs) {
-      const { onCloseCallback, onConfirm } = attrs
-      setModalState({
-        isVisible: true,
-        onCloseCallback: onCloseCallback ?? doNothing,
-        onConfirm: onConfirm ?? doNothing,
-      })
-    } else {
-      setModalState({
-        isVisible: true,
-        onCloseCallback: doNothing,
-        onConfirm: doNothing,
-      })
-    }
+  const showModal = (attrs: ShowModalAttributes) => {
+    const { onCloseCallback, onConfirm, modal } = attrs
+    setModalState({
+      onCloseCallback: onCloseCallback ?? doNothing,
+      onConfirm: onConfirm ?? doNothing,
+      modal,
+    })
     handleBodyScroll("disable")
   }
 
@@ -36,9 +30,9 @@ const useModal = () => {
       modalState.onCloseCallback()
     }
     setModalState({
-      isVisible: false,
       onCloseCallback: doNothing,
       onConfirm: doNothing,
+      modal: null,
     })
     setTimeout(() => {
       handleBodyScroll("enable")
@@ -48,7 +42,7 @@ const useModal = () => {
   return {
     showModal,
     hideModal,
-    isVisible: modalState.isVisible,
+    modal: modalState.modal,
     onConfirm: modalState.onConfirm,
   }
 }

@@ -1,10 +1,11 @@
 import { createContext } from "react"
+import { modals } from "../utils/constants"
 import { doNothing } from "../utils/functions"
 
 export interface ModalStateValues {
   onCloseCallback: () => void | null
   onConfirm: () => void | null
-  isVisible: boolean
+  modal: keyof typeof modals | null
 }
 
 export interface ModalContextValues {
@@ -15,8 +16,8 @@ export interface ModalContextValues {
 const ModalContext = createContext<ModalContextValues>({
   modalState: {
     onCloseCallback: doNothing,
-    isVisible: false,
     onConfirm: doNothing,
+    modal: null,
   },
   setModalState: doNothing,
 })

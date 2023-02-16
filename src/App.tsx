@@ -20,7 +20,7 @@ function App() {
   })
 
   const [modalState, setModalState] = useState<ModalStateValues>({
-    isVisible: false,
+    modal: null,
     onCloseCallback: doNothing,
     onConfirm: doNothing,
   })

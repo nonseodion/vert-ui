@@ -7,14 +7,17 @@ export interface ModalProps {
   children: React.ReactNode
   bodyClassNames?: string
   onClose?: () => void
+  name: string
 }
 
 export default function Modal({
   children,
   bodyClassNames,
+  name,
   onClose,
 }: ModalProps) {
-  const { isVisible } = useModal()
+  const { modal } = useModal()
+  const isVisible = modal === name
 
   useEffect(() => {
     if (!isVisible && onClose) {

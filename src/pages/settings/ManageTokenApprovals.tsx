@@ -13,6 +13,7 @@ interface TokenApproval {
   asset: string
   time: string
   asset_icon: string
+  id: number
 }
 
 const tokenApprovals = [
@@ -137,7 +138,10 @@ export default function ManageTokenApprovals() {
             ) : (
               <ul>
                 {approvals.map((approval) => (
-                  <li className="h-[71px] flex w-full px-5 items-center justify-between bg-white border-y-[0.25px]">
+                  <li
+                    key={approval.id}
+                    className="h-[71px] flex w-full px-5 items-center justify-between bg-white border-y-[0.25px]"
+                  >
                     <div className="w-[161px] flex items-center space-x-1">
                       <img
                         src={approval.asset_icon}
@@ -159,6 +163,7 @@ export default function ManageTokenApprovals() {
                         onClick={() => {
                           setTokenToRevoke(approval)
                           showModal({
+                            modal: "remove_token_approval",
                             onCloseCallback: () => setTokenToRevoke(null),
                           })
                         }}

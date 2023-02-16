@@ -28,7 +28,10 @@ export default function Converter() {
           <span>206,611.10 NGN</span>
         </p>
         <div className="flex flex-col space-y-4 mb-[30px]">
-          <ConverterSide side="sell" onTokenSelect={showModal} />
+          <ConverterSide
+            side="sell"
+            onTokenSelect={() => showModal({ modal: "token_modal" })}
+          />
           <ConverterSide side="buy" onTokenSelect={doNothing} />
         </div>
         <button

@@ -62,7 +62,7 @@ export default function TokenImport() {
       </div>
       <Button
         text="Import"
-        className="mb-6 disabled:text-lightBlue disabled:bg-disabled"
+        className="mb-6 disabled:text-lightBlue disabled:bg-disabled h-[52px]"
         disabled={!confirmed}
         fullWidth
         onClick={() => setLoading(true)}

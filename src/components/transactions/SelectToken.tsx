@@ -57,21 +57,26 @@ export default function SelectToken({
       {addressIsEmpty ? (
         <ul className="px-6 pt-6 max-h-[320px] overflow-y-scroll scrollbar-hide">
           {availableTokens.map((token) => (
-            <div className="flex space-x-4 items-center mb-8" key={token.token}>
-              <img
-                src={token.icon}
-                alt={token.token_name}
-                className="h-10 w-10 rounded-[20px]"
-              />
-              <div className="flex flex-col space-y-[3.5px]">
-                <h4 className="font-medium text-base text-black">
-                  {token.token_name}
-                </h4>
-                <span className="text-[13px] text-lightBlue">
-                  {token.token}
-                </span>
-              </div>
-            </div>
+            <li key={token.token}>
+              <button
+                type="button"
+                className="w-full text-left flex space-x-4 items-center mb-8"
+              >
+                <img
+                  src={token.icon}
+                  alt={token.token_name}
+                  className="h-10 w-10 rounded-[20px]"
+                />
+                <div className="flex flex-col space-y-[3.5px]">
+                  <h4 className="font-medium text-base text-black">
+                    {token.token_name}
+                  </h4>
+                  <span className="text-[13px] text-lightBlue">
+                    {token.token}
+                  </span>
+                </div>
+              </button>
+            </li>
           ))}
         </ul>
       ) : (

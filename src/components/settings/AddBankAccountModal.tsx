@@ -1,7 +1,9 @@
 import React, { useState } from "react"
 import { SingleValue } from "react-select"
+import { FilterOptionOption } from "react-select/dist/declarations/src/filters"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { BankAccountDetails, banks } from "../../dummy/currencies"
+import { modals } from "../../utils/constants"
 import { Modal, Button } from "../general"
 import { Input } from "../inputs"
 import Select, { OptionType } from "../inputs/Select"
@@ -38,8 +40,23 @@ export default function AddBankAccountModal({
     onChange("bank_name", bank?.value ?? "")
   }
 
+  const filterOption = (
+    option: FilterOptionOption<OptionType> | any,
+    inputValue: string
+  ) => {
+    const optionInitials = option.label
+      ?.split(" ")
+      .map((item: string) => item[0])
+      .join("")
+    return (
+      option.label.toLowerCase().includes(inputValue.toLowerCase()) ||
+      optionInitials.toLowerCase().includes(inputValue.toLowerCase())
+    )
+  }
+
   return (
     <Modal
+      name={modals.bank_account}
       onClose={reset}
       bodyClassNames="!mt-[22vh] !mb-[10vh] !lg:w-[508px] !rounded-3xl !pb-[30px] !px-[30px]"
     >
@@ -47,7 +64,7 @@ export default function AddBankAccountModal({
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-[32.57px] right-[32.57px]"
+          className="absolute top-4 right-4 lg:top-[32.57px] lg:right-[32.57px]"
         >
           <Exit />
         </button>
@@ -56,7 +73,12 @@ export default function AddBankAccountModal({
         </h3>
         <form className="flex flex-col space-y-[30px]">
           <div className="flex flex-col space-y-[10px]">
-            <Select label="Bank name" options={banks} onChange={onBankChange} />
+            <Select
+              filterOption={filterOption}
+              label="Bank name"
+              options={banks}
+              onChange={onBankChange}
+            />
             <div />
             <Input
               outerClassName="!rounded-xl h-[52px]"

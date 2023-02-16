@@ -1,8 +1,9 @@
 import React from "react"
 import clsx from "classnames"
-import { Button, Loader, Modal } from "../general"
+import { Button, Modal, WalletConfirmation } from "../general"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import useModal from "../../hooks/useModal"
+import { modals } from "../../utils/constants"
 
 interface UnlinkWalletModalProps {
   unlinking: boolean
@@ -14,6 +15,7 @@ export default function UnlinkWalletModal({
   const { onConfirm, hideModal } = useModal()
   return (
     <Modal
+      name={modals.unlink_wallet}
       bodyClassNames={clsx(
         "!mt-[192px] border border-primary/[.3] rounded-2xl !lg:w-[452px] !px-[27px] !pt-[52px]",
         { "px-5 pt-[23px] !pb-[30px] lg:w-[392px] rounded-3xl": unlinking },
@@ -21,20 +23,11 @@ export default function UnlinkWalletModal({
       )}
     >
       {unlinking ? (
-        <div>
-          <h3 className="text-black font-semibold text-[21px] text-center">
-            Unlinking wallet
-          </h3>
-          <div className="flex items-center justify-center  my-[52.5px]">
-            <Loader className="h-[75px] w-[75px]" />
-          </div>
-          <p className="mb-[35px] text-center max-w-[351px] font-medium text-lightBlue leading-6">
-            Communicating with wallet. Please, Sign message with your wallet
-          </p>
-          <div className="flex items-center justify-center mx-[17px]">
-            <Button fullWidth onClick={hideModal} text="Close" />
-          </div>
-        </div>
+        <WalletConfirmation
+          header="Unlinking wallet"
+          buttonText="Close"
+          onClose={hideModal}
+        />
       ) : (
         <div>
           <button

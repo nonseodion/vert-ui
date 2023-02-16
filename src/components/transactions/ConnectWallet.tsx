@@ -1,34 +1,25 @@
 import React, { useState } from "react"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import { Button, Loader, Modal } from "../general"
+import { Button, Modal, WalletConfirmation } from "../general"
 import { providers } from "../../dummy/providers"
 import { doNothing } from "../../utils/functions"
 import useModal from "../../hooks/useModal"
+import { modals } from "../../utils/constants"
 
 export default function ConnectWallet() {
   const { hideModal } = useModal()
   const [selectedProvider, setSelectedProvider] = useState<null | string>(null)
   return (
-    <Modal bodyClassNames={selectedProvider ? "pt-[23px] pb-[30px]" : ""}>
+    <Modal
+      name={modals.connect_wallet}
+      bodyClassNames={selectedProvider ? "pt-[23px] pb-[30px]" : ""}
+    >
       {selectedProvider ? (
-        <div>
-          <h3 className="text-black text-center text-[21px] font-semibold">
-            Connecting wallet
-          </h3>
-          <div className="flex items-center justify-center mt-[52.5px]">
-            <Loader className="w-[100px] h-[100px]" />
-          </div>
-          <p className="mt-[40px] mb-[35px] text-lightBlue leading-6 text-center">
-            Communicating with wallet. Please, Sign message with your wallet
-          </p>
-          <div className="mx-[37px]">
-            <Button
-              fullWidth
-              text="Disconnect"
-              onClick={() => setSelectedProvider(null)}
-            />
-          </div>
-        </div>
+        <WalletConfirmation
+          header="Connecting wallet"
+          buttonText="Disconnect"
+          onClose={() => setSelectedProvider(null)}
+        />
       ) : (
         <div>
           <button
