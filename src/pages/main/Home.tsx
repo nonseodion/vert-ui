@@ -1,10 +1,12 @@
 import React from "react"
+import SuccessfulSignup from "../../components/auth/SuccessfulSignup"
 import { Wrapper } from "../../components/general"
 import Converter from "../../components/transactions/Converter"
 
 export default function Home() {
   return (
     <Wrapper hideFooter={false}>
+      <SuccessfulSignup />
       <div className="flex flex-col lg:flex-row pt-[50px] lg:pt-[114px] pb-[242px] px-6 lg:px-[80px] lg:justify-between">
         <div className="lg:max-w-[60%]">
           <h1 className="lg:text-left text-center text-white text-[34px] lg:text-[54px] font-bold leading-[51px] lg:leading-[81px]">

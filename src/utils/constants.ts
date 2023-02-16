@@ -20,4 +20,5 @@ export const modals = {
   bank_account: "bank_account",
   remove_token_approval: "remove_token_approval",
   unlink_wallet: "unlink_wallet",
+  successful_sign_up: "successful_sign_up",
 }
