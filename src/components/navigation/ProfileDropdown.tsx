@@ -28,6 +28,7 @@ export default function ProfileDropdown() {
     {
       icon: <History />,
       text: "Transactions",
+      page: routes.transactions,
     },
     {
       icon: <Settings />,

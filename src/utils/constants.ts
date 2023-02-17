@@ -12,6 +12,8 @@ export const routes = {
   change_password: "/settings/security/change-password",
   set_password: "/settings/security/set-password",
   manage_token_approvals: "/settings/security/manage-token-approvals",
+  transactions: "/transactions",
+  transaction_detail: "/transactions/:transactionId",
 }
 
 export const modals = {
@@ -22,3 +24,5 @@ export const modals = {
   unlink_wallet: "unlink_wallet",
   successful_sign_up: "successful_sign_up",
 }
+
+export const TABLE_ROW_SIZE = 6

@@ -47,7 +47,7 @@ export default function UnlinkWalletModal({
               text="Continue"
               bordered
               onClick={onConfirm}
-              className="w-[199px] text-primary"
+              className="w-[199px] !text-primary"
               background="transparent"
             />
           </div>

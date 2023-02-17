@@ -18,6 +18,7 @@ import {
   SecuritySettings,
   SetPassword,
 } from "./pages/settings"
+import { TransactionDetail, TransactionList } from "./pages/transactions"
 import NotFound from "./pages/utils/NotFound"
 import { routes } from "./utils/constants"
 
@@ -90,6 +91,22 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <SetPassword />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={routes.transactions}
+        element={
+          <ProtectedRoute>
+            <TransactionList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={routes.transaction_detail}
+        element={
+          <ProtectedRoute>
+            <TransactionDetail />
           </ProtectedRoute>
         }
       />

@@ -52,7 +52,7 @@ export default function EmailVerification() {
 
   return (
     <Wrapper hideTopNav>
-      <div className="mt-[158px] flex items-center justify-center">
+      <div className="pt-[158px] flex items-center justify-center">
         <div className="mx-auto max-w-[calc(100vw_-_40px)] lg:w-[432px] bg-lightGreen rounded-3xl px-[19px] py-6">
           <div className="flex items-center justify-between">
             <button type="button" onClick={() => navigate(-1)}>
