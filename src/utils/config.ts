@@ -1,22 +1,28 @@
 import { configureChains, createClient } from "wagmi"
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
 import { publicProvider } from "wagmi/providers/public"
-import { bsc, bscTestnet } from "wagmi/chains"
+import { bscTestnet, bsc } from "wagmi/chains"
 
-const chains = [bsc, bscTestnet]
-const { provider, webSocketProvider } = configureChains(chains, [
-  jsonRpcProvider({
-    rpc: () => ({
-      http: `https://bsc-dataseed.binance.org`,
+const chains = { bsc, bscTestnet }
+const chainId: Chain =
+  process.env.NODE_ENV === "development" ? chains.bscTestnet.id : 56
+const chain = chainId === 56 ? bsc : bscTestnet
+const rpcUrl =
+  chainId === 56
+    ? `https://bsc-dataseed.binance.org`
+    : `https://data-seed-prebsc-1-s1.binance.org:8545`
+
+const { provider, webSocketProvider } = configureChains(
+  [chain],
+  [
+    jsonRpcProvider({
+      rpc: () => ({
+        http: rpcUrl,
+      }),
     }),
-  }),
-  jsonRpcProvider({
-    rpc: () => ({
-      http: `https://data-seed-prebsc-1-s1.binance.org:8545`,
-    }),
-  }),
-  publicProvider(),
-])
+    publicProvider(),
+  ]
+)
 
 const client = createClient({
   autoConnect: true,
@@ -24,6 +30,6 @@ const client = createClient({
   webSocketProvider,
 })
 
-const chainId = process.env.NODE_ENV === "test" ? chains[1].id : chains[0].id
+export type Chain = 56 | 97
 
 export { client, chains, chainId }
