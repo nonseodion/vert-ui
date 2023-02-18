@@ -5,12 +5,11 @@ import { Banner } from "./components/general"
 import AuthContext, { AuthStateValues } from "./contexts/AuthContext"
 import Routes from "./Routes"
 import {
-  doNothing,
   handleMobileNavDropdown,
   handleProfileDropdown,
 } from "./utils/functions"
 import ToastDisplay from "./components/general/ToastDisplay"
-import ModalContext, { ModalStateValues } from "./contexts/ModalContext"
+import ModalContext, { ActiveModalsArrayValue } from "./contexts/ModalContext"
 
 function App() {
   const [showBanner] = useState(true)
@@ -19,17 +18,10 @@ function App() {
     user: null,
   })
 
-  const [modalState, setModalState] = useState<ModalStateValues>({
-    modal: null,
-    onCloseCallback: doNothing,
-    onConfirm: doNothing,
-  })
+  const [modals, setModals] = useState<ActiveModalsArrayValue[]>([])
 
   const value = useMemo(() => ({ authState, setAuthState }), [authState])
-  const modalStateValue = useMemo(
-    () => ({ modalState, setModalState }),
-    [modalState]
-  )
+  const modalStateValue = useMemo(() => ({ modals, setModals }), [modals])
 
   return (
     <AuthContext.Provider value={value}>

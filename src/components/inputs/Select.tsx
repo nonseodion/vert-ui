@@ -16,6 +16,7 @@ interface SelectProps extends Props {
 export interface OptionType {
   label: string
   value: string
+  aliases?: string[]
 }
 
 const customClassNames: ClassNamesConfig = {

@@ -3,7 +3,7 @@ import Button from "./Button"
 import Loader from "./Loader"
 
 interface WalletConfirmationProps {
-  onClose: () => void
+  onClose: (_?: any) => void
   header: string
   buttonText: string
 }
@@ -25,7 +25,7 @@ export default function WalletConfirmation({
         Communicating with wallet. Please, Sign message with your wallet
       </p>
       <div className="mx-[37px]">
-        <Button fullWidth text={buttonText} onClick={onClose} />
+        <Button fullWidth text={buttonText} onClick={() => onClose()} />
       </div>
     </div>
   )
