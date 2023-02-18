@@ -44,7 +44,9 @@ export default function AddBankAccountModal({
     inputValue: string
   ) =>
     option.label.toLowerCase().includes(inputValue.toLowerCase()) ||
-    option?.data?.aliases?.includes(inputValue.toLowerCase())
+    option?.data?.aliases?.find((alias: string) =>
+      alias?.toLowerCase().includes(inputValue.toLowerCase())
+    )
 
   return (
     <Modal
