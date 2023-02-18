@@ -1,11 +1,22 @@
-// import React from "react"
-// import useAuth from "../../hooks/useAuth"
+import React, { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import useAuth from "../../hooks/useAuth"
+import { routes } from "../../utils/constants"
 
-// const ProtectedRoute: React.FC = ({ children }) => {
-//   const
-//   const { isAuthenticated } = useAuth()
-//   if (isAuthenticated) return children
-//   redirect("/")
-// }
+interface ProtectedRouteProps {
+  children: React.ReactNode
+}
 
-export default {}
+export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const navigate = useNavigate()
+  const { isAuthenticated } = useAuth()
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate(routes.home)
+    }
+  }, [])
+
+  if (isAuthenticated) return <div>{children}</div>
+  return <div />
+}
