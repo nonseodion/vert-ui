@@ -3,7 +3,6 @@ import clsx from "classnames"
 import { Button, Modal, WalletConfirmation } from "../general"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import useModal from "../../hooks/useModal"
-import { modals } from "../../utils/constants"
 
 interface UnlinkWalletModalProps {
   unlinking: boolean
@@ -12,10 +11,10 @@ interface UnlinkWalletModalProps {
 export default function UnlinkWalletModal({
   unlinking,
 }: UnlinkWalletModalProps) {
-  const { onConfirm, hideModal } = useModal()
+  const { modalValues, hideModal } = useModal("unlink_wallet")
   return (
     <Modal
-      name={modals.unlink_wallet}
+      name="unlink_wallet"
       bodyClassNames={clsx(
         "!mt-[192px] border border-primary/[.3] rounded-2xl !lg:w-[452px] !px-[27px] !pt-[52px]",
         { "px-5 pt-[23px] !pb-[30px] lg:w-[392px] rounded-3xl": unlinking },
@@ -26,13 +25,13 @@ export default function UnlinkWalletModal({
         <WalletConfirmation
           header="Unlinking wallet"
           buttonText="Close"
-          onClose={hideModal}
+          onClose={() => hideModal()}
         />
       ) : (
         <div>
           <button
             type="button"
-            onClick={hideModal}
+            onClick={() => hideModal()}
             className="absolute top-[24.4px] right-[26.8px]"
           >
             <Exit />
@@ -42,12 +41,16 @@ export default function UnlinkWalletModal({
             want to continue?
           </p>
           <div className="flex justify-center space-x-5 mb-[25px]">
-            <Button text="Cancel" className="w-[181px]" onClick={hideModal} />
+            <Button
+              text="Cancel"
+              className="w-[181px]"
+              onClick={() => hideModal()}
+            />
             <Button
               text="Continue"
               bordered
-              onClick={onConfirm}
-              className="w-[199px] !text-primary"
+              onClick={modalValues?.onConfirm}
+              className="w-[199px] text-primary"
               background="transparent"
             />
           </div>

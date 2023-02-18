@@ -2,19 +2,18 @@ import React from "react"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { ReactComponent as Girl } from "../../assets/images/girl.svg"
 import useModal from "../../hooks/useModal"
-import { modals } from "../../utils/constants"
 import { Modal } from "../general"
 
 export default function SuccessfulSignup() {
-  const { hideModal } = useModal()
+  const { hideModal } = useModal("successful_sign_up")
   return (
     <Modal
-      name={modals.successful_sign_up}
+      name="successful_sign_up"
       bodyClassNames="bg-[#EFFEED] !pb-0 !lg:w-[508px]"
     >
       <button
         type="button"
-        onClick={hideModal}
+        onClick={() => hideModal()}
         className="absolute top-4 right-4 lg:top-[34.1px] lg:right-[26.1px]"
       >
         <Exit />

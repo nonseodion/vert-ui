@@ -1,4 +1,6 @@
 import React from "react"
+import { useForm, Controller } from "react-hook-form"
+import isEmail from "validator/lib/isEmail"
 import { Link, useNavigate } from "react-router-dom"
 import { ReactComponent as LoneLogo } from "../../assets/icons/logo-lone.svg"
 import { Button, Glow, Wrapper } from "../../components/general"
@@ -8,16 +10,26 @@ import useAuth from "../../hooks/useAuth"
 import useModal from "../../hooks/useModal"
 import { routes } from "../../utils/constants"
 
+interface SignInWithEmailValues {
+  email: string
+  password: string
+}
+
 export default function SignInWithEmail() {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<SignInWithEmailValues>()
   const { showModal } = useModal()
   const { authenticateUser } = useAuth()
   const navigate = useNavigate()
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const onSubmit = handleSubmit((data) => {
+    localStorage.setItem("data", JSON.stringify(data))
     authenticateUser()
     navigate(routes.home)
-  }
+  })
 
   return (
     <Wrapper hideTopNav>
@@ -32,8 +44,38 @@ export default function SignInWithEmail() {
             </p>
             <div className="bg-lightGreen rounded-xl w-[349px] p-7">
               <form className="flex flex-col space-y-4" onSubmit={onSubmit}>
-                <Input placeholder="Enter your email" autoFocus type="email" />
-                <Input placeholder="Enter password" type="password" />
+                <Controller
+                  control={control}
+                  name="email"
+                  rules={{
+                    required: true,
+                    validate: (v) => isEmail(v?.trim()),
+                  }}
+                  render={({ field }) => (
+                    <Input
+                      placeholder="Enter your email"
+                      autoFocus
+                      errorMessage="The email you entered is not in the correct format. Please check."
+                      type="email"
+                      hasError={!!errors.email}
+                      {...field}
+                    />
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name="password"
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Input
+                      placeholder="Enter password"
+                      type="password"
+                      hasError={!!errors.password}
+                      {...field}
+                    />
+                  )}
+                />
+
                 <div className="mt-[30px]">
                   <Button
                     text="Sign In"

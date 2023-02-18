@@ -4,14 +4,13 @@ import { Button, Modal, WalletConfirmation } from "../general"
 import { providers } from "../../dummy/providers"
 import { doNothing } from "../../utils/functions"
 import useModal from "../../hooks/useModal"
-import { modals } from "../../utils/constants"
 
 export default function ConnectWallet() {
-  const { hideModal } = useModal()
+  const { hideModal } = useModal("connect_wallet")
   const [selectedProvider, setSelectedProvider] = useState<null | string>(null)
   return (
     <Modal
-      name={modals.connect_wallet}
+      name="connect_wallet"
       bodyClassNames={selectedProvider ? "pt-[23px] pb-[30px]" : ""}
     >
       {selectedProvider ? (
@@ -25,7 +24,7 @@ export default function ConnectWallet() {
           <button
             className="absolute top-4 right-[30px] border-none outline-none"
             type="button"
-            onClick={hideModal}
+            onClick={() => hideModal()}
           >
             <Exit />
           </button>

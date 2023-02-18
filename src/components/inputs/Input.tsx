@@ -7,6 +7,9 @@ interface InputProps extends HTMLProps<HTMLInputElement> {
   outerClassName?: string
   className?: string
   label?: string
+  hasError?: boolean
+  value?: any
+  errorMessage?: string
   [key: string]: any
 }
 
@@ -15,6 +18,9 @@ export default function Input({
   outerClassName,
   className,
   label,
+  hasError,
+  errorMessage,
+  value,
   ...rest
 }: InputProps) {
   const [isVisiblePassword, setIsVisiblePassword] = useState(false)
@@ -27,11 +33,13 @@ export default function Input({
       <div
         className={clsx(
           "flex items-center h-[40px] rounded-[5px] border-black/[.5] border px-[10px]",
-          outerClassName
+          outerClassName,
+          { "!border-red/[.5]": hasError }
         )}
       >
         <input
           {...rest}
+          {...(value && { value })}
           type={
             rest?.type === "password" && isVisiblePassword ? "text" : rest?.type
           }
@@ -51,6 +59,11 @@ export default function Input({
           </button>
         )}
       </div>
+      {errorMessage && hasError && (
+        <p className="text-center text-red mt-[14px] text-[8px]">
+          {errorMessage}
+        </p>
+      )}
     </div>
   )
 }
@@ -59,4 +72,7 @@ Input.defaultProps = {
   outerClassName: "",
   className: "",
   label: null,
+  hasError: false,
+  errorMessage: "",
+  value: "",
 }

@@ -8,7 +8,7 @@ interface ButtonProps {
   background?: "primary" | "transparent"
   textColor?: "white" | "dark"
   bordered?: boolean
-  onClick?: (_: any) => void
+  onClick?: (_?: any) => void | null
   fullWidth?: boolean
   className?: string
   loading?: boolean

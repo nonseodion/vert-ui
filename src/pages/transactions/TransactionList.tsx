@@ -144,13 +144,13 @@ export default function TransactionList() {
                     <div className="flex items-center space-x-[14px]">
                       <Cash />
                       <div className="flex flex-col space-y-[11px]">
-                        <h3 className="text-[15px] uppercase font-semibold text-black">
+                        <h3 className="text-13 md:text-[15px] uppercase font-semibold text-black">
                           {`sold ${row.amount_sold} for ${row.amount_received}`}
                         </h3>
-                        <p className="text-[15px] text-[#707A8A]">
+                        <p className="text13 md:text-[15px] text-[#707A8A]">
                           {row.bank_details.account_number}{" "}
                           {row.bank_details.bank}
-                          <span className="text-black text-13">
+                          <span className="text-black text-[10px] md:text-13">
                             {" "}
                             {row.date}
                           </span>

@@ -7,7 +7,6 @@ import CustomTokens from "./CustomTokens"
 import SelectToken from "./SelectToken"
 import { Modal } from "../general"
 import useModal from "../../hooks/useModal"
-import { modals } from "../../utils/constants"
 
 const steps = {
   IMPORT_TOKEN: "IMPORT_TOKEN",
@@ -16,13 +15,13 @@ const steps = {
 }
 
 export default function TokenModal() {
-  const { hideModal } = useModal()
+  const { hideModal } = useModal("token_modal")
   const [currentStep, setCurrentStep] = useState<string>(steps.DEFAULT)
   const [address, setAddress] = useState<string>("")
 
   return (
     <Modal
-      name={modals.token_modal}
+      name="token_modal"
       onClose={() => setAddress("")}
       bodyClassNames="mt-[68px] lg:mt-[80px] mb-6 rounded-3xl !lg:w-[434px] pt-[30px] !px-0 !pb-0"
     >

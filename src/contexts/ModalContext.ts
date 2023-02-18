@@ -2,24 +2,25 @@ import { createContext } from "react"
 import { modals } from "../utils/constants"
 import { doNothing } from "../utils/functions"
 
-export interface ModalStateValues {
+export interface ActiveModalValues {
   onCloseCallback: () => void | null
   onConfirm: () => void | null
-  modal: keyof typeof modals | null
+}
+
+export type Modal = keyof typeof modals
+
+export type ActiveModalsArrayValue = {
+  [key in Modal]?: ActiveModalValues
 }
 
 export interface ModalContextValues {
-  modalState: ModalStateValues
-  setModalState: React.Dispatch<React.SetStateAction<ModalStateValues>>
+  modals: ActiveModalsArrayValue[]
+  setModals: React.Dispatch<React.SetStateAction<ActiveModalsArrayValue[]>>
 }
 
 const ModalContext = createContext<ModalContextValues>({
-  modalState: {
-    onCloseCallback: doNothing,
-    onConfirm: doNothing,
-    modal: null,
-  },
-  setModalState: doNothing,
+  modals: [],
+  setModals: doNothing,
 })
 
 export default ModalContext

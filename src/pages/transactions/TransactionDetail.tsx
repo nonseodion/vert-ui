@@ -51,13 +51,13 @@ export default function TransactionDetail() {
               189,899.90 Naira{" "}
             </span>
           </li>
-          <li className="space-x-[45px] flex">
+          <li className="space-x-[45px] flex overflow-hidden text-ellipsis">
             <h3 className="flex-shrink-0 w-[143px] text-primary text-base font-semibold">
               BANK DETAILS:
             </h3>
-            <span className="text-white font-semibold text-sm">
+            <p className="text-white font-semibold text-sm">
               0245786573 GT BANK PLC EMMANUEL EMMANUEL AYOBAMI
-            </span>
+            </p>
           </li>
           <li className="space-x-[45px] flex">
             <h3 className="flex-shrink-0 w-[143px] text-primary text-base font-semibold">
