@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { Button, Loader, Wrapper } from "../../components/general"
 import useModal from "../../hooks/useModal"
-import { routes } from "../../utils/constants"
+import { PageRoutes } from "../../utils/constants"
 import { doNothing } from "../../utils/functions"
 
 export default function EmailVerification() {
@@ -26,7 +26,7 @@ export default function EmailVerification() {
     setTimeout(() => {
       setValidating(false)
       showModal({ modal: "successful_sign_up" })
-      navigate(routes.home)
+      navigate(PageRoutes.home)
     }, 2000)
   }
 

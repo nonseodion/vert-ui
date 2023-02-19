@@ -1,5 +1,5 @@
 import { createContext } from "react"
-import { modals } from "../utils/constants"
+import { Modals } from "../utils/constants"
 import { doNothing } from "../utils/functions"
 
 export interface ActiveModalValues {
@@ -7,7 +7,7 @@ export interface ActiveModalValues {
   onConfirm: () => void | null
 }
 
-export type Modal = keyof typeof modals
+export type Modal = keyof typeof Modals
 
 export type ActiveModalsArrayValue = {
   [key in Modal]?: ActiveModalValues

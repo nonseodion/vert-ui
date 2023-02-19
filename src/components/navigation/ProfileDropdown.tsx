@@ -5,7 +5,7 @@ import { ReactComponent as History } from "../../assets/icons/history.svg"
 import { ReactComponent as Settings } from "../../assets/icons/settings-white.svg"
 import { ReactComponent as SignOut } from "../../assets/icons/sign-out.svg"
 import useAuth from "../../hooks/useAuth"
-import { routes } from "../../utils/constants"
+import { PageRoutes } from "../../utils/constants"
 import { handleProfileDropdown } from "../../utils/functions"
 import Button from "../general/Button"
 
@@ -23,24 +23,24 @@ export default function ProfileDropdown() {
     {
       icon: <Profile className="fill-white" />,
       text: "Profile",
-      page: routes.profile_settings,
+      page: PageRoutes.profile_settings,
     },
     {
       icon: <History />,
       text: "Transactions",
-      page: routes.transactions,
+      page: PageRoutes.transactions,
     },
     {
       icon: <Settings />,
       text: "Account settings",
-      page: routes.profile_settings,
+      page: PageRoutes.profile_settings,
     },
     {
       icon: <SignOut />,
       text: "Sign out",
       onClick: () => {
         logOut()
-        navigate(routes.home)
+        navigate(PageRoutes.home)
       },
     },
   ]
@@ -92,7 +92,7 @@ export default function ProfileDropdown() {
         className="text-[13px]"
         bordered
         fullWidth
-        onClick={() => onClick(routes.manage_wallets)}
+        onClick={() => onClick(PageRoutes.manage_wallets)}
       />
     </div>
   )

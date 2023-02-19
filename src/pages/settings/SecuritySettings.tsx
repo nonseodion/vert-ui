@@ -5,7 +5,7 @@ import { ReactComponent as Security } from "../../assets/icons/security-2.svg"
 import { Button, Wrapper } from "../../components/general"
 import { Navigator } from "../../components/navigation"
 import { SettingsContent } from "../../components/settings"
-import { routes } from "../../utils/constants"
+import { PageRoutes } from "../../utils/constants"
 
 export default function SecuritySettings() {
   const navigate = useNavigate()
@@ -37,7 +37,9 @@ export default function SecuritySettings() {
                 className="h-[37px] py-0 min-w-[89px]"
                 onClick={() =>
                   navigate(
-                    isWalletUser ? routes.set_password : routes.change_password
+                    isWalletUser
+                      ? PageRoutes.set_password
+                      : PageRoutes.change_password
                   )
                 }
               />
@@ -59,7 +61,7 @@ export default function SecuritySettings() {
               <Button
                 text="Manage"
                 className="h-[37px] py-0"
-                onClick={() => navigate(routes.manage_token_approvals)}
+                onClick={() => navigate(PageRoutes.manage_token_approvals)}
               />
             </div>
           </div>

@@ -1,28 +1,28 @@
-export const routes = {
-  home: "/",
-  sign_in_with_email: "/sign-in/email",
-  sign_up_with_email: "/sign-up/email",
-  sign_up_with_wallet: "/sign-up/wallet",
-  email_verification: "/verify-email",
-  profile_settings: "/settings/profile",
-  manage_wallets: "/settings/wallet",
-  default_currency: "/settings/default-currency",
-  bank_accounts: "/settings/bank-accounts",
-  security_settings: "/settings/security",
-  change_password: "/settings/security/change-password",
-  set_password: "/settings/security/set-password",
-  manage_token_approvals: "/settings/security/manage-token-approvals",
-  transactions: "/transactions",
-  transaction_detail: "/transactions/:transactionId",
+export enum PageRoutes {
+  home = "/",
+  sign_in_with_email = "/sign-in/email",
+  sign_up_with_email = "/sign-up/email",
+  sign_up_with_wallet = "/sign-up/wallet",
+  email_verification = "/verify-email",
+  profile_settings = "/settings/profile",
+  manage_wallets = "/settings/wallet",
+  default_currency = "/settings/default-currency",
+  bank_accounts = "/settings/bank-accounts",
+  security_settings = "/settings/security",
+  change_password = "/settings/security/change-password",
+  set_password = "/settings/security/set-password",
+  manage_token_approvals = "/settings/security/manage-token-approvals",
+  transactions = "/transactions",
+  transaction_detail = "/transactions/:transactionId",
 }
 
-export const modals = {
-  connect_wallet: "connect_wallet",
-  token_modal: "token_modal",
-  bank_account: "bank_account",
-  remove_token_approval: "remove_token_approval",
-  unlink_wallet: "unlink_wallet",
-  successful_sign_up: "successful_sign_up",
+export enum Modals {
+  connect_wallet = "connect_wallet",
+  token_modal = "token_modal",
+  bank_account = "bank_account",
+  remove_token_approval = "remove_token_approval",
+  unlink_wallet = "unlink_wallet",
+  successful_sign_up = "successful_sign_up",
 }
 
 export const TABLE_ROW_SIZE = 6

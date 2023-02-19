@@ -8,7 +8,7 @@ import { ReactComponent as Dropdown } from "../../assets/icons/dropdown.svg"
 import { ReactComponent as Hamburger } from "../../assets/icons/hamburger.svg"
 import { ReactComponent as User } from "../../assets/icons/user.svg"
 import useAuth from "../../hooks/useAuth"
-import { routes } from "../../utils/constants"
+import { PageRoutes } from "../../utils/constants"
 import { handleProfileDropdown } from "../../utils/functions"
 import Button from "../general/Button"
 import ProfileDropdown from "./ProfileDropdown"
@@ -21,7 +21,7 @@ export default function TopNav() {
   return (
     <div className="z-[998] fixed left-0  w-full bg-nav">
       <div className="max-w-[1500px] h-[60px] lg:h-[100px] lg:py-[13px]  relative mx-auto flex items-center justify-between px-4 lg:pl-[80px] lg:pr-[95px]">
-        <Link to={routes.home}>
+        <Link to={PageRoutes.home}>
           <Logo className="h-10 w-[52px] lg:h-[74.44px] lg:w-[96.98px]" />
         </Link>
         {isAuthenticated ? (
@@ -65,12 +65,12 @@ export default function TopNav() {
               <Button
                 bordered
                 text="sign in"
-                onClick={() => navigate(routes.sign_in_with_email)}
+                onClick={() => navigate(PageRoutes.sign_in_with_email)}
                 background="transparent"
               />
               <Button
                 text="Connect Wallet"
-                onClick={() => navigate(routes.sign_up_with_wallet)}
+                onClick={() => navigate(PageRoutes.sign_up_with_wallet)}
               />
             </div>
           </div>
@@ -95,14 +95,14 @@ export default function TopNav() {
             background="transparent"
             bordered
             className="text-primary"
-            onClick={() => navigate(routes.sign_in_with_email)}
+            onClick={() => navigate(PageRoutes.sign_in_with_email)}
           />
           <Button
             text="Connect Wallet"
             fullWidth
             bordered
             textColor="white"
-            onClick={() => navigate(routes.sign_up_with_wallet)}
+            onClick={() => navigate(PageRoutes.sign_up_with_wallet)}
           />
         </div>
       </div>
