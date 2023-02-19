@@ -105,20 +105,12 @@ export default function EmailVerification() {
                     text="Resend Code"
                     onClick={resendCode}
                     loading={resending}
-                    className="h-10 py-0  text-primary text-13 font-medium"
+                    className="h-10 py-0  text-primary text-13 font-medium !text-primary"
                   />
                 </div>
               )}
             </div>
           )}
-          {/* <div className="mt-[13px] ">
-            <Button
-              text="Verify your account"
-              onClick={doNothing}
-              fullWidth
-              className="rounded-[4px]"
-            />
-          </div> */}
         </div>
       </div>
     </Wrapper>
