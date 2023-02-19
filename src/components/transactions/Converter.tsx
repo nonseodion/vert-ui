@@ -30,7 +30,7 @@ export default function Converter() {
         <div className="flex flex-col space-y-4 mb-[30px]">
           <ConverterSide
             side="sell"
-            onTokenSelect={() => showModal({ modal: "token_modal" })}
+            onTokenSelect={() => showModal({ modal: "TOKEN_MODAL" })}
           />
           <ConverterSide side="buy" onTokenSelect={doNothing} />
         </div>

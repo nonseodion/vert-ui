@@ -22,7 +22,8 @@ module.exports = {
         lightGrey: '#ECF0F9',
         danger: '#E3402A',
         dark: '#222222',
-        red: "#FF0000"
+        red: "#FF0000",
+        background: "#494949"
       },
       borderRadius: {
         10: "10px"

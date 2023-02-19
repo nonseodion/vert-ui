@@ -2,7 +2,7 @@ import React from "react"
 import { useNavigate } from "react-router-dom"
 import { Button, Wrapper } from "../../components/general"
 import { ReactComponent as Svg404 } from "../../assets/images/404.svg"
-import { routes } from "../../utils/constants"
+import { PageRoutes } from "../../utils/constants"
 
 export default function NotFound() {
   const navigate = useNavigate()
@@ -19,7 +19,7 @@ export default function NotFound() {
             bordered
             background="transparent"
             textColor="white"
-            onClick={() => navigate(routes.home)}
+            onClick={() => navigate(PageRoutes.HOME)}
           />
         </div>
       </div>

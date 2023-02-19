@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import useAuth from "../../hooks/useAuth"
-import { routes } from "../../utils/constants"
+import { PageRoutes } from "../../utils/constants"
 
 interface ProtectedRouteProps {
   children: React.ReactNode
@@ -13,7 +13,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate(routes.home)
+      navigate(PageRoutes.HOME)
     }
   }, [])
 

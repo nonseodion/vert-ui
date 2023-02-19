@@ -6,7 +6,7 @@ import { ReactComponent as LoneLogo } from "../../assets/icons/logo-lone.svg"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { Button, Glow, Wrapper } from "../../components/general"
 import Input from "../../components/inputs/Input"
-import { routes } from "../../utils/constants"
+import { PageRoutes } from "../../utils/constants"
 import ConnectWallet from "../../components/transactions/ConnectWallet"
 import useModal from "../../hooks/useModal"
 
@@ -25,7 +25,7 @@ export default function SignUpWithWallet() {
   const { showModal } = useModal()
   const onSubmit = handleSubmit((data) => {
     localStorage.setItem("data", JSON.stringify(data))
-    showModal({ modal: "connect_wallet" })
+    showModal({ modal: "CONNECT_WALLET" })
   })
   return (
     <Wrapper hideTopNav>
@@ -114,7 +114,7 @@ export default function SignUpWithWallet() {
               Already have an account?{" "}
               <Link
                 className="text-[15px] text-primary underline"
-                to={routes.sign_in_with_email}
+                to={PageRoutes.SIGN_IN_WITH_EMAIL}
               >
                 Sign in
               </Link>

@@ -8,7 +8,7 @@ import Input from "../../components/inputs/Input"
 import ConnectWallet from "../../components/transactions/ConnectWallet"
 import useAuth from "../../hooks/useAuth"
 import useModal from "../../hooks/useModal"
-import { routes } from "../../utils/constants"
+import { PageRoutes } from "../../utils/constants"
 
 interface SignInWithEmailValues {
   email: string
@@ -28,7 +28,7 @@ export default function SignInWithEmail() {
   const onSubmit = handleSubmit((data) => {
     localStorage.setItem("data", JSON.stringify(data))
     authenticateUser()
-    navigate(routes.home)
+    navigate(PageRoutes.HOME)
   })
 
   return (
@@ -98,7 +98,7 @@ export default function SignInWithEmail() {
                   <Button
                     text="Connect Wallet"
                     background="transparent"
-                    onClick={() => showModal({ modal: "connect_wallet" })}
+                    onClick={() => showModal({ modal: "CONNECT_WALLET" })}
                     fullWidth
                     className="text-[14.48px] font-semibold"
                     textColor="dark"
@@ -111,7 +111,7 @@ export default function SignInWithEmail() {
               Don&apos;t have an account?{" "}
               <Link
                 className="text-[15px] text-primary underline"
-                to={routes.sign_up_with_email}
+                to={PageRoutes.SIGN_UP_WITH_EMAIL}
               >
                 Sign up
               </Link>

@@ -21,10 +21,11 @@ export default function Wrapper({
     <div
       className={clsx(
         {
-          "min-h-[calc(_100vh_-_160px)] md:min-h-[calc(_100vh_-_200px)]":
+          "min-h-[calc(100vh_-_160px)] md:min-h-[calc(_100vh_-_200px)]":
             !hideTopNav,
         },
-        { "min-h-[calc(_100vh_-_100px)]": hideTopNav }
+        { "min-h-[calc(100vh_-_100px)]": hideTopNav },
+        { "!min-h-screen": hideTopNav && hideFooter }
       )}
     >
       {!hideTopNav && <TopNav />}

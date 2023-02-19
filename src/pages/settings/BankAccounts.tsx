@@ -17,7 +17,7 @@ export default function BankAccounts() {
     setAdding(true)
     setTimeout(() => {
       setAdding(false)
-      hideModal("bank_account")
+      hideModal("BANK_ACCOUNT")
       setAccounts([...accounts, bank_info])
       toast("Bank account information added successfully.")
     }, 3000)
@@ -28,7 +28,7 @@ export default function BankAccounts() {
       <AddBankAccountModal
         onConfirm={onConfirm}
         adding={adding}
-        onClose={() => hideModal("bank_account")}
+        onClose={() => hideModal("BANK_ACCOUNT")}
       />
       <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
         <Navigator />
@@ -37,7 +37,7 @@ export default function BankAccounts() {
             <button
               className="ml-auto flex items-center px-[13px] py-[14px] rounded-lg bg-primary/[.1] space-x-[7.7px]"
               type="button"
-              onClick={() => showModal({ modal: "bank_account" })}
+              onClick={() => showModal({ modal: "BANK_ACCOUNT" })}
             >
               <Plus />
               <span className="text-sm text-white">Add new bank details</span>

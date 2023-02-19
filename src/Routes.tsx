@@ -18,19 +18,32 @@ import {
   SecuritySettings,
   SetPassword,
 } from "./pages/settings"
+import { TransactionDetail, TransactionList } from "./pages/transactions"
 import NotFound from "./pages/utils/NotFound"
-import { routes } from "./utils/constants"
+import { PageRoutes } from "./utils/constants"
 
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path={routes.home} element={<Home />} />
-      <Route path={routes.sign_in_with_email} element={<SignInWithEmail />} />
-      <Route path={routes.sign_up_with_email} element={<SignUpWithEmail />} />
-      <Route path={routes.sign_up_with_wallet} element={<SignUpWithWallet />} />
-      <Route path={routes.email_verification} element={<EmailVerification />} />
+      <Route path={PageRoutes.HOME} element={<Home />} />
       <Route
-        path={routes.profile_settings}
+        path={PageRoutes.SIGN_IN_WITH_EMAIL}
+        element={<SignInWithEmail />}
+      />
+      <Route
+        path={PageRoutes.SIGN_UP_WITH_EMAIL}
+        element={<SignUpWithEmail />}
+      />
+      <Route
+        path={PageRoutes.SIGN_UP_WITH_WALLET}
+        element={<SignUpWithWallet />}
+      />
+      <Route
+        path={PageRoutes.EMAIL_VERIFICATION}
+        element={<EmailVerification />}
+      />
+      <Route
+        path={PageRoutes.PROFILE_SETTINGS}
         element={
           <ProtectedRoute>
             <ProfileSettings />
@@ -38,7 +51,7 @@ export default function AppRoutes() {
         }
       />
       <Route
-        path={routes.manage_wallets}
+        path={PageRoutes.MANAGE_WALLETS}
         element={
           <ProtectedRoute>
             <ManageWallets />
@@ -46,7 +59,7 @@ export default function AppRoutes() {
         }
       />
       <Route
-        path={routes.default_currency}
+        path={PageRoutes.DEFAULT_CURRENCY}
         element={
           <ProtectedRoute>
             <DefaultCurrency />
@@ -54,7 +67,7 @@ export default function AppRoutes() {
         }
       />
       <Route
-        path={routes.bank_accounts}
+        path={PageRoutes.BANK_ACCOUNTS}
         element={
           <ProtectedRoute>
             <BankAccounts />
@@ -62,7 +75,7 @@ export default function AppRoutes() {
         }
       />
       <Route
-        path={routes.security_settings}
+        path={PageRoutes.SECURITY_SETTINGS}
         element={
           <ProtectedRoute>
             <SecuritySettings />
@@ -70,7 +83,7 @@ export default function AppRoutes() {
         }
       />
       <Route
-        path={routes.change_password}
+        path={PageRoutes.CHANGE_PASSWORD}
         element={
           <ProtectedRoute>
             <ChangePassword />
@@ -78,7 +91,7 @@ export default function AppRoutes() {
         }
       />
       <Route
-        path={routes.manage_token_approvals}
+        path={PageRoutes.MANAGE_TOKEN_APPROVALS}
         element={
           <ProtectedRoute>
             <ManageTokenApprovals />
@@ -86,10 +99,26 @@ export default function AppRoutes() {
         }
       />
       <Route
-        path={routes.set_password}
+        path={PageRoutes.SET_PASSWORD}
         element={
           <ProtectedRoute>
             <SetPassword />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PageRoutes.TRANSACTIONS}
+        element={
+          <ProtectedRoute>
+            <TransactionList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PageRoutes.TRANSACTION_DETAIL}
+        element={
+          <ProtectedRoute>
+            <TransactionDetail />
           </ProtectedRoute>
         }
       />

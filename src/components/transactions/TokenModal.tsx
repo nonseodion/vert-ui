@@ -15,13 +15,13 @@ const steps = {
 }
 
 export default function TokenModal() {
-  const { hideModal } = useModal("token_modal")
+  const { hideModal } = useModal("TOKEN_MODAL")
   const [currentStep, setCurrentStep] = useState<string>(steps.DEFAULT)
   const [address, setAddress] = useState<string>("")
 
   return (
     <Modal
-      name="token_modal"
+      name="TOKEN_MODAL"
       onClose={() => setAddress("")}
       bodyClassNames="mt-[68px] lg:mt-[80px] mb-6 rounded-3xl !lg:w-[434px] pt-[30px] !px-0 !pb-0"
     >

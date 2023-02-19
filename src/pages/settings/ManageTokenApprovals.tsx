@@ -158,12 +158,12 @@ export default function ManageTokenApprovals() {
                     <div className="w-[161px] flex justify-end">
                       <Button
                         text="Revoke"
-                        className="h-[35px] py-0 bg-primary/[.15] text-primary"
+                        className="h-[35px] py-0 bg-primary/[.15] !text-primary"
                         bordered
                         onClick={() => {
                           setTokenToRevoke(approval)
                           showModal({
-                            modal: "remove_token_approval",
+                            modal: "REMOVE_TOKEN_APPROVAL",
                             onCloseCallback: () => setTokenToRevoke(null),
                           })
                         }}
