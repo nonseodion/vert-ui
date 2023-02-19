@@ -163,7 +163,7 @@ export default function ManageTokenApprovals() {
                         onClick={() => {
                           setTokenToRevoke(approval)
                           showModal({
-                            modal: "remove_token_approval",
+                            modal: "REMOVE_TOKEN_APPROVAL",
                             onCloseCallback: () => setTokenToRevoke(null),
                           })
                         }}

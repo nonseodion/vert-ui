@@ -13,7 +13,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate(PageRoutes.home)
+      navigate(PageRoutes.HOME)
     }
   }, [])
 

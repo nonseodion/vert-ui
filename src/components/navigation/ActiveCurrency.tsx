@@ -12,7 +12,7 @@ export default function ActiveCurrency() {
         "px-[6px] h-6 bg-white/[.15] rounded-lg flex items-center border border-transparent space-x-[2px]",
         {
           "!border-primary bg-primary/[.15]":
-            pathname === PageRoutes.default_currency,
+            pathname === PageRoutes.DEFAULT_CURRENCY,
         }
       )}
     >

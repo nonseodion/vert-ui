@@ -50,7 +50,7 @@ export default function AddBankAccountModal({
 
   return (
     <Modal
-      name="bank_account"
+      name="BANK_ACCOUNT"
       onClose={reset}
       bodyClassNames="!mt-[22vh] !mb-[10vh] !lg:w-[508px] !rounded-3xl !pb-[30px] !px-[30px]"
     >

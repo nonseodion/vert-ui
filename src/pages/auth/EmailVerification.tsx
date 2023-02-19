@@ -25,8 +25,8 @@ export default function EmailVerification() {
     setValidating(true)
     setTimeout(() => {
       setValidating(false)
-      showModal({ modal: "successful_sign_up" })
-      navigate(PageRoutes.home)
+      showModal({ modal: "SUCCESSFUL_SIGN_UP" })
+      navigate(PageRoutes.HOME)
     }, 2000)
   }
 

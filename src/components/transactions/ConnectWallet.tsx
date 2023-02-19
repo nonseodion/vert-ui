@@ -6,11 +6,11 @@ import { doNothing } from "../../utils/functions"
 import useModal from "../../hooks/useModal"
 
 export default function ConnectWallet() {
-  const { hideModal } = useModal("connect_wallet")
+  const { hideModal } = useModal("CONNECT_WALLET")
   const [selectedProvider, setSelectedProvider] = useState<null | string>(null)
   return (
     <Modal
-      name="connect_wallet"
+      name="CONNECT_WALLET"
       bodyClassNames={selectedProvider ? "pt-[23px] pb-[30px]" : ""}
     >
       {selectedProvider ? (

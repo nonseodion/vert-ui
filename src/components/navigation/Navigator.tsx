@@ -12,16 +12,16 @@ import { handleMobileNavDropdown } from "../../utils/functions"
 import ActiveCurrency from "./ActiveCurrency"
 
 const navigatorLinks = [
-  { route: PageRoutes.profile_settings, text: "Profile", icon: <Profile /> },
-  { route: PageRoutes.manage_wallets, text: "Wallet", icon: <Wallet /> },
-  { route: PageRoutes.bank_accounts, text: "Bank Accounts", icon: <Bank /> },
+  { route: PageRoutes.PROFILE_SETTINGS, text: "Profile", icon: <Profile /> },
+  { route: PageRoutes.MANAGE_WALLETS, text: "Wallet", icon: <Wallet /> },
+  { route: PageRoutes.BANK_ACCOUNTS, text: "Bank Accounts", icon: <Bank /> },
   {
-    route: PageRoutes.default_currency,
+    route: PageRoutes.DEFAULT_CURRENCY,
     text: "Default Currency",
     icon: <Currency />,
     extra: <ActiveCurrency />,
   },
-  { route: PageRoutes.security_settings, text: "Security", icon: <Security /> },
+  { route: PageRoutes.SECURITY_SETTINGS, text: "Security", icon: <Security /> },
 ]
 
 export default function MobileNavigator() {

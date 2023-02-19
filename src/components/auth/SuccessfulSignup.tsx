@@ -5,10 +5,10 @@ import useModal from "../../hooks/useModal"
 import { Modal } from "../general"
 
 export default function SuccessfulSignup() {
-  const { hideModal } = useModal("successful_sign_up")
+  const { hideModal } = useModal("SUCCESSFUL_SIGN_UP")
   return (
     <Modal
-      name="successful_sign_up"
+      name="SUCCESSFUL_SIGN_UP"
       bodyClassNames="bg-[#EFFEED] !pb-0 !lg:w-[508px]"
     >
       <button

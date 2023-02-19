@@ -25,7 +25,7 @@ export default function SignUpWithWallet() {
   const { showModal } = useModal()
   const onSubmit = handleSubmit((data) => {
     localStorage.setItem("data", JSON.stringify(data))
-    showModal({ modal: "connect_wallet" })
+    showModal({ modal: "CONNECT_WALLET" })
   })
   return (
     <Wrapper hideTopNav>
@@ -114,7 +114,7 @@ export default function SignUpWithWallet() {
               Already have an account?{" "}
               <Link
                 className="text-[15px] text-primary underline"
-                to={PageRoutes.sign_in_with_email}
+                to={PageRoutes.SIGN_IN_WITH_EMAIL}
               >
                 Sign in
               </Link>

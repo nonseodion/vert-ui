@@ -38,8 +38,8 @@ export default function SecuritySettings() {
                 onClick={() =>
                   navigate(
                     isWalletUser
-                      ? PageRoutes.set_password
-                      : PageRoutes.change_password
+                      ? PageRoutes.SET_PASSWORD
+                      : PageRoutes.CHANGE_PASSWORD
                   )
                 }
               />
@@ -61,7 +61,7 @@ export default function SecuritySettings() {
               <Button
                 text="Manage"
                 className="h-[37px] py-0"
-                onClick={() => navigate(PageRoutes.manage_token_approvals)}
+                onClick={() => navigate(PageRoutes.MANAGE_TOKEN_APPROVALS)}
               />
             </div>
           </div>

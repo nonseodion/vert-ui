@@ -23,24 +23,24 @@ export default function ProfileDropdown() {
     {
       icon: <Profile className="fill-white" />,
       text: "Profile",
-      page: PageRoutes.profile_settings,
+      page: PageRoutes.PROFILE_SETTINGS,
     },
     {
       icon: <History />,
       text: "Transactions",
-      page: PageRoutes.transactions,
+      page: PageRoutes.TRANSACTIONS,
     },
     {
       icon: <Settings />,
       text: "Account settings",
-      page: PageRoutes.profile_settings,
+      page: PageRoutes.PROFILE_SETTINGS,
     },
     {
       icon: <SignOut />,
       text: "Sign out",
       onClick: () => {
         logOut()
-        navigate(PageRoutes.home)
+        navigate(PageRoutes.HOME)
       },
     },
   ]
@@ -92,7 +92,7 @@ export default function ProfileDropdown() {
         className="text-[13px]"
         bordered
         fullWidth
-        onClick={() => onClick(PageRoutes.manage_wallets)}
+        onClick={() => onClick(PageRoutes.MANAGE_WALLETS)}
       />
     </div>
   )

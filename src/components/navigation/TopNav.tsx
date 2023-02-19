@@ -21,7 +21,7 @@ export default function TopNav() {
   return (
     <div className="z-[998] fixed left-0  w-full bg-nav">
       <div className="max-w-[1500px] h-[60px] lg:h-[100px] lg:py-[13px]  relative mx-auto flex items-center justify-between px-4 lg:pl-[80px] lg:pr-[95px]">
-        <Link to={PageRoutes.home}>
+        <Link to={PageRoutes.HOME}>
           <Logo className="h-10 w-[52px] lg:h-[74.44px] lg:w-[96.98px]" />
         </Link>
         {isAuthenticated ? (
@@ -65,12 +65,12 @@ export default function TopNav() {
               <Button
                 bordered
                 text="sign in"
-                onClick={() => navigate(PageRoutes.sign_in_with_email)}
+                onClick={() => navigate(PageRoutes.SIGN_IN_WITH_EMAIL)}
                 background="transparent"
               />
               <Button
                 text="Connect Wallet"
-                onClick={() => navigate(PageRoutes.sign_up_with_wallet)}
+                onClick={() => navigate(PageRoutes.SIGN_UP_WITH_WALLET)}
               />
             </div>
           </div>
@@ -95,14 +95,14 @@ export default function TopNav() {
             background="transparent"
             bordered
             className="text-primary"
-            onClick={() => navigate(PageRoutes.sign_in_with_email)}
+            onClick={() => navigate(PageRoutes.SIGN_IN_WITH_EMAIL)}
           />
           <Button
             text="Connect Wallet"
             fullWidth
             bordered
             textColor="white"
-            onClick={() => navigate(PageRoutes.sign_up_with_wallet)}
+            onClick={() => navigate(PageRoutes.SIGN_UP_WITH_WALLET)}
           />
         </div>
       </div>

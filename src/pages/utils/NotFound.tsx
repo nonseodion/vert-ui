@@ -19,7 +19,7 @@ export default function NotFound() {
             bordered
             background="transparent"
             textColor="white"
-            onClick={() => navigate(PageRoutes.home)}
+            onClick={() => navigate(PageRoutes.HOME)}
           />
         </div>
       </div>

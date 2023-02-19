@@ -28,7 +28,7 @@ export default function SignInWithEmail() {
   const onSubmit = handleSubmit((data) => {
     localStorage.setItem("data", JSON.stringify(data))
     authenticateUser()
-    navigate(PageRoutes.home)
+    navigate(PageRoutes.HOME)
   })
 
   return (
@@ -98,7 +98,7 @@ export default function SignInWithEmail() {
                   <Button
                     text="Connect Wallet"
                     background="transparent"
-                    onClick={() => showModal({ modal: "connect_wallet" })}
+                    onClick={() => showModal({ modal: "CONNECT_WALLET" })}
                     fullWidth
                     className="text-[14.48px] font-semibold"
                     textColor="dark"
@@ -111,7 +111,7 @@ export default function SignInWithEmail() {
               Don&apos;t have an account?{" "}
               <Link
                 className="text-[15px] text-primary underline"
-                to={PageRoutes.sign_up_with_email}
+                to={PageRoutes.SIGN_UP_WITH_EMAIL}
               >
                 Sign up
               </Link>
