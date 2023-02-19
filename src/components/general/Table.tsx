@@ -32,6 +32,7 @@ const customStyles: TableStyles = {
       backgroundColor: "#fff",
       marginBottom: "3px",
       border: "1px solid #72BF65",
+      cursor: "pointer",
     },
   },
   cells: {
