@@ -105,7 +105,7 @@ export default function EmailVerification() {
                     text="Resend Code"
                     onClick={resendCode}
                     loading={resending}
-                    className="h-10 py-0  text-primary text-13 font-medium !text-primary"
+                    className="h-10 py-0 text-13 font-medium !text-primary"
                   />
                 </div>
               )}
