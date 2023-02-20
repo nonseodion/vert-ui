@@ -1,16 +1,30 @@
 import React from "react"
+import { useForm, Controller } from "react-hook-form"
+import isEmail from "validator/lib/isEmail"
 import { Link, useNavigate } from "react-router-dom"
 import { ReactComponent as LoneLogo } from "../../assets/icons/logo-lone.svg"
 import { Button, Glow, Wrapper } from "../../components/general"
 import Input from "../../components/inputs/Input"
 import { routes } from "../../utils/constants"
 
+interface SignUpWithEmailValues {
+  email: string
+  username: string
+  password: String
+}
+
 export default function SignUpWithEmail() {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<SignUpWithEmailValues>()
   const navigate = useNavigate()
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const onSubmit = handleSubmit((data) => {
+    localStorage.setItem("data", JSON.stringify(data))
     navigate(routes.email_verification)
-  }
+  })
+
   return (
     <Wrapper hideTopNav>
       <Glow />
@@ -25,20 +39,50 @@ export default function SignUpWithEmail() {
                 onSubmit={onSubmit}
                 method="post"
               >
-                <Input
-                  placeholder="Email Address"
-                  autoFocus
-                  type="email"
-                  required
+                <Controller
+                  control={control}
                   name="email"
+                  rules={{
+                    required: true,
+                    validate: (v) => isEmail(v?.trim()),
+                  }}
+                  render={({ field }) => (
+                    <Input
+                      placeholder="Email Address"
+                      autoFocus
+                      type="email"
+                      hasError={!!errors.email}
+                      errorMessage="The email you entered is not in the correct format. Please check."
+                      {...field}
+                    />
+                  )}
                 />
-                <Input placeholder="Username" required name="username" />
-                <Input
-                  placeholder="Enter password"
-                  type="password"
-                  required
+                <Controller
+                  control={control}
+                  name="username"
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Input
+                      placeholder="Username"
+                      hasError={!!errors.username}
+                      {...field}
+                    />
+                  )}
+                />
+                <Controller
+                  control={control}
+                  rules={{ required: true }}
                   name="password"
+                  render={({ field }) => (
+                    <Input
+                      placeholder="Enter password"
+                      type="password"
+                      hasError={!!errors.password}
+                      {...field}
+                    />
+                  )}
                 />
+
                 <p className="mt-[10px] text-grey text-[10px] mb-[30px]">
                   By signing up, you agree to our{" "}
                   <a

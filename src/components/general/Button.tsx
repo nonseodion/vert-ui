@@ -8,7 +8,7 @@ interface ButtonProps {
   background?: "primary" | "transparent"
   textColor?: "white" | "dark"
   bordered?: boolean
-  onClick?: (_: any) => void
+  onClick?: (_?: any) => void | null
   fullWidth?: boolean
   className?: string
   loading?: boolean
@@ -32,11 +32,11 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      disabled={disabled}
+      disabled={disabled || loading}
       type={type === "submit" ? "submit" : "button"}
       onClick={onClick}
       className={clsx(
-        "text-white bg-primary py-[14px] px-4 rounded-xl",
+        "text-white disabled:cursor-pointer bg-primary py-[14px] px-4 rounded-xl",
         { "bg-transparent": background === "transparent" },
         { "text-black": textColor === "dark" },
         { "border border-primary": bordered },

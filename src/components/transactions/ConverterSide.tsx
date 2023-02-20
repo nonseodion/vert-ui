@@ -5,11 +5,11 @@ import { ReactComponent as DropdownIcon } from "../../assets/icons/arrow-down.sv
 
 export interface ConverterSideProps {
   side: "sell" | "buy"
-  onTokenSelect: () => void
   token: ERC20Token
   amount: string
   logo: string
   setAmount: (amount: string) => void
+  onTokenSelect: (_: any) => void
 }
 
 export default function ConverterSide({

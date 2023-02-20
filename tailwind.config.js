@@ -12,6 +12,7 @@ module.exports = {
         grey: '#A5A5A5',
         placeholder: "#828F9C",
         lightGreen: "#DEE7DD",
+        faintGreen: "#CFFFC7",
         border: "#BBBBBB",
         borderLight: '#E8EAED',
         purple: '#6C86AD',
@@ -21,6 +22,7 @@ module.exports = {
         lightGrey: '#ECF0F9',
         danger: '#E3402A',
         dark: '#222222',
+        red: "#FF0000"
       },
       borderRadius: {
         10: "10px"

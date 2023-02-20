@@ -28,7 +28,7 @@ export default function SelectToken({
           <Search />
         </div>
         <input
-          className="h-12 flex-1 text-sm text-lightBlue bg-transparent outline-none border-none"
+          className="h-12 w-full flex-1 text-sm text-lightBlue bg-transparent outline-none border-none"
           placeholder="Search name or paste address"
           value={address}
           onChange={({ target: { value } }) => setAddress(value)}
@@ -46,9 +46,10 @@ export default function SelectToken({
       <div className="mx-6 flex flex-wrap pb-[9px]">
         {userTokens.map((token) => (
           <UserToken
+            key={token.token}
             token={token.token}
             icon={token.icon}
-            className="mb-1 mr-[6px]"
+            className="mb-1 mr-[6px] cursor-pointer"
           />
         ))}
       </div>
@@ -56,21 +57,26 @@ export default function SelectToken({
       {addressIsEmpty ? (
         <ul className="px-6 pt-6 max-h-[320px] overflow-y-scroll scrollbar-hide">
           {availableTokens.map((token) => (
-            <div className="flex space-x-4 items-center mb-8" key={token.token}>
-              <img
-                src={token.icon}
-                alt={token.token_name}
-                className="h-10 w-10 rounded-[20px]"
-              />
-              <div className="flex flex-col space-y-[3.5px]">
-                <h4 className="font-medium text-base text-black">
-                  {token.token_name}
-                </h4>
-                <span className="text-[13px] text-lightBlue">
-                  {token.token}
-                </span>
-              </div>
-            </div>
+            <li key={token.token}>
+              <button
+                type="button"
+                className="w-full text-left flex space-x-4 items-center mb-8"
+              >
+                <img
+                  src={token.icon}
+                  alt={token.token_name}
+                  className="h-10 w-10 rounded-[20px]"
+                />
+                <div className="flex flex-col space-y-[3.5px]">
+                  <h4 className="font-medium text-base text-black">
+                    {token.token_name}
+                  </h4>
+                  <span className="text-[13px] text-lightBlue">
+                    {token.token}
+                  </span>
+                </div>
+              </button>
+            </li>
           ))}
         </ul>
       ) : (

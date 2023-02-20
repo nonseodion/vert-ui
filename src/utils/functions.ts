@@ -2,10 +2,10 @@ import { BigintIsh, JSBI } from "@pancakeswap/sdk"
 
 export const doNothing = (): void => {}
 
-export const handleProfileDropdown = (
-  action: "show" | "hide" | "toggle" = "show"
-) => {
-  const el = document.querySelector(".profile-dropdown")
+type ActionType = "show" | "hide" | "toggle"
+
+export const handleDropdown = (elementSelector: string, action: ActionType) => {
+  const el = document.querySelector(elementSelector)
   if (!el) return
   if (action === "toggle") {
     if (el.classList.contains("active")) {
@@ -22,8 +22,21 @@ export const handleProfileDropdown = (
   }
 }
 
+export const handleProfileDropdown = (action: ActionType) =>
+  handleDropdown(".profile-dropdown", action)
+
+export const handleMobileNavDropdown = (action: ActionType) =>
+  handleDropdown(".mobile-navigator-dropdown", action)
+
 export const handleBodyScroll = (action: "enable" | "disable" = "enable") => {
-  document.body.style.overflowY = action === "enable" ? "visible" : "hidden"
+  const el = document.querySelector("html")
+  if (el) {
+    if (action === "enable") {
+      el.classList.remove("hide-overflow")
+    } else {
+      el.classList.add("hide-overflow")
+    }
+  }
 }
 
 export function parseBigintIsh(bigintIsh: BigintIsh): JSBI {

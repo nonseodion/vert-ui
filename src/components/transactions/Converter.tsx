@@ -1,13 +1,14 @@
-import React, { useState } from "react"
+import React from "react"
 import { ReactComponent as Retry } from "../../assets/icons/retry.svg"
 import { ReactComponent as Retry2 } from "../../assets/icons/retry-2.svg"
 import ConverterSide from "./ConverterSide"
 import TokenModal from "./TokenModal"
 import { doNothing } from "../../utils/functions"
+import useModal from "../../hooks/useModal"
 import useConverterInterface from "../../hooks/interfaces/useConverterInferface"
 
 export default function Converter() {
-  const [tokenModalActive, setTokenModalActive] = useState(false)
+  const { showModal } = useModal()
   const {
     buyToken,
     sellToken,
@@ -17,13 +18,9 @@ export default function Converter() {
     buyAmount,
     setSellAmount,
   } = useConverterInterface()
-
   return (
     <div className="w-[418px] rounded-3xl bg-lightGreen">
-      <TokenModal
-        visible={tokenModalActive}
-        onClose={() => setTokenModalActive(false)}
-      />
+      <TokenModal />
       <div className="h-[53px] flex items-center justify-between border-b border-border">
         <div className="ml-auto flex space-x-[21.01px] items-center mr-[22px]">
           <button type="button">
@@ -43,7 +40,7 @@ export default function Converter() {
         <div className="flex flex-col space-y-4 mb-[30px]">
           <ConverterSide
             side="sell"
-            onTokenSelect={() => setTokenModalActive(true)}
+            onTokenSelect={() => showModal({ modal: "token_modal" })}
             token={sellToken}
             logo={sellLogo}
             amount={typedValue}
