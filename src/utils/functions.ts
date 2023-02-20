@@ -1,3 +1,5 @@
+import { BigintIsh, JSBI } from "@pancakeswap/sdk"
+
 export const doNothing = (): void => {}
 
 export const handleProfileDropdown = (
@@ -22,4 +24,8 @@ export const handleProfileDropdown = (
 
 export const handleBodyScroll = (action: "enable" | "disable" = "enable") => {
   document.body.style.overflowY = action === "enable" ? "visible" : "hidden"
+}
+
+export function parseBigintIsh(bigintIsh: BigintIsh): JSBI {
+  return bigintIsh instanceof JSBI ? bigintIsh : JSBI.BigInt(bigintIsh)
 }

@@ -4,9 +4,20 @@ import { ReactComponent as Retry2 } from "../../assets/icons/retry-2.svg"
 import ConverterSide from "./ConverterSide"
 import TokenModal from "./TokenModal"
 import { doNothing } from "../../utils/functions"
+import useConverterInterface from "../../hooks/interfaces/useConverterInferface"
 
 export default function Converter() {
   const [tokenModalActive, setTokenModalActive] = useState(false)
+  const {
+    buyToken,
+    sellToken,
+    sellLogo,
+    buyLogo,
+    typedValue,
+    buyAmount,
+    setSellAmount,
+  } = useConverterInterface()
+
   return (
     <div className="w-[418px] rounded-3xl bg-lightGreen">
       <TokenModal
@@ -33,8 +44,19 @@ export default function Converter() {
           <ConverterSide
             side="sell"
             onTokenSelect={() => setTokenModalActive(true)}
+            token={sellToken}
+            logo={sellLogo}
+            amount={typedValue}
+            setAmount={setSellAmount}
           />
-          <ConverterSide side="buy" onTokenSelect={doNothing} />
+          <ConverterSide
+            side="buy"
+            onTokenSelect={doNothing}
+            token={buyToken}
+            logo={buyLogo}
+            amount={buyAmount}
+            setAmount={() => {}}
+          />
         </div>
         <button
           className="bg-disabled py-[17px] h-[48px] w-full rounded disabled:text-[black]/[.3] text-sm font-semibold leading-[2px] disabled:cursor-not-allowed"
