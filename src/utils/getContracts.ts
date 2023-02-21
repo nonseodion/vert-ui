@@ -1,7 +1,7 @@
-import { useContract } from "wagmi"
-import { VertRouter } from "../utils/abis/types"
-import VertRouterAbi from "../utils/abis/contracts/VertRouter.json"
-import { chainId } from "../utils/config"
+import { getContract } from "@wagmi/core"
+import { VertRouter } from "./abis/types"
+import VertRouterAbi from "./abis/contracts/VertRouter.json"
+import { chainId } from "./config"
 
 enum ContractNames {
   VERTROUTER = "vertRouter",
@@ -21,8 +21,8 @@ const getAddress = (contractName: ContractNames) =>
     : bscTestnetAddresses[contractName]
 
 // returns contracts and abis
-const useContracts = () => {
-  const vertRouter = useContract({
+const getContracts = () => {
+  const vertRouter = getContract({
     address: getAddress(ContractNames.VERTROUTER),
     abi: VertRouterAbi,
   }) as VertRouter
@@ -33,4 +33,4 @@ const useContracts = () => {
   }
 }
 
-export default useContracts
+export default getContracts

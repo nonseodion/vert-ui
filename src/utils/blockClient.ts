@@ -14,28 +14,19 @@ interface Call<T extends Contract, K extends string> {
   functionArgs: Parameters<T[K]>
 }
 
-const blockClient = () => {
-  const call = async <T extends Contract, K extends string>(
-    args: Call<T, K>
-  ): Promise<ReturnType<T[K]>> => {
-    const { contract, abi, functionArgs, functionName } = args
-    const data = (await readContract({
-      address: contract.address as `0x${string}`,
-      functionName,
-      abi,
-      args: functionArgs,
-      chainId: 97,
-    })) as ReturnType<T[K]>
+export const call = async <T extends Contract, K extends string>(
+  args: Call<T, K>
+): Promise<ReturnType<T[K]>> => {
+  const { contract, abi, functionArgs, functionName } = args
+  const data = (await readContract({
+    address: contract.address as `0x${string}`,
+    functionName,
+    abi,
+    args: functionArgs,
+    chainId: 97,
+  })) as ReturnType<T[K]>
 
-    return data
-  }
-
-  const multicall = () => {}
-
-  return {
-    call,
-    multicall,
-  }
+  return data
 }
 
-export default blockClient
+export const multicall = () => {}
