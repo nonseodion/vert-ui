@@ -1,51 +1,59 @@
-import { CurrencyAmount, ERC20Token } from "@pancakeswap/sdk"
-import { useEffect, useState } from "react"
+import { CurrencyAmount, ERC20Token, JSBI, TEN } from "@pancakeswap/sdk"
+import { useEffect, useMemo, useState } from "react"
 import { parseUnits } from "ethers/lib/utils"
-import { VertRouter } from "../../utils/abis/types"
-import blockClient from "../../utils/blockClient"
-import useContracts from "../useContracts"
 import useTokens from "../useTokens"
+import ngn from "../../assets/icons/ngn.png"
 import busd from "../../assets/icons/busd.png"
 import bnb from "../../assets/icons/bnb.png"
+import { USD, NGN } from "../../utils/Fiat"
+import FiatAmount from "../../utils/FiatAmount"
+import { getAmountIn, getAmountOut } from "../../utils/swap"
+import validateUserInput from "../../utils/validateConverterInput"
+import removeTrailingZeros from "../../utils/removeTrailingZeros"
+
+let independentField: "sell" | "buy"
 
 const useConverterInterface = () => {
-  const { vertRouter, VertRouterAbi } = useContracts()
-  const { call } = blockClient()
   const tokens = useTokens()
+  const buyToken = NGN
+  const dollarRate = 745
+  const BUSD = useMemo(
+    () => tokens.filter((token) => token.symbol === "BUSD")[0],
+    [tokens]
+  )
+
   const [sellToken, setSellToken] = useState<ERC20Token>(tokens[1])
-  const [buyToken, setBuyToken] = useState<ERC20Token>(tokens[0])
-  const [buyAmount, setBuyAmount1] = useState<CurrencyAmount<ERC20Token> | "">(
+  const [buyAmount, setBuyAmount] = useState<FiatAmount | "">("")
+  const [sellAmount, setSellAmount] = useState<CurrencyAmount<ERC20Token> | "">(
     ""
   )
-  const [sellAmount, setSellAmount1] = useState<
-    CurrencyAmount<ERC20Token> | ""
-  >("")
+
   const [typedValue, setTypedValue] = useState<string>("")
   const logos = [busd, bnb]
 
-  const setBuyAmount = (amount: string) => {
-    const newAmount =
-      amount === ""
-        ? amount
-        : CurrencyAmount.fromRawAmount<ERC20Token>(buyToken, amount)
-    setBuyAmount1(newAmount)
+  // validate and format inputted buyAmount before updating state
+  const setBuyAmount1 = (amount: string) => {
+    independentField = "buy"
+    const valid = validateUserInput(amount, buyToken.decimals)
+    if (valid) {
+      setTypedValue(amount)
+      const newAmount =
+        amount === ""
+          ? amount
+          : FiatAmount.fromRawAmount(
+              buyToken,
+              parseUnits(amount, buyToken.decimals).toString()
+            )
+
+      setBuyAmount(newAmount)
+    }
   }
 
-  const setSellAmount = (amount: string) => {
-    // eslint-disable-next-line prefer-regex-literals
-    const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
-    const escapeRegex = /[.*+?^${}()|[\]\\]/g
-
-    // ensure amount does not exceed token decimals
-    const decimalPortion = amount.split(".")[1]
-    const decimalSafe = decimalPortion
-      ? decimalPortion.length <= sellToken.decimals
-      : true
-
-    if (
-      (amount === "" || inputRegex.test(amount.replace(escapeRegex, "\\$&"))) && // test for unwanted characters
-      decimalSafe
-    ) {
+  // validate and format inputted sellAmount before updating state
+  const setSellAmount1 = (amount: string) => {
+    independentField = "sell"
+    const valid = validateUserInput(amount, sellToken.decimals)
+    if (valid) {
       setTypedValue(amount)
       const newAmount =
         amount === ""
@@ -55,58 +63,96 @@ const useConverterInterface = () => {
               parseUnits(amount, sellToken.decimals).toString()
             )
 
-      setSellAmount1(newAmount)
+      setSellAmount(newAmount)
     }
   }
 
+  // update buyAmount when sellAmount or sellToken changes
   useEffect(() => {
-    if (sellAmount && buyToken) {
-      const getAmountOut = async () => {
-        const amountsOut = await call<VertRouter, "getAmountsOut">({
-          contract: vertRouter,
-          functionName: "getAmountsOut",
-          abi: VertRouterAbi,
-          functionArgs: [
-            sellAmount.numerator.toString(),
-            [
-              "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
-              "0xaB1a4d4f1D656d2450692D237fdD6C7f9146e814",
-            ],
-          ],
-        })
+    if (sellAmount === "" && buyAmount === "") return
 
-        const amountOut = amountsOut[amountsOut.length - 1].toString()
+    if (
+      sellAmount &&
+      sellAmount.toExact() !== "0" &&
+      independentField === "sell"
+    ) {
+      let amountOut: string
+      ;(async (): Promise<void> => {
+        amountOut = await getAmountOut(sellAmount)
 
-        setBuyAmount(amountOut)
-      }
-
-      getAmountOut()
-    } else if (sellAmount === "") {
+        const busdAmount = CurrencyAmount.fromRawAmount(BUSD, amountOut)
+        const USDAmount = FiatAmount.fromFractionalAmount(
+          USD,
+          busdAmount.multiply(100).numerator,
+          JSBI.exponentiate(TEN, JSBI.BigInt(busdAmount.currency.decimals))
+        )
+        const NGNAmount = FiatAmount.fromOtherAmount(NGN, USDAmount, dollarRate)
+        setBuyAmount(NGNAmount)
+      })()
+    } else if (
+      (sellAmount === "" || sellAmount.toExact() === "0") &&
+      independentField === "sell"
+    ) {
       setBuyAmount("")
+    } else if (independentField !== "sell" && typedValue === "") {
+      setSellAmount("")
     }
   }, [sellToken, sellAmount])
 
-  // unset buyAmount if typedValue is empty
+  // update sellAmount when buyAmount changes
   useEffect(() => {
-    if (buyAmount === "") return
-    if (typedValue === "") {
+    if (buyAmount === "" && sellAmount === "") return
+
+    if (
+      buyAmount &&
+      buyAmount.toExact() !== "0" &&
+      independentField === "buy"
+    ) {
+      let amountIn: string
+      ;(async (): Promise<void> => {
+        const usdAmount = buyAmount.toDollarAmount(dollarRate)
+        const rawBUSDAmount = usdAmount
+          .multiply(
+            JSBI.exponentiate(TEN, JSBI.BigInt(BUSD.decimals)).toString()
+          )
+          .toFixed(0)
+        const busdAmount = CurrencyAmount.fromRawAmount(BUSD, rawBUSDAmount)
+        amountIn = await getAmountIn(busdAmount)
+
+        const tokenAmount = CurrencyAmount.fromRawAmount<ERC20Token>(
+          sellToken,
+          amountIn
+        )
+        setSellAmount(tokenAmount)
+      })()
+    } else if (
+      (buyAmount === "" || buyAmount.toExact() === "0") &&
+      independentField === "buy"
+    ) {
+      setSellAmount("")
+    } else if (independentField !== "buy" && typedValue === "") {
       setBuyAmount("")
     }
   }, [buyAmount])
 
   return {
-    sellAmount: sellAmount === "" ? sellAmount : sellAmount.toExact(),
+    sellAmount:
+      sellAmount === ""
+        ? sellAmount
+        : removeTrailingZeros(sellAmount.toFixed()),
     sellToken,
     setSellToken,
-    setSellAmount,
+    setSellAmount: setSellAmount1,
     sellLogo: bnb,
 
     buyToken,
-    buyAmount: buyAmount === "" ? buyAmount : buyAmount.toFixed(6),
-    setBuyToken,
-    buyLogo: busd,
-    typedValue,
+    buyAmount:
+      buyAmount === "" ? buyAmount : removeTrailingZeros(buyAmount.toFixed()),
+    buyLogo: ngn,
+    setBuyAmount: setBuyAmount1,
 
+    typedValue,
+    independentField: independentField ?? "sell",
     tokens,
     logos,
   }

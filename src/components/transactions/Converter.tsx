@@ -1,5 +1,5 @@
 import React from "react"
-import { ReactComponent as Retry } from "../../assets/icons/retry.svg"
+import { ReactComponent as History } from "../../assets/icons/retry.svg"
 import { ReactComponent as Retry2 } from "../../assets/icons/retry-2.svg"
 import ConverterSide from "./ConverterSide"
 import TokenModal from "./TokenModal"
@@ -17,6 +17,9 @@ export default function Converter() {
     typedValue,
     buyAmount,
     setSellAmount,
+    setBuyAmount,
+    sellAmount,
+    independentField,
   } = useConverterInterface()
   return (
     <div className="w-[418px] rounded-3xl bg-lightGreen">
@@ -24,7 +27,7 @@ export default function Converter() {
       <div className="h-[53px] flex items-center justify-between border-b border-border">
         <div className="ml-auto flex space-x-[21.01px] items-center mr-[22px]">
           <button type="button">
-            <Retry />
+            <History />
           </button>
           <button type="button">
             <Retry2 />
@@ -43,7 +46,7 @@ export default function Converter() {
             onTokenSelect={() => showModal({ modal: "token_modal" })}
             token={sellToken}
             logo={sellLogo}
-            amount={typedValue}
+            amount={independentField === "sell" ? typedValue : sellAmount}
             setAmount={setSellAmount}
           />
           <ConverterSide
@@ -51,8 +54,8 @@ export default function Converter() {
             onTokenSelect={doNothing}
             token={buyToken}
             logo={buyLogo}
-            amount={buyAmount}
-            setAmount={() => {}}
+            amount={independentField === "buy" ? typedValue : buyAmount}
+            setAmount={setBuyAmount}
           />
         </div>
         <button
