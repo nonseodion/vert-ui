@@ -4,7 +4,7 @@ module.exports = {
     browser: true,
     es6: true,
   },
-  extends: ["airbnb", "airbnb-typescript", "prettier"],
+  extends: ["airbnb", "airbnb-typescript", "airbnb/hooks", "prettier"],
   plugins: ["import", "prettier"],
   parserOptions: {
     project: "./tsconfig.eslint.json",
