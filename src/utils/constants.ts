@@ -1,3 +1,7 @@
+import { JSBI, Percent, Token } from "@pancakeswap/sdk"
+import { chainIds, ChainId } from "./config"
+import { bscTestnetTokens } from "../hooks/useTokens"
+
 export const routes = {
   home: "/",
   sign_in_with_email: "/sign-in/email",
@@ -20,4 +24,20 @@ export const modals = {
   bank_account: "bank_account",
   remove_token_approval: "remove_token_approval",
   unlink_wallet: "unlink_wallet",
+}
+
+export const BIPS_BASE = JSBI.BigInt(10000)
+export const BETTER_TRADE_LESS_HOPS_THRESHOLD = new Percent(
+  JSBI.BigInt(50),
+  BIPS_BASE
+)
+
+export type ChainMap<T> = {
+  readonly [id in ChainId]: T
+}
+export type ChainTokenList = ChainMap<Token[]>
+
+export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
+  [chainIds.bsc]: [bscTestnetTokens[0], bscTestnetTokens[1]],
+  [chainIds.bscTestnet]: [bscTestnetTokens[0], bscTestnetTokens[1]],
 }

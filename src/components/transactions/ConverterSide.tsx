@@ -1,12 +1,12 @@
 import React from "react"
-import { ERC20Token } from "@pancakeswap/sdk"
+import { Currency } from "@pancakeswap/sdk"
 // import { buyableCurrencies, sellableCurrencies } from "../../dummy/currencies"
 import { ReactComponent as DropdownIcon } from "../../assets/icons/arrow-down.svg"
 import Fiat from "../../utils/Fiat"
 
 export interface ConverterSideProps {
   side: "sell" | "buy"
-  token: Fiat | ERC20Token
+  token: Fiat | Currency
   amount: string
   logo: string
   setAmount: (amount: string) => void
