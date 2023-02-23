@@ -25,6 +25,7 @@ export default function Modal({
         onClose()
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isActive])
 
   return (

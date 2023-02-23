@@ -16,6 +16,7 @@
     "classnames": "^2.3.2",
     "ethers": "^5",
     "jsbi": "^4.3.0",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.1",
@@ -39,9 +40,10 @@
     "prepare": "!is-ci || husky install",
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "prettier": "prettier --write --ignore-unknown --cache ./src",
-    "eslint": "eslint ./src"
+    "eslint": "eslint ./src",
+    "typechain": "typechain --target ethers-v5 --out-dir ./src/utils/abis/types './src/utils/abis/contracts/*'"
   },
-  "postinstall": "typechain --target ethers-v5 --out-dir ./src/utils/abis/types './src/utils/abis/contracts/*'",
+  "postinstall": "typechain",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -61,8 +63,9 @@
     ]
   },
   "devDependencies": {
-    "@types/big.js": "^6.1.6",
     "@typechain/ethers-v5": "^10.2.0",
+    "@types/big.js": "^6.1.6",
+    "@types/lodash": "^4.14.191",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-select": "^5.0.1",
     "@types/validator": "^13.7.12",

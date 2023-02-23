@@ -5,7 +5,7 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask"
 import { InjectedConnector } from "wagmi/connectors/injected"
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
 // import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
-import { chainId } from "../utils/config"
+import { activeChainId } from "../utils/config"
 
 export enum Wallets {
   METAMASK = "metamask",
@@ -34,7 +34,7 @@ const walletToConnector = new Map<Wallets, Connector>([
 ])
 
 const useWrapWagmi = (): Wallet => {
-  const { connectAsync } = useConnect({ chainId })
+  const { connectAsync } = useConnect({ chainId: activeChainId })
   const { disconnectAsync } = useDisconnect()
   const { address, isConnected } = useAccount()
 

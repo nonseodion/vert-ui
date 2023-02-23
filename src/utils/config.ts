@@ -4,11 +4,14 @@ import { publicProvider } from "wagmi/providers/public"
 import { bscTestnet, bsc } from "wagmi/chains"
 
 const chains = { bsc, bscTestnet }
-const chainId: Chain =
+const activeChainId: ChainId =
   process.env.NODE_ENV === "development" ? chains.bscTestnet.id : 56
-const chain = chainId === 56 ? bsc : bscTestnet
+
+const chainIds = { bsc: bsc.id, bscTestnet: bscTestnet.id }
+const chain = activeChainId === 56 ? bsc : bscTestnet
+
 const rpcUrl =
-  chainId === 56
+  activeChainId === 56
     ? `https://bsc-dataseed.binance.org`
     : `https://data-seed-prebsc-1-s1.binance.org:8545`
 
@@ -30,6 +33,6 @@ const client = createClient({
   webSocketProvider,
 })
 
-export type Chain = 56 | 97
+export type ChainId = (typeof chainIds)[keyof typeof chainIds]
 
-export { client, chains, chainId }
+export { client, chains, activeChainId, chainIds }

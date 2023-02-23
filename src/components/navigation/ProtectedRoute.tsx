@@ -15,6 +15,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     if (!isAuthenticated) {
       navigate(routes.home)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (isAuthenticated) return <div>{children}</div>
