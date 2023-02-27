@@ -8,7 +8,7 @@ import {
 } from "@pancakeswap/sdk"
 import { useMemo } from "react"
 import flatMap from "lodash/flatMap"
-import { BASES_TO_CHECK_TRADES_AGAINST } from "../utils/constants"
+import { BASES_TO_CHECK_TRADES_AGAINST } from "../utils/constants/exchange"
 import { activeChainId } from "../utils/config"
 import { wrappedCurrency } from "../utils/wrappedCurrency"
 import { PairState, usePairs } from "./usePairs"
@@ -116,7 +116,11 @@ export function useTradeExactIn(
     currencyAmountIn?.currency,
     currencyOut
   )
-
+  console.log(
+    "useTradeExactIn",
+    currencyAmountIn?.toExact(),
+    currencyAmountIn?.currency.symbol
+  )
   return useMemo(() => {
     if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
       const bestTrade: Trade<Currency, Currency, TradeType> | null =
