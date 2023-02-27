@@ -1,7 +1,15 @@
-import { Currency, CurrencyAmount, JSBI, TEN } from "@pancakeswap/sdk"
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import {
+  Currency,
+  CurrencyAmount,
+  ERC20Token,
+  JSBI,
+  TEN,
+} from "@pancakeswap/sdk"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { useAtom, useAtomValue } from "jotai"
+
 import { parseUnits } from "ethers/lib/utils"
-import useTokens from "../useTokens"
+import useTokens from "../../state/tokens/hooks"
 import ngnLogo from "../../assets/icons/ngn.png"
 import busdLogo from "../../assets/icons/busd.png"
 import bnbLogo from "../../assets/icons/bnb.png"
@@ -14,13 +22,21 @@ import {
   fiatToStableCoinAmount,
   stableCoinAmountToFiat,
 } from "../../utils/swap"
+import { stableCoin } from "../../utils/constants/exchange"
+import {
+  exchangeAtom,
+  handleSetExchangeAtomCreator,
+} from "../../state/exchange/atoms"
 
 let independentField: "sell" | "buy"
 
-interface Returntypes {
+interface ReturnTypes {
   sellAmount: string
   sellToken: Currency
-  setSellToken: React.Dispatch<React.SetStateAction<Currency>>
+  setSellToken: (arg: {
+    key: "sellToken"
+    value: { token: ERC20Token; logo: string }
+  }) => void
   setSellAmount: (_: string) => void
   sellLogo: string
 
@@ -35,16 +51,23 @@ interface Returntypes {
   logos: string[]
 }
 
-const useConverterInterface = (): Returntypes => {
-  const tokens = useTokens()
+const useConverterInterface = (): ReturnTypes => {
+  const { tokens } = useTokens()
   const buyToken = NGN
   const dollarRate = "745"
-  const stableCoin = useMemo(
-    () => tokens.filter((token) => token.symbol === "BUSD")[0],
-    [tokens]
+  const {
+    sellToken: { token: sellToken, logo: sellLogo },
+  } = useAtomValue(exchangeAtom)
+  const [, setSellToken] = useAtom(
+    useMemo(
+      () =>
+        handleSetExchangeAtomCreator<
+          "sellToken",
+          { token: ERC20Token; logo: string }
+        >(),
+      []
+    )
   )
-
-  const [sellToken, setSellToken] = useState<Currency>(tokens[1])
   const [buyAmount, setBuyAmount] = useState<FiatAmount | "">("")
   const [sellAmount, setSellAmount] = useState<CurrencyAmount<Currency> | "">(
     ""
@@ -59,6 +82,12 @@ const useConverterInterface = (): Returntypes => {
     stableCoin
   )
 
+  console.log(
+    tradeIn?.outputAmount.toExact(),
+    sellToken.symbol,
+    tradeIn?.route.path.map((t) => t.symbol)
+  )
+
   const stableCoinAmount = useMemo(
     () =>
       fiatToStableCoinAmount(
@@ -66,7 +95,7 @@ const useConverterInterface = (): Returntypes => {
         stableCoin,
         dollarRate
       ),
-    [buyAmount, dollarRate, stableCoin]
+    [buyAmount, dollarRate]
   )
 
   const tradeOut = useTradeExactOut(
@@ -124,9 +153,24 @@ const useConverterInterface = (): Returntypes => {
     [sellToken]
   )
 
+  // update sellAmount when sellToken changes
+  useEffect(() => {
+    setSellAmount((oldAmount) =>
+      oldAmount === ""
+        ? ""
+        : CurrencyAmount.fromFractionalAmount(
+            sellToken,
+            oldAmount.numerator,
+            oldAmount.denominator
+          )
+    )
+  }, [sellToken])
+
   // update buyAmount when sellAmount or sellToken changes
   useEffect(() => {
     if (sellAmount === "" && buyAmount === "") return
+
+    console.log("we de here")
 
     if (
       sellAmount &&
@@ -147,8 +191,9 @@ const useConverterInterface = (): Returntypes => {
     } else if (independentField !== "sell" && typedValue === "") {
       setSellAmount("")
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sellToken, sellAmount])
+  }, [sellAmount, tradeIn?.outputAmount])
 
   // update sellAmount when buyAmount changes
   useEffect(() => {
@@ -172,8 +217,9 @@ const useConverterInterface = (): Returntypes => {
     } else if (independentField !== "buy" && typedValue === "") {
       setBuyAmount("")
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [buyAmount])
+  }, [buyAmount, tradeOut?.inputAmount])
 
   return {
     sellAmount:
@@ -183,7 +229,7 @@ const useConverterInterface = (): Returntypes => {
     sellToken,
     setSellToken,
     setSellAmount: setSellAmount1,
-    sellLogo: bnbLogo,
+    sellLogo,
 
     buyToken,
     buyAmount:

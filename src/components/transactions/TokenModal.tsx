@@ -7,6 +7,7 @@ import CustomTokens from "./CustomTokens"
 import SelectToken from "./SelectToken"
 import { Modal } from "../general"
 import useModal from "../../hooks/useModal"
+import useTokens from "../../state/tokens/hooks"
 
 const steps = {
   IMPORT_TOKEN: "IMPORT_TOKEN",
@@ -18,6 +19,7 @@ export default function TokenModal() {
   const { hideModal } = useModal("token_modal")
   const [currentStep, setCurrentStep] = useState<string>(steps.DEFAULT)
   const [address, setAddress] = useState<string>("")
+  const { tokens, logoURIs } = useTokens()
 
   return (
     <Modal
@@ -60,7 +62,16 @@ export default function TokenModal() {
         )}
       </div>
       {currentStep === steps.DEFAULT && (
-        <SelectToken {...{ setAddress, address, steps, setCurrentStep }} />
+        <SelectToken
+          {...{
+            setAddress,
+            address,
+            steps,
+            setCurrentStep,
+            tokens,
+            logos: logoURIs,
+          }}
+        />
       )}
       {currentStep === steps.IMPORT_TOKEN && <TokenImport />}
       {currentStep === steps.CUSTOM_TOKENS && <CustomTokens />}

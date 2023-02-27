@@ -1,25 +1,30 @@
 import React, { useMemo } from "react"
+import { ERC20Token } from "@pancakeswap/sdk"
 import { ReactComponent as Search } from "../../assets/icons/search.svg"
 import { ReactComponent as Settings } from "../../assets/icons/settings.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import userTokens, { availableTokens } from "../../dummy/user-tokens"
-import UserToken from "./UserToken"
 import { Button } from "../general"
+import useSelectTokenInterface from "../../hooks/interfaces/useSelectTokenInterface"
 
 interface SelectTokenProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<string>>
   setAddress: React.Dispatch<React.SetStateAction<string>>
   steps: { [key: string]: string }
   address: string
+  tokens: ERC20Token[]
+  logos: string[]
 }
 
 export default function SelectToken({
   address,
   setAddress,
   setCurrentStep,
+  tokens,
+  logos,
   steps,
 }: SelectTokenProps) {
   const addressIsEmpty = useMemo(() => address.trim().length === 0, [address])
+  const { pinnedTokens, tokenList } = useSelectTokenInterface(tokens, logos)
 
   return (
     <div>
@@ -43,41 +48,11 @@ export default function SelectToken({
           </button>
         )}
       </div>
-      <div className="mx-6 flex flex-wrap pb-[9px]">
-        {userTokens.map((token) => (
-          <UserToken
-            key={token.token}
-            token={token.token}
-            icon={token.icon}
-            className="mb-1 mr-[6px] cursor-pointer"
-          />
-        ))}
-      </div>
+      <div className="mx-6 flex flex-wrap pb-[9px]">{pinnedTokens}</div>
       <div className="mx-2 h-[1px] bg-lightBlue" />
       {addressIsEmpty ? (
         <ul className="px-6 pt-6 max-h-[320px] overflow-y-scroll scrollbar-hide">
-          {availableTokens.map((token) => (
-            <li key={token.token}>
-              <button
-                type="button"
-                className="w-full text-left flex space-x-4 items-center mb-8"
-              >
-                <img
-                  src={token.icon}
-                  alt={token.token_name}
-                  className="h-10 w-10 rounded-[20px]"
-                />
-                <div className="flex flex-col space-y-[3.5px]">
-                  <h4 className="font-medium text-base text-black">
-                    {token.token_name}
-                  </h4>
-                  <span className="text-[13px] text-lightBlue">
-                    {token.token}
-                  </span>
-                </div>
-              </button>
-            </li>
-          ))}
+          {tokenList}
         </ul>
       ) : (
         <div className="pt-6 h-[320px] px-6">
