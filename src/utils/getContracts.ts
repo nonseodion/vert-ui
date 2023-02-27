@@ -10,7 +10,7 @@ enum ContractNames {
 }
 
 const bscAddresses = {
-  [ContractNames.VERTROUTER]: "",
+  [ContractNames.VERTROUTER]: "0x0a055140C146bf8aAca189c65d8572Ee18Dd7e01",
 }
 
 const bscTestnetAddresses = {

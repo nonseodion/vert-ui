@@ -3,19 +3,23 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc"
 import { publicProvider } from "wagmi/providers/public"
 import { bscTestnet, bsc } from "wagmi/chains"
 
-const chains = { bsc, bscTestnet }
-const activeChainId: ChainId =
+export const chains = { bsc, bscTestnet }
+export const activeChainId: ChainId =
   process.env.NODE_ENV === "development" ? chains.bscTestnet.id : 56
 
-const chainIds = { bsc: bsc.id, bscTestnet: bscTestnet.id }
-const chain = activeChainId === 56 ? bsc : bscTestnet
+export enum ChainId {
+  BSC = bsc.id,
+  BSC_TESTNET = bscTestnet.id,
+}
 
-const rpcUrl =
+export const chain = activeChainId === 56 ? bsc : bscTestnet
+
+export const rpcUrl =
   activeChainId === 56
     ? `https://bsc-dataseed.binance.org`
     : `https://data-seed-prebsc-1-s1.binance.org:8545`
 
-const { provider, webSocketProvider } = configureChains(
+export const { provider, webSocketProvider } = configureChains(
   [chain],
   [
     jsonRpcProvider({
@@ -27,12 +31,8 @@ const { provider, webSocketProvider } = configureChains(
   ]
 )
 
-const client = createClient({
+export const client = createClient({
   autoConnect: true,
   provider,
   webSocketProvider,
 })
-
-export type ChainId = (typeof chainIds)[keyof typeof chainIds]
-
-export { client, chains, activeChainId, chainIds }
