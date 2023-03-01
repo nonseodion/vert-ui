@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import OtpInput from "react-otp-input"
 import { useNavigate } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
@@ -21,20 +21,20 @@ export default function EmailVerification() {
     }
   }, [counter])
 
-  const validateOtp = () => {
+  const validateOtp = useCallback(() => {
     setValidating(true)
     setTimeout(() => {
       setValidating(false)
       showModal({ modal: "SUCCESSFUL_SIGN_UP" })
       navigate(PageRoutes.HOME)
     }, 2000)
-  }
+  }, [navigate, showModal])
 
   useEffect(() => {
     if (otp.length === 6) {
       validateOtp()
     }
-  }, [otp])
+  }, [otp, validateOtp])
 
   const getSeconds = () => {
     if (counter < 10) return `0${counter}`

@@ -14,6 +14,7 @@ export enum PageRoutes {
   MANAGE_TOKEN_APPROVALS = "/settings/security/manage-token-approvals",
   TRANSACTIONS = "/transactions",
   TRANSACTION_DETAIL = "/transactions/:transactionId",
+  FORGOT_PASSWORD = "/forgot-password",
 }
 
 export enum Modals {

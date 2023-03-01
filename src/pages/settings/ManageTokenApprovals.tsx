@@ -1,13 +1,12 @@
 import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
 import metamask from "../../assets/icons/metamask.png"
 import wakanda_inu from "../../assets/icons/wakanda-inu.png"
 import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
-import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { Button, Loader, Wrapper } from "../../components/general"
 import SettingsContent from "../../components/settings/SettingsContent"
 import { RemoveTokenApprovalModal } from "../../components/settings"
 import useModal from "../../hooks/useModal"
+import { BackButton } from "../../components/navigation"
 
 interface TokenApproval {
   asset: string
@@ -44,7 +43,6 @@ const tokenApprovals = [
 ]
 
 export default function ManageTokenApprovals() {
-  const navigate = useNavigate()
   const { showModal } = useModal()
   const [approvals] = useState<TokenApproval[]>(tokenApprovals)
   const [tokenToRevoke, setTokenToRevoke] = useState<TokenApproval | null>(null)
@@ -56,14 +54,7 @@ export default function ManageTokenApprovals() {
             My Account
           </h3>
           <div className="flex flex-col space-y-[26.5px]">
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="border-none flex h-[40px] outline-none items-center space-x-[10px]"
-            >
-              <ArrowLeft />
-              <span className="text-primary text-sm font-medium">Back</span>
-            </button>
+            <BackButton />
             <div className="flex flex-col space-y-[10px]">
               <h3 className="text-base font-semibold text-white">
                 Manage Token Approval

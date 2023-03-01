@@ -1,12 +1,10 @@
 import React from "react"
-import { useNavigate } from "react-router-dom"
-import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { Button, Wrapper } from "../../components/general"
 import Input from "../../components/inputs/Input"
+import { BackButton } from "../../components/navigation"
 import SettingsContent from "../../components/settings/SettingsContent"
 
 export default function ChangePassword() {
-  const navigate = useNavigate()
   return (
     <Wrapper>
       <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
@@ -15,14 +13,7 @@ export default function ChangePassword() {
             My Account
           </h3>
           <div className="flex flex-col space-y-[26.5px]">
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="border-none flex h-[40px] outline-none items-center space-x-[10px]"
-            >
-              <ArrowLeft />
-              <span className="text-primary text-sm font-medium">Back</span>
-            </button>
+            <BackButton />
             <div className="flex flex-col space-y-[10px]">
               <h3 className="text-base font-semibold text-white">
                 Change Password

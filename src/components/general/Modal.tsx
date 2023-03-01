@@ -25,7 +25,7 @@ export default function Modal({
         onClose()
       }
     }
-  }, [isActive])
+  }, [isActive, onClose])
 
   return (
     <>

@@ -15,7 +15,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     if (!isAuthenticated) {
       navigate(PageRoutes.HOME)
     }
-  }, [])
+  }, [navigate, isAuthenticated])
 
   if (isAuthenticated) return <div>{children}</div>
   return <div />
