@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react"
 import clsx from "classnames"
 import { WagmiConfig } from "wagmi"
+import { Provider as ReduxProvider } from "react-redux"
 import { BrowserRouter as Router } from "react-router-dom"
 import { Banner } from "./components/general"
 import AuthContext, { AuthStateValues } from "./contexts/AuthContext"
@@ -13,6 +14,7 @@ import {
 } from "./utils/functions"
 import ToastDisplay from "./components/general/ToastDisplay"
 import ModalContext, { ActiveModalsArrayValue } from "./contexts/ModalContext"
+import { store } from "./state/redux"
 
 function App() {
   const [showBanner] = useState(true)
@@ -27,32 +29,34 @@ function App() {
   const modalStateValue = useMemo(() => ({ modals, setModals }), [modals])
 
   return (
-    <AuthContext.Provider value={value}>
-      <ModalContext.Provider value={modalStateValue}>
-        <WagmiConfig client={client}>
-          <ToastDisplay />
-          <Router>
-            <div
-              className="bg-black min-h-screen"
-              onClick={() => {
-                handleProfileDropdown("hide")
-                handleMobileNavDropdown("hide")
-              }}
-              role="presentation"
-            >
-              {showBanner && <Banner />}
+    <ReduxProvider store={store}>
+      <AuthContext.Provider value={value}>
+        <ModalContext.Provider value={modalStateValue}>
+          <WagmiConfig client={client}>
+            <ToastDisplay />
+            <Router>
               <div
-                className={clsx("max-w-[1500px] mx-auto", {
-                  "pt-7 md:pt-10": showBanner,
-                })}
+                className="bg-black min-h-screen"
+                onClick={() => {
+                  handleProfileDropdown("hide")
+                  handleMobileNavDropdown("hide")
+                }}
+                role="presentation"
               >
-                <Routes />
+                {showBanner && <Banner />}
+                <div
+                  className={clsx("max-w-[1500px] mx-auto", {
+                    "pt-7 md:pt-10": showBanner,
+                  })}
+                >
+                  <Routes />
+                </div>
               </div>
-            </div>
-          </Router>
-        </WagmiConfig>
-      </ModalContext.Provider>
-    </AuthContext.Provider>
+            </Router>
+          </WagmiConfig>
+        </ModalContext.Provider>
+      </AuthContext.Provider>
+    </ReduxProvider>
   )
 }
 

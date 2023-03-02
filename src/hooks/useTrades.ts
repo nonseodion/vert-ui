@@ -112,14 +112,13 @@ export function useTradeExactIn(
   currencyAmountIn?: CurrencyAmount<Currency>,
   currencyOut?: Currency
 ): Trade<Currency, Currency, TradeType> | null {
-  const allowedPairs: any[] = useAllCommonPairs(
+  const allowedPairs: Pair[] = useAllCommonPairs(
     currencyAmountIn?.currency,
     currencyOut
   )
   console.log(
     "useTradeExactIn",
-    currencyAmountIn?.toExact(),
-    currencyAmountIn?.currency.symbol
+    allowedPairs.map((pair) => [pair.token0.symbol, pair.token1.symbol])
   )
   return useMemo(() => {
     if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {

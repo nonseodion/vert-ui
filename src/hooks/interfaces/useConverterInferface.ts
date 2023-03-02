@@ -170,17 +170,17 @@ const useConverterInterface = (): ReturnTypes => {
   useEffect(() => {
     if (sellAmount === "" && buyAmount === "") return
 
-    console.log("we de here")
-
     if (
       sellAmount &&
       sellAmount.toExact() !== "0" &&
       independentField === "sell"
     ) {
       ;(async (): Promise<void> => {
-        const amountOut =
-          tradeIn?.outputAmount ?? CurrencyAmount.fromRawAmount(stableCoin, "0")
-        const NGNAmount = stableCoinAmountToFiat(amountOut, dollarRate)
+        const amountOut = tradeIn?.outputAmount ?? ""
+        const NGNAmount =
+          amountOut !== ""
+            ? stableCoinAmountToFiat(amountOut, dollarRate)
+            : amountOut
         setBuyAmount(NGNAmount)
       })()
     } else if (
@@ -205,8 +205,7 @@ const useConverterInterface = (): ReturnTypes => {
       independentField === "buy"
     ) {
       ;(async (): Promise<void> => {
-        const amountIn =
-          tradeOut?.inputAmount ?? CurrencyAmount.fromRawAmount(sellToken, "0")
+        const amountIn = tradeOut?.inputAmount ?? ""
         setSellAmount(amountIn)
       })()
     } else if (

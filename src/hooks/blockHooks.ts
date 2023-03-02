@@ -29,11 +29,16 @@ export const useMulticall = <
 
   useEffect(() => {
     ;(async () => {
-      const response = await multicall<T, K, I>(args)
+      console.log("before call", { ...args, allowFailure: false })
+      if (result.length !== 0) setResult([])
+      const response = await multicall<T, K, I>({
+        ...args,
+        allowFailure: false,
+      })
+      console.log(response)
       setResult(response)
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [callDetails, allowFailure])
-
   return result
 }

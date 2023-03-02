@@ -5,7 +5,7 @@ import { bscTestnet, bsc } from "wagmi/chains"
 
 export const chains = { bsc, bscTestnet }
 export const activeChainId: ChainId =
-  process.env.NODE_ENV === "development" ? chains.bscTestnet.id : 56
+  process.env.NODE_ENV === "development" ? chains.bsc.id : 56
 
 export enum ChainId {
   BSC = bsc.id,

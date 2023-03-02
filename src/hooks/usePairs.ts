@@ -60,7 +60,6 @@ export function usePairs(
         functionName: "getReserves",
         contract: pairContract.attach(address),
         abi: PairAbi,
-        // eslint-disable-next-line react-hooks/exhaustive-deps
       })),
     [pairAddresses]
   )
@@ -68,6 +67,11 @@ export function usePairs(
   const results = useMulticall<[PairContractType], ["getReserves"], 0>({
     callDetails,
   })
+
+  console.log(
+    "results",
+    results.map((result) => [result[0].toString(), result[1].toString()])
+  )
 
   return useMemo(
     () =>
