@@ -53,7 +53,7 @@ export default function DefaultCurrency() {
                   </div>
                   {currency.is_connected && (
                     <div className="h-4 w-4 rounded-full bg-[#E7FFE3] flex items-center justify-center">
-                      <Right />
+                      <Right className="stroke-primary" />
                     </div>
                   )}
                 </button>

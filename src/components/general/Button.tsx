@@ -15,6 +15,7 @@ interface ButtonProps {
   type?: "button" | "submit"
   disabled?: boolean
   showLoadingText?: boolean
+  loadingText?: string
 }
 
 export default function Button({
@@ -28,6 +29,7 @@ export default function Button({
   className,
   loading,
   disabled,
+  loadingText,
   showLoadingText,
 }: ButtonProps) {
   return (
@@ -48,7 +50,9 @@ export default function Button({
         {loading ? (
           <div className="flex items-center space-x-[5px] justify-center">
             {showLoadingText && (
-              <span className="text-black/[.4]">Loading...</span>
+              <span className="text-black/[.4]">
+                {loadingText ?? "Loading.."}.
+              </span>
             )}
             <Loader className="h-4 w-4" />
           </div>
@@ -71,4 +75,5 @@ Button.defaultProps = {
   type: "button",
   disabled: false,
   showLoadingText: true,
+  loadingText: "",
 }

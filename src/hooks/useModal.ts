@@ -6,23 +6,26 @@ interface ShowModalAttributes {
   onCloseCallback?: () => void
   onConfirm?: () => void
   modal: Modal
+  modalParams?: { [key: string]: any }
 }
 
 const emptyModalActions = {
   onCloseCallback: doNothing,
   onConfirm: doNothing,
+  modalParams: null,
 }
 
 const useModal = (name?: Modal) => {
   const { modals, setModals } = useContext(ModalContext)
 
   const showModal = (attrs: ShowModalAttributes) => {
-    const { onCloseCallback, onConfirm, modal } = attrs
+    const { onCloseCallback, onConfirm, modal, modalParams } = attrs
     const newModal = {
       [modal]: {
         onCloseCallback: onCloseCallback ?? doNothing,
         onConfirm: onConfirm ?? doNothing,
         modal,
+        modalParams: modalParams ?? {},
       },
     }
     setModals([...modals, newModal])
