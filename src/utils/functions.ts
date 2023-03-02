@@ -1,3 +1,6 @@
+import { Location, NavigateFunction } from "react-router-dom"
+import { PageRoutes } from "./constants"
+
 export const doNothing = (): void => {}
 
 type ActionType = "show" | "hide" | "toggle"
@@ -35,4 +38,18 @@ export const handleBodyScroll = (action: "enable" | "disable" = "enable") => {
       el.classList.add("hide-overflow")
     }
   }
+}
+
+export const canGoBack = (location: Location) => location.key !== "default"
+
+export const goBackConditionally = (
+  navigate: NavigateFunction,
+  location: Location,
+  page: PageRoutes
+) => {
+  if (canGoBack(location)) {
+    navigate(-1)
+    return
+  }
+  navigate(page)
 }

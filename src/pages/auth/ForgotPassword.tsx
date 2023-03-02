@@ -8,6 +8,7 @@ import { Input } from "../../components/inputs"
 import { BackButton } from "../../components/navigation"
 import useModal from "../../hooks/useModal"
 import { PageRoutes } from "../../utils/constants"
+import { goBackConditionally } from "../../utils/functions"
 
 interface ForgotPasswordValues {
   email: string
@@ -86,13 +87,9 @@ export default function ForgotPassword() {
               className="!h-10 font-medium text-[14.84px] !py-0 disabled:bg-primary/[.4] !rounded-lg mb-[50px]"
             />
             <BackButton
-              onClick={() => {
-                if (location.key !== "default") {
-                  navigate(-1)
-                } else {
-                  navigate(PageRoutes.HOME)
-                }
-              }}
+              onClick={() =>
+                goBackConditionally(navigate, location, PageRoutes.HOME)
+              }
             />
           </form>
         </div>

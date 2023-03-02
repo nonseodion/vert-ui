@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 import metamask from "../../assets/icons/metamask.png"
 import wakanda_inu from "../../assets/icons/wakanda-inu.png"
 import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
@@ -7,6 +8,8 @@ import SettingsContent from "../../components/settings/SettingsContent"
 import { RemoveTokenApprovalModal } from "../../components/settings"
 import useModal from "../../hooks/useModal"
 import { BackButton } from "../../components/navigation"
+import { goBackConditionally } from "../../utils/functions"
+import { PageRoutes } from "../../utils/constants"
 
 interface TokenApproval {
   asset: string
@@ -44,6 +47,8 @@ const tokenApprovals = [
 
 export default function ManageTokenApprovals() {
   const { showModal } = useModal()
+  const location = useLocation()
+  const navigate = useNavigate()
   const [approvals] = useState<TokenApproval[]>(tokenApprovals)
   const [tokenToRevoke, setTokenToRevoke] = useState<TokenApproval | null>(null)
   return (
@@ -54,7 +59,15 @@ export default function ManageTokenApprovals() {
             My Account
           </h3>
           <div className="flex flex-col space-y-[26.5px]">
-            <BackButton />
+            <BackButton
+              onClick={() =>
+                goBackConditionally(
+                  navigate,
+                  location,
+                  PageRoutes.SECURITY_SETTINGS
+                )
+              }
+            />
             <div className="flex flex-col space-y-[10px]">
               <h3 className="text-base font-semibold text-white">
                 Manage Token Approval
