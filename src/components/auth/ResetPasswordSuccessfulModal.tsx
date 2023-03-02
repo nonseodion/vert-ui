@@ -33,7 +33,7 @@ export default function ResetPasswordSuccessfulModal() {
           text="Return to login"
           fullWidth
           onClick={returnToLogin}
-          className="!h-10 py-0 text-sm font-medium"
+          className="!h-10 !py-0 text-sm font-medium"
         />
       </div>
     </Modal>

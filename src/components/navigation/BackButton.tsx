@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 
 interface BackButtonProps {
-  onClick?: () => void
+  onClick?: () => any
 }
 
 export default function BackButton({ onClick }: BackButtonProps) {
@@ -18,7 +18,7 @@ export default function BackButton({ onClick }: BackButtonProps) {
   return (
     <button
       type="button"
-      onClick={onButtonClick}
+      onClick={() => onButtonClick()}
       className="border-none w-fit bg-white rounded-lg flex px-4 h-[40px] outline-none justify-center items-center space-x-[10px]"
     >
       <ArrowLeft />
@@ -28,5 +28,5 @@ export default function BackButton({ onClick }: BackButtonProps) {
 }
 
 BackButton.defaultProps = {
-  onClick: () => {},
+  onClick: null,
 }

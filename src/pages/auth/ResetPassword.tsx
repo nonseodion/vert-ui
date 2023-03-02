@@ -1,11 +1,12 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useForm, Controller } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { ResetPasswordSuccessfulModal } from "../../components/auth"
 import { Button, Wrapper } from "../../components/general"
 import { Input } from "../../components/inputs"
 import { BackButton } from "../../components/navigation"
 import useModal from "../../hooks/useModal"
+import { PageRoutes } from "../../utils/constants"
 
 interface ResetPasswordValues {
   password: string
@@ -15,6 +16,7 @@ interface ResetPasswordValues {
 export default function ResetPassword() {
   const { showModal } = useModal()
   const navigate = useNavigate()
+  const location = useLocation()
   const [loading, setLoading] = useState(false)
   const {
     control,
@@ -42,6 +44,12 @@ export default function ResetPassword() {
       })
     }, 2000)
   }
+
+  useEffect(() => {
+    if (location.key === "default") {
+      navigate(PageRoutes.SIGN_IN_WITH_EMAIL)
+    }
+  }, [location, navigate])
 
   return (
     <Wrapper hideTopNav>
@@ -106,7 +114,7 @@ export default function ResetPassword() {
               loadingText="Resetting password"
               type="submit"
               loading={loading}
-              className="!h-10 font-medium text-[14.84px] py-0 disabled:bg-primary/[.4] !rounded-lg mb-[50px]"
+              className="!h-10 font-medium text-[14.84px] !py-0 disabled:bg-primary/[.4] !rounded-lg mb-[50px]"
             />
             <BackButton onClick={() => navigate(-1)} />
           </form>

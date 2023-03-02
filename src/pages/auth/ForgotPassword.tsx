@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { useForm, Controller } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import isEmail from "validator/lib/isEmail"
 import { ResetPasswordModal } from "../../components/auth"
 import { Button, Wrapper } from "../../components/general"
@@ -16,6 +16,7 @@ interface ForgotPasswordValues {
 export default function ForgotPassword() {
   const { showModal, hideModal } = useModal()
   const navigate = useNavigate()
+  const location = useLocation()
   const [loading, setLoading] = useState(false)
   const {
     control,
@@ -82,9 +83,17 @@ export default function ForgotPassword() {
               type="submit"
               disabled={!!errors.email}
               loading={loading}
-              className="!h-10 font-medium text-[14.84px] py-0 disabled:bg-primary/[.4] !rounded-lg mb-[50px]"
+              className="!h-10 font-medium text-[14.84px] !py-0 disabled:bg-primary/[.4] !rounded-lg mb-[50px]"
             />
-            <BackButton onClick={() => navigate(-1)} />
+            <BackButton
+              onClick={() => {
+                if (location.key !== "default") {
+                  navigate(-1)
+                } else {
+                  navigate(PageRoutes.HOME)
+                }
+              }}
+            />
           </form>
         </div>
       </div>

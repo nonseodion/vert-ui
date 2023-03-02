@@ -1,10 +1,13 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
 import { Button, Wrapper } from "../../components/general"
 import Input from "../../components/inputs/Input"
 import { BackButton } from "../../components/navigation"
 import SettingsContent from "../../components/settings/SettingsContent"
+import { PageRoutes } from "../../utils/constants"
 
 export default function ChangePassword() {
+  const navigate = useNavigate()
   return (
     <Wrapper>
       <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
@@ -13,7 +16,9 @@ export default function ChangePassword() {
             My Account
           </h3>
           <div className="flex flex-col space-y-[26.5px]">
-            <BackButton />
+            <BackButton
+              onClick={() => navigate(PageRoutes.SECURITY_SETTINGS)}
+            />
             <div className="flex flex-col space-y-[10px]">
               <h3 className="text-base font-semibold text-white">
                 Change Password

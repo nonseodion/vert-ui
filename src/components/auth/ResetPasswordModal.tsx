@@ -32,7 +32,7 @@ export default function ResetPasswordModal() {
           text="Okay"
           fullWidth
           onClick={onConfirm}
-          className="mb-[30px] !h-10 py-0 text-sm"
+          className="mb-[30px] !h-10 !py-0 text-sm"
         />
       </div>
     </Modal>

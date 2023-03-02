@@ -9,9 +9,9 @@ export default function NotFound() {
   return (
     <Wrapper>
       <div className="mt-[100px] flex justify-center">
-        <div className="flex flex-col justify-center items-center space-y-[46px] mb-[266px]">
-          <Svg404 />
-          <p className="font-medium text-white text-[40px] text-center uppercase">
+        <div className="flex flex-col justify-center items-center space-y-5 md:space-y-[46px] mb-[266px]">
+          <Svg404 className="w-[80vw] md:w-auto" />
+          <p className="font-medium text-white text-xl md:text-[40px] text-center uppercase">
             ERROR - PAGE NOT FOUND!
           </p>
           <Button
