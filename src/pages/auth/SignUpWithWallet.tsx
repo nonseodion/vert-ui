@@ -1,7 +1,7 @@
 import React from "react"
 import { useForm, Controller } from "react-hook-form"
 import isEmail from "validator/lib/isEmail"
-import { Link } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { ReactComponent as LoneLogo } from "../../assets/icons/logo-lone.svg"
 import { Button, Glow, Wrapper } from "../../components/general"
 import Input from "../../components/inputs/Input"
@@ -9,6 +9,7 @@ import { PageRoutes } from "../../utils/constants"
 import ConnectWallet from "../../components/transactions/ConnectWallet"
 import useModal from "../../hooks/useModal"
 import { BackButton } from "../../components/navigation"
+import { goBackConditionally } from "../../utils/functions"
 
 interface SignUpWithEmailValues {
   email: string
@@ -16,6 +17,8 @@ interface SignUpWithEmailValues {
 }
 
 export default function SignUpWithWallet() {
+  const navigate = useNavigate()
+  const location = useLocation()
   const {
     handleSubmit,
     control,
@@ -99,7 +102,11 @@ export default function SignUpWithWallet() {
                 />
               </form>
               <div className="mt-[69px]">
-                <BackButton />
+                <BackButton
+                  onClick={() =>
+                    goBackConditionally(navigate, location, PageRoutes.HOME)
+                  }
+                />
               </div>
             </div>
             <p className="text-center text-white text-[15px] mt-8">
