@@ -2,27 +2,36 @@ import { useContext } from "react"
 import ModalContext, { Modal } from "../contexts/ModalContext"
 import { doNothing, handleBodyScroll } from "../utils/functions"
 
-interface ShowModalAttributes {
+type ModalParamsMap = {
+  [M in Modal]: M extends "RESET_PASSWORD_MODAL" ? { email: string } : null
+}
+
+interface ShowModalAttributes<M extends Modal> {
   onCloseCallback?: () => void
   onConfirm?: () => void
-  modal: Modal
+  modal: M
+  modalParams?: ModalParamsMap[M]
 }
 
 const emptyModalActions = {
   onCloseCallback: doNothing,
   onConfirm: doNothing,
+  modalParams: null,
 }
+
+type ShowModalFunction = <M extends Modal>(attrs: ShowModalAttributes<M>) => any
 
 const useModal = (name?: Modal) => {
   const { modals, setModals } = useContext(ModalContext)
 
-  const showModal = (attrs: ShowModalAttributes) => {
-    const { onCloseCallback, onConfirm, modal } = attrs
+  const showModal: ShowModalFunction = (attrs) => {
+    const { onCloseCallback, onConfirm, modal, modalParams } = attrs
     const newModal = {
       [modal]: {
         onCloseCallback: onCloseCallback ?? doNothing,
         onConfirm: onConfirm ?? doNothing,
         modal,
+        modalParams: modalParams ?? {},
       },
     }
     setModals([...modals, newModal])

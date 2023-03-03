@@ -85,12 +85,12 @@ export default function SignInWithEmail() {
                   />
                   <div className="mt-[6px] mb-[15px] flex items-center justify-between">
                     <div />
-                    <a
+                    <Link
                       className="text-primary underline text-[10px]"
-                      href="https://www.google.com"
+                      to={PageRoutes.FORGOT_PASSWORD}
                     >
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
                   <h4 className="text-black text-[13px] text-center font-semibold mb-[35px]">
                     OR

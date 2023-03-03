@@ -5,6 +5,7 @@ import { doNothing } from "../utils/functions"
 export interface ActiveModalValues {
   onCloseCallback: () => void | null
   onConfirm: () => void | null
+  modalParams?: { [key: string]: any }
 }
 
 export type Modal = keyof typeof Modals

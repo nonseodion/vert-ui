@@ -14,6 +14,8 @@ export enum PageRoutes {
   MANAGE_TOKEN_APPROVALS = "/settings/security/manage-token-approvals",
   TRANSACTIONS = "/transactions",
   TRANSACTION_DETAIL = "/transactions/:transactionId",
+  FORGOT_PASSWORD = "/forgot-password",
+  RESET_PASSWORD = "/reset-password",
 }
 
 export enum Modals {
@@ -23,6 +25,8 @@ export enum Modals {
   REMOVE_TOKEN_APPROVAL = "remove_token_approval",
   UNLINK_WALLET = "unlink_wallet",
   SUCCESSFUL_SIGN_UP = "successful_sign_up",
+  RESET_PASSWORD_MODAL = "reset_password_modal",
+  RESET_PASSWORD_SUCCESSFUL_MODAL = "reset_password_successful_modal",
 }
 
 export const TABLE_ROW_SIZE = 6

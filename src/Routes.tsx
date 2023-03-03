@@ -6,6 +6,8 @@ import {
   SignUpWithEmail,
   SignUpWithWallet,
   EmailVerification,
+  ForgotPassword,
+  ResetPassword,
 } from "./pages/auth"
 import Home from "./pages/main/Home"
 import {
@@ -30,6 +32,8 @@ export default function AppRoutes() {
         path={PageRoutes.SIGN_IN_WITH_EMAIL}
         element={<SignInWithEmail />}
       />
+      <Route path={PageRoutes.FORGOT_PASSWORD} element={<ForgotPassword />} />
+      <Route path={PageRoutes.RESET_PASSWORD} element={<ResetPassword />} />
       <Route
         path={PageRoutes.SIGN_UP_WITH_EMAIL}
         element={<SignUpWithEmail />}

@@ -47,7 +47,7 @@ export default function TopNav() {
               <User className="mr-0 lg:mr-[7px]" />
               <Button
                 text={user ? user.username : ""}
-                className="lg:block hidden h-9 text-[15px] rounded-[10px] px-[10px] py-0 max-w-[121px]"
+                className="lg:block hidden h-9 text-[15px] rounded-[10px] px-[10px] !py-0 max-w-[121px]"
               />
               <Dropdown className="ml-[13.41px] h-3 w-3" />
             </button>

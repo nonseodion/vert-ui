@@ -6,6 +6,7 @@ import { ReactComponent as EyeSlash } from "../../assets/icons/eye-slash.svg"
 interface InputProps extends HTMLProps<HTMLInputElement> {
   outerClassName?: string
   className?: string
+  labelClassName?: string
   label?: string
   hasError?: boolean
   value?: any
@@ -16,6 +17,7 @@ interface InputProps extends HTMLProps<HTMLInputElement> {
 export default function Input({
   placeholder,
   outerClassName,
+  labelClassName,
   className,
   label,
   hasError,
@@ -29,7 +31,11 @@ export default function Input({
   }
   return (
     <div>
-      {label && <p className="text-black font-medium mb-[10px]">{label}</p>}
+      {label && (
+        <p className={clsx("text-black font-medium mb-[10px]", labelClassName)}>
+          {label}
+        </p>
+      )}
       <div
         className={clsx(
           "flex items-center h-[40px] rounded-[5px] border-black/[.5] border px-[10px]",
@@ -75,4 +81,5 @@ Input.defaultProps = {
   hasError: false,
   errorMessage: "",
   value: "",
+  labelClassName: "",
 }

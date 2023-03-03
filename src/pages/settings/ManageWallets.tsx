@@ -75,7 +75,7 @@ export default function ManageWallets() {
                   }
                   bordered
                   background="transparent"
-                  className="border-dark h-10 py-0 text-[#010304] font-semibold text-sm"
+                  className="border-dark h-10 !py-0 text-[#010304] font-semibold text-sm"
                 />
               </div>
             ))}

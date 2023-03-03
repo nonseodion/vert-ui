@@ -16,7 +16,7 @@ export default function Paginator({
   const rowCountItems = useMemo(
     () =>
       Array.from(Array(Math.ceil(transactions.length / rowsPerPage)).keys()),
-    []
+    [rowsPerPage]
   )
 
   return (

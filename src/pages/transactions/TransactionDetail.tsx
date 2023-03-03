@@ -24,7 +24,7 @@ export default function TransactionDetail() {
         <div className="mt-6 py-[30px] bg-background px-3 rounded-[12px] lg:mt-[40px] lg:mx-auto lg:px-[37px] lg:max-w-[488px]">
           <div className="px-5 h-[95px] bg-[#F3FFF1] rounded-[4px] flex items-center space-x-[18px]">
             <div className="flex items-center justify-center h-10 w-10 rounded-full shadowed">
-              <Right className="h-[12.02px] w-4" />
+              <Right className="h-[12.02px] w-4 stroke-primary" />
             </div>
             <h3 className="uppercase font-semibold text-[17px] text-black">
               sold 7 BNB for 189,899.90 Naira
