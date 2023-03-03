@@ -20,8 +20,12 @@ import {
 } from "./pages/settings"
 import NotFound from "./pages/utils/NotFound"
 import { routes } from "./utils/constants"
+import { useBlockNumber } from "./state/blockAtoms"
 
 export default function AppRoutes() {
+  // allow block number to update
+  useBlockNumber()
+
   return (
     <Routes>
       <Route path={routes.home} element={<Home />} />

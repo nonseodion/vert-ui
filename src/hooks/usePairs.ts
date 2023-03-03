@@ -1,11 +1,12 @@
 import { Currency, Pair, CurrencyAmount } from "@pancakeswap/sdk"
 import { useMemo } from "react"
+import { useAtomValue } from "jotai"
+import { Interface } from "ethers/lib/utils"
 import { wrappedCurrency } from "../utils/wrappedCurrency"
 import { activeChainId } from "../utils/config"
-import { Call } from "../utils/blockClient"
-import getContracts, { getAbis } from "../utils/getContracts"
-import { Pair as PairContractType } from "../utils/abis/types/Pair"
-import { useMulticall } from "./blockHooks"
+import { getAbis } from "../utils/getContracts"
+import { useMultipleContractSingleData } from "../utils/multicall"
+import { blockNumberAtom } from "../state/blockAtoms"
 
 export enum PairState {
   LOADING,
@@ -14,8 +15,8 @@ export enum PairState {
   INVALID,
 }
 
-const { pair: pairContract } = getContracts()
 const { PairAbi } = getAbis()
+const pairInterface = new Interface(PairAbi)
 
 const chainId = activeChainId
 
@@ -54,32 +55,25 @@ export function usePairs(
     [tokens]
   )
 
-  const callDetails: Call<PairContractType, "getReserves">[] = useMemo(
-    () =>
-      pairAddresses.map((address) => ({
-        functionName: "getReserves",
-        contract: pairContract.attach(address),
-        abi: PairAbi,
-      })),
-    [pairAddresses]
-  )
+  const blockNumber = useAtomValue(blockNumberAtom)
 
-  const results = useMulticall<[PairContractType], ["getReserves"], 0>({
-    callDetails,
-  })
-
-  console.log(
-    "results",
-    results.map((result) => [result[0].toString(), result[1].toString()])
+  const results = useMultipleContractSingleData(
+    activeChainId,
+    blockNumber,
+    pairAddresses,
+    pairInterface,
+    "getReserves"
   )
 
   return useMemo(
     () =>
-      results.map((result, i) => {
-        const { reserve0, reserve1 } = result
+      results.map(({ result }, i) => {
+        const { reserve0, reserve1 } = {
+          reserve0: result?.reserve0,
+          reserve1: result?.reserve1,
+        }
         const tokenA = tokens[i][0]
         const tokenB = tokens[i][1]
-
         if (!tokenA || !tokenB || tokenA.equals(tokenB))
           return [PairState.INVALID, null]
         if (!reserve0) return [PairState.NOT_EXISTS, null]

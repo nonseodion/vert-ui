@@ -1,20 +1,22 @@
 import React, { useState, useMemo } from "react"
 import clsx from "classnames"
 import { WagmiConfig } from "wagmi"
+import { useAtom } from "jotai"
 import { Provider as ReduxProvider } from "react-redux"
 import { BrowserRouter as Router } from "react-router-dom"
 import { Banner } from "./components/general"
 import AuthContext, { AuthStateValues } from "./contexts/AuthContext"
 import Routes from "./Routes"
-
-import { client } from "./utils/config"
+import { store } from "./state/redux"
+import { Updater as MulticallUpdater } from "./utils/multicall"
+import { activeChainId, client } from "./utils/config"
 import {
   handleMobileNavDropdown,
   handleProfileDropdown,
 } from "./utils/functions"
 import ToastDisplay from "./components/general/ToastDisplay"
 import ModalContext, { ActiveModalsArrayValue } from "./contexts/ModalContext"
-import { store } from "./state/redux"
+import { blockNumberAtom } from "./state/blockAtoms"
 
 function App() {
   const [showBanner] = useState(true)
@@ -24,7 +26,7 @@ function App() {
   })
 
   const [modals, setModals] = useState<ActiveModalsArrayValue[]>([])
-
+  const [blockNumber] = useAtom(blockNumberAtom)
   const value = useMemo(() => ({ authState, setAuthState }), [authState])
   const modalStateValue = useMemo(() => ({ modals, setModals }), [modals])
 
@@ -33,6 +35,11 @@ function App() {
       <AuthContext.Provider value={value}>
         <ModalContext.Provider value={modalStateValue}>
           <WagmiConfig client={client}>
+            <MulticallUpdater
+              chainId={activeChainId}
+              blockNumber={blockNumber}
+              blocksPerFetch={6}
+            />
             <ToastDisplay />
             <Router>
               <div

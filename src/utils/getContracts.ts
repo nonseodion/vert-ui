@@ -3,7 +3,7 @@ import { VertRouter } from "./abis/types"
 import VertRouterAbi from "./abis/contracts/VertRouter.json"
 import PairAbi from "./abis/contracts/Pair.json"
 import UniswapInterfaceMulticallAbi from "./abis/contracts/UniswapInterfaceMulticall.json"
-import { activeChainId } from "./config"
+import { activeChainId, provider } from "./config"
 import { Pair as PairContractType } from "./abis/types/Pair"
 import { UniswapInterfaceMulticall as UniswapInterfaceMulticallContractType } from "./abis/types/UniswapInterfaceMulticall"
 
@@ -47,6 +47,7 @@ const getContracts = () => {
   const multicall = getContract({
     address: getAddress(ContractNames.UNISWAPINTERFACEMULTICALL),
     abi: UniswapInterfaceMulticallAbi,
+    signerOrProvider: provider({ chainId: activeChainId }),
   }) as UniswapInterfaceMulticallContractType
 
   return {

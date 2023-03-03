@@ -17,6 +17,7 @@ export const useCall = <T extends Contract, K extends string>(
   return result
 }
 
+// deprecated multicall from wagmi
 export const useMulticall = <
   T extends Contract[],
   K extends string[],
@@ -29,13 +30,11 @@ export const useMulticall = <
 
   useEffect(() => {
     ;(async () => {
-      console.log("before call", { ...args, allowFailure: false })
       if (result.length !== 0) setResult([])
       const response = await multicall<T, K, I>({
         ...args,
         allowFailure: false,
       })
-      console.log(response)
       setResult(response)
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps

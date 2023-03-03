@@ -116,10 +116,7 @@ export function useTradeExactIn(
     currencyAmountIn?.currency,
     currencyOut
   )
-  console.log(
-    "useTradeExactIn",
-    allowedPairs.map((pair) => [pair.token0.symbol, pair.token1.symbol])
-  )
+
   return useMemo(() => {
     if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
       const bestTrade: Trade<Currency, Currency, TradeType> | null =
