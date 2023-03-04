@@ -18,11 +18,11 @@ export default function SuccessfulSignup() {
       >
         <Exit />
       </button>
-      <p className="text-center mt-[98px] lg:mt-[111px] text-primary font-bold text-[23px] lg:text-[26px]">
+      <p className="text-center mt-[30px] text-primary font-bold text-[23px] lg:text-[26px]">
         You successfully signed up!
       </p>
-      <div className="mt-[30px] flex justify-center lg:mt-[47px]">
-        <Girl className="lg:h-[31vh] h-[15.5vh]" />
+      <div className="flex justify-center pb-[30px]">
+        <Girl className="lg:h-[315.68px] h-[200px]" />
       </div>
     </Modal>
   )

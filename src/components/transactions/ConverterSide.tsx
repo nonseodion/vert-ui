@@ -42,7 +42,7 @@ export default function ConverterSide({
                 }
                 className="h-6 w-6 rounded-xl"
               />
-              <span className="font-semibold text-[#280D5F] text-base">
+              <span className="font-semibold text-black text-base">
                 {isBuySide
                   ? buyableCurrencies[0]?.label
                   : sellableCurrencies[0]?.label}

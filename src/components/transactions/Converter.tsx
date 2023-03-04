@@ -27,13 +27,16 @@ export default function Converter() {
           <span> = </span>
           <span>206,611.10 NGN</span>
         </p>
-        <div className="flex flex-col space-y-4 mb-[30px]">
+        <div className="flex flex-col space-y-4 mb-[15px]">
           <ConverterSide
             side="sell"
             onTokenSelect={() => showModal({ modal: "TOKEN_MODAL" })}
           />
           <ConverterSide side="buy" onTokenSelect={doNothing} />
         </div>
+        <p className="mb-[30px] text-center text-[#6C7689] text-12 font-bold">
+          <span className="text-primary">Rate:</span> 1 USD ≈ 760.22 NGN
+        </p>
         <button
           className="bg-disabled py-[17px] h-[48px] w-full rounded disabled:text-[black]/[.3] text-sm font-semibold leading-[2px] disabled:cursor-not-allowed"
           disabled
