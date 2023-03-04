@@ -1,11 +1,15 @@
 import { getContract } from "@wagmi/core"
-import { VertRouter } from "./abis/types"
 import VertRouterAbi from "./abis/contracts/VertRouter.json"
 import PairAbi from "./abis/contracts/Pair.json"
+import ERC20Abi from "./abis/contracts/ERC20Token.json"
 import UniswapInterfaceMulticallAbi from "./abis/contracts/UniswapInterfaceMulticall.json"
-import { activeChainId, provider } from "./config"
-import { Pair as PairContractType } from "./abis/types/Pair"
-import { UniswapInterfaceMulticall as UniswapInterfaceMulticallContractType } from "./abis/types/UniswapInterfaceMulticall"
+import { activeChainId, provider as blockProvider } from "./config"
+import {
+  Pair as PairContractType,
+  UniswapInterfaceMulticall as UniswapInterfaceMulticallContractType,
+  VertRouter,
+  ERC20Token,
+} from "./abis/types"
 
 enum ContractNames {
   VERTROUTER = "vertRouter",
@@ -29,6 +33,7 @@ const getAddress = (contractName: ContractNames) =>
     ? bscAddresses[contractName]
     : bscTestnetAddresses[contractName]
 
+const provider = blockProvider({ chainId: activeChainId })
 // returns contracts
 const getContracts = () => {
   const vertRouter = getContract({
@@ -47,13 +52,20 @@ const getContracts = () => {
   const multicall = getContract({
     address: getAddress(ContractNames.UNISWAPINTERFACEMULTICALL),
     abi: UniswapInterfaceMulticallAbi,
-    signerOrProvider: provider({ chainId: activeChainId }),
+    signerOrProvider: provider,
   }) as UniswapInterfaceMulticallContractType
+
+  const erc20Token = getContract({
+    address: "0x74ad3f1C96E23456B8e6c9D7d7F67d1169949b5B",
+    abi: ERC20Abi,
+    signerOrProvider: provider,
+  }) as ERC20Token
 
   return {
     vertRouter,
     pair,
     multicall,
+    erc20Token,
   }
 }
 

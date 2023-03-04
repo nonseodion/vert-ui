@@ -1,41 +1,48 @@
 import React, { useState } from "react"
+import { ERC20Token } from "@pancakeswap/sdk"
 import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 import { ReactComponent as CheckBox } from "../../assets/icons/checkbox.svg"
 import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
 import { Button } from "../general"
+import { chain } from "../../utils/config"
+import { shortenAddress } from "../../utils"
 
-export default function TokenImport() {
+const blockExplorer = chain.blockExplorers
+
+export default function TokenImport({ token }: { token: ERC20Token }) {
   const [confirmed, setConfirmed] = useState(false)
   const [loading, setLoading] = useState(false)
+  console.log("loading tokenImport")
   return (
     <div className="px-6">
       <div className="p-[17px] flex space-x-3 items-center border border-primary rounded-2xl">
         <div className="h-[40px] w-[40px] rounded-full bg-[#CADAF4] flex items-center justify-center">
-          <span className="text-lightBlue text-base">W</span>
+          <span className="text-lightBlue text-base">{token.symbol}</span>
         </div>
         <div className="flex flex-col space-y-1 w-full">
           <div className="flex space-x-[6.75px] items-center">
-            <h3 className="text-black font-medium text-base">
-              Wakanda Inu Token
-            </h3>
+            <h3 className="text-black font-medium text-base">{token.name}</h3>
             <div className="bg-lightGrey rounded-[4px] p-1">
-              <span className="text-[13px] text-dark">WKD</span>
+              <span className=" text-dark">{token.symbol}</span>
             </div>
           </div>
           <div className="justify-between items-center flex">
             <div className="flex space-x-[8.68px]">
-              <span className="text-13">0x534...c3d</span>
+              <span className="text-13">{shortenAddress(token.address)}</span>
               <button className="border-none outline-none" type="button">
                 <Copy />
               </button>
             </div>
-            <button
-              type="button"
+            <a
+              href={`${blockExplorer.default.url}/token/${token.address}`}
+              target="blank"
               className="border-none outline-none flex items-center space-x-[5.45px]"
             >
-              <span className="text-13 text-lightBlue">BscScan</span>
+              <span className="text-13 text-lightBlue">
+                {blockExplorer.default.name}
+              </span>
               <LinkIcon />
-            </button>
+            </a>
           </div>
         </div>
       </div>

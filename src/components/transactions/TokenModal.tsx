@@ -8,6 +8,7 @@ import SelectToken from "./SelectToken"
 import { Modal } from "../general"
 import useModal from "../../hooks/useModal"
 import useTokens from "../../state/tokens/hooks"
+import useTokenModalInterface from "../../hooks/interfaces/useTokenModalInterface"
 
 const steps = {
   IMPORT_TOKEN: "IMPORT_TOKEN",
@@ -18,13 +19,18 @@ const steps = {
 export default function TokenModal() {
   const { hideModal } = useModal("token_modal")
   const [currentStep, setCurrentStep] = useState<string>(steps.DEFAULT)
-  const [address, setAddress] = useState<string>("")
   const { tokens, logoURIs } = useTokens()
+  const {
+    pinnedTokens,
+    tokenList,
+    setSearchQuery,
+    searchQuery,
+    resolvedToken,
+  } = useTokenModalInterface(tokens, logoURIs)
 
   return (
     <Modal
       name="token_modal"
-      onClose={() => setAddress("")}
       bodyClassNames="mt-[68px] lg:mt-[80px] mb-6 rounded-3xl !lg:w-[434px] pt-[30px] !px-0 !pb-0"
     >
       <div className="flex items-center justify-between mb-[21px] px-6">
@@ -64,16 +70,19 @@ export default function TokenModal() {
       {currentStep === steps.DEFAULT && (
         <SelectToken
           {...{
-            setAddress,
-            address,
             steps,
             setCurrentStep,
-            tokens,
-            logos: logoURIs,
+            tokenList,
+            pinnedTokens,
+            searchQuery,
+            setSearchQuery,
+            resolvedToken,
           }}
         />
       )}
-      {currentStep === steps.IMPORT_TOKEN && <TokenImport />}
+      {currentStep === steps.IMPORT_TOKEN && resolvedToken !== null && (
+        <TokenImport token={resolvedToken} />
+      )}
       {currentStep === steps.CUSTOM_TOKENS && <CustomTokens />}
     </Modal>
   )
