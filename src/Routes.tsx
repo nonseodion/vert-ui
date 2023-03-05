@@ -21,6 +21,7 @@ import {
   SetPassword,
 } from "./pages/settings"
 import { TransactionDetail, TransactionList } from "./pages/transactions"
+import Error from "./pages/utils/Error"
 import NotFound from "./pages/utils/NotFound"
 import { PageRoutes } from "./utils/constants"
 
@@ -28,6 +29,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path={PageRoutes.HOME} element={<Home />} />
+      <Route path={PageRoutes.ERROR} element={<Error />} />
       <Route
         path={PageRoutes.SIGN_IN_WITH_EMAIL}
         element={<SignInWithEmail />}
