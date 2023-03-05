@@ -9,32 +9,45 @@ import { shortenAddress } from "../../utils"
 
 const blockExplorer = chain.blockExplorers
 
-export default function TokenImport({ token }: { token: ERC20Token }) {
+export default function TokenImport({
+  token,
+}: {
+  token: [ERC20Token, string]
+}) {
   const [confirmed, setConfirmed] = useState(false)
   const [loading, setLoading] = useState(false)
-  console.log("loading tokenImport")
+  const { symbol, address, name } = token[0]
+  const logo = token[1]
+
   return (
     <div className="px-6">
       <div className="p-[17px] flex space-x-3 items-center border border-primary rounded-2xl">
-        <div className="h-[40px] w-[40px] rounded-full bg-[#CADAF4] flex items-center justify-center">
-          <span className="text-lightBlue text-base">{token.symbol}</span>
-        </div>
+        {logo !== "" ? (
+          <img src={logo} alt={name} className="h-10 w-10 rounded-[20px]" />
+        ) : (
+          <div className="h-[40px] w-[40px] rounded-full bg-[#CADAF4] overflow-hidden flex items-center justify-center">
+            <span className="text-lightBlue text-base">
+              {symbol.slice(0, 4)}
+            </span>
+          </div>
+        )}
+
         <div className="flex flex-col space-y-1 w-full">
           <div className="flex space-x-[6.75px] items-center">
-            <h3 className="text-black font-medium text-base">{token.name}</h3>
+            <h3 className="text-black font-medium text-base">{name}</h3>
             <div className="bg-lightGrey rounded-[4px] p-1">
-              <span className=" text-dark">{token.symbol}</span>
+              <span className=" text-dark">{symbol}</span>
             </div>
           </div>
           <div className="justify-between items-center flex">
             <div className="flex space-x-[8.68px]">
-              <span className="text-13">{shortenAddress(token.address)}</span>
+              <span className="text-13">{shortenAddress(address)}</span>
               <button className="border-none outline-none" type="button">
                 <Copy />
               </button>
             </div>
             <a
-              href={`${blockExplorer.default.url}/token/${token.address}`}
+              href={`${blockExplorer.default.url}/token/${address}`}
               target="blank"
               className="border-none outline-none flex items-center space-x-[5.45px]"
             >

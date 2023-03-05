@@ -21,6 +21,10 @@ const EMPTY_LIST = {
   [ChainId.BSC_TESTNET]: [],
 }
 
-export const tokensStateAtom = atom<LOADSTATE>(LOADSTATE.UNLOADED)
+export const defaultTokensStateAtom = atom<LOADSTATE>(LOADSTATE.UNLOADED)
 
-export const tokensAtom = atom<TokenList>(EMPTY_LIST)
+export const defaultTokensAtom = atom<TokenList>(EMPTY_LIST)
+
+export const otherTokensStateAtom = atom<LOADSTATE>(LOADSTATE.UNLOADED)
+
+export const otherTokensAtom = atom<TokenList>(EMPTY_LIST)

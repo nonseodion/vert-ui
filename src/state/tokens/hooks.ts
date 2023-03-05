@@ -3,25 +3,35 @@ import { useEffect, useMemo } from "react"
 import { useAtom } from "jotai"
 import { groupBy, uniqBy } from "lodash"
 import { activeChainId } from "../../utils/config"
-import { TokenInfo, TokenList, tokensAtom, tokensStateAtom } from "./atoms"
-import { defaultTokenInfo } from "../../utils/constants/tokens"
+import {
+  TokenInfo,
+  TokenList,
+  defaultTokensAtom,
+  defaultTokensStateAtom,
+  otherTokensAtom,
+  otherTokensStateAtom,
+} from "./atoms"
+import { defaultTokenInfo as initialTokenInfo } from "../../utils/constants/tokens"
 import { LOADSTATE } from "../../utils/types"
 import {
   TokenResponse,
-  TOKEN_LIST_URLS,
+  DEFAULT_TOKEN_LIST_URLS,
+  OTHER_TOKEN_LIST_URLS,
 } from "../../utils/constants/tokens/urls"
 import { fetch } from "../../utils/api"
 import { isAddress } from "../../utils"
 
 interface UseTokensReturnType {
   tokens: ERC20Token[]
+  otherTokens: ERC20Token[]
   logoURIs: string[]
+  otherLogoURIs: string[]
 }
 
 // get all tokens from urls
-const fetchTokenInfo = async (): Promise<TokenInfo[]> => {
+const fetchTokenInfo = async (urls: string[]): Promise<TokenInfo[]> => {
   const calls: Promise<TokenResponse | null>[] = []
-  TOKEN_LIST_URLS.forEach((url) => {
+  urls.forEach((url) => {
     calls.push(fetch<TokenResponse>(url))
   })
   const results = (await Promise.all(calls)).filter(
@@ -35,18 +45,40 @@ const fetchTokenInfo = async (): Promise<TokenInfo[]> => {
   return tokenInfo
 }
 
+const tokenListToTokens = (infoList: TokenInfo[]): [ERC20Token[], string[]] => {
+  const URIs: string[] = []
+  const tokens = infoList.map((tokenInfo) => {
+    const { chainId, symbol, address, logoURI, name, decimals } = tokenInfo
+    URIs.push(logoURI || "")
+    return new ERC20Token(chainId, address, decimals, symbol, name)
+  })
+
+  return [tokens, URIs]
+}
+
 const useTokens = (): UseTokensReturnType => {
-  const [tokens, setTokens] = useAtom(tokensAtom)
-  const [tokensState, setTokensState] = useAtom(tokensStateAtom)
+  const [defaultTokens, setDefaultTokens] = useAtom(defaultTokensAtom)
+  const [defaultTokensState, setDefaultTokensState] = useAtom(
+    defaultTokensStateAtom
+  )
+
+  const [otherTokens, setOtherTokens] = useAtom(otherTokensAtom)
+  const [otherTokensState, setOtherTokensState] = useAtom(otherTokensStateAtom)
 
   // fetch all tokens and merge with default list
   useEffect(() => {
     ;(async () => {
-      if (tokensState === LOADSTATE.LOADED || tokensState === LOADSTATE.LOADING)
+      if (
+        defaultTokensState === LOADSTATE.LOADED ||
+        defaultTokensState === LOADSTATE.LOADING
+      )
         return
-      setTokensState(LOADSTATE.LOADING)
+      setDefaultTokensState(LOADSTATE.LOADING)
 
-      let allTokenInfo = [...defaultTokenInfo, ...(await fetchTokenInfo())]
+      let allTokenInfo = [
+        ...initialTokenInfo,
+        ...(await fetchTokenInfo(DEFAULT_TOKEN_LIST_URLS)),
+      ]
       allTokenInfo = uniqBy(
         allTokenInfo,
         (info) => `${info.chainId}-${info.address}`
@@ -63,35 +95,96 @@ const useTokens = (): UseTokensReturnType => {
         allTokenInfo,
         (tokenInfo) => tokenInfo.chainId
       ) as TokenList
-      setTokens(tokenList)
+      setDefaultTokens(tokenList)
 
-      setTokensState(LOADSTATE.LOADED)
+      setDefaultTokensState(LOADSTATE.LOADED)
     })()
-  }, [tokens, setTokens, tokensState, setTokensState])
+  }, [
+    defaultTokens,
+    setDefaultTokens,
+    defaultTokensState,
+    setDefaultTokensState,
+  ])
 
-  // set default tokens
+  // fetch other tokens and filter with default
+  useEffect(() => {
+    ;(async () => {
+      if (
+        otherTokensState === LOADSTATE.LOADED ||
+        otherTokensState === LOADSTATE.LOADING ||
+        defaultTokensState === LOADSTATE.LOADING ||
+        defaultTokensState === LOADSTATE.UNLOADED
+      )
+        return
+      setOtherTokensState(LOADSTATE.LOADING)
+
+      let allTokenInfo = [...(await fetchTokenInfo(OTHER_TOKEN_LIST_URLS))]
+      allTokenInfo = uniqBy(
+        allTokenInfo,
+        (info) => `${info.chainId}-${info.address}`
+      )
+
+      allTokenInfo = allTokenInfo
+        .map((tokenInfo) => ({
+          ...tokenInfo,
+          address: isAddress(tokenInfo.address),
+        }))
+        // filters with defaultTokens list
+        .filter((tokenInfo) => {
+          if (!tokenInfo.address) {
+            return false
+          }
+          const present = defaultTokens[tokenInfo.chainId]
+            .map((tokenInfo2) => tokenInfo2.address.toLowerCase())
+            .includes(tokenInfo.address.toLowerCase())
+
+          return !present
+        }) as TokenInfo[]
+
+      const tokenList = groupBy(
+        allTokenInfo,
+        (tokenInfo) => tokenInfo.chainId
+      ) as TokenList
+      setOtherTokens(tokenList)
+
+      setOtherTokensState(LOADSTATE.LOADED)
+    })()
+  }, [
+    otherTokens,
+    defaultTokensState,
+    setOtherTokens,
+    otherTokensState,
+    setOtherTokensState,
+    defaultTokens,
+  ])
+
+  // set local tokens as default upon initial load
   useEffect(() => {
     const tokenList = groupBy(
-      defaultTokenInfo,
+      initialTokenInfo,
       (tokenInfo) => tokenInfo.chainId
     ) as TokenList
-    setTokens(tokenList)
-  }, [setTokens, setTokensState])
+    setDefaultTokens(tokenList)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  const [activeTokens, logoURIs] = useMemo((): [ERC20Token[], string[]] => {
-    const URIs: string[] = []
-    const tokenObjects = tokens[activeChainId].map((tokenInfo) => {
-      const { chainId, symbol, address, logoURI, name, decimals } = tokenInfo
-      URIs.push(logoURI || "")
-      return new ERC20Token(chainId, address, decimals, symbol, name)
-    })
+  const [activeTokens, activelogoURIs] = useMemo(
+    (): [ERC20Token[], string[]] =>
+      tokenListToTokens(defaultTokens[activeChainId]),
+    [defaultTokens]
+  )
 
-    return [tokenObjects, URIs]
-  }, [tokens])
+  const [inactiveTokens, inActivelogoURIs] = useMemo(
+    (): [ERC20Token[], string[]] =>
+      tokenListToTokens(otherTokens[activeChainId]),
+    [otherTokens]
+  )
 
   return {
     tokens: activeTokens,
-    logoURIs,
+    logoURIs: activelogoURIs,
+    otherTokens: inactiveTokens,
+    otherLogoURIs: inActivelogoURIs,
   }
 }
 

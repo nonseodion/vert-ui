@@ -1,16 +1,15 @@
 import React, { useMemo } from "react"
-import { ERC20Token } from "@pancakeswap/sdk"
 import { ReactComponent as Search } from "../../assets/icons/search.svg"
 import { ReactComponent as Settings } from "../../assets/icons/settings.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import { Button } from "../general"
+import { Steps } from "../../hooks/interfaces/useTokenModalInterface"
 
 interface SelectTokenProps {
-  setCurrentStep: React.Dispatch<React.SetStateAction<string>>
-  steps: { [key: string]: string }
+  setCurrentStep: React.Dispatch<React.SetStateAction<Steps>>
   tokenList: JSX.Element[]
+  otherTokenList: JSX.Element[]
   pinnedTokens: JSX.Element[]
-  resolvedToken: ERC20Token | null
+  resolvedTokenElement: JSX.Element | null
   searchQuery: string
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>
 }
@@ -18,11 +17,11 @@ interface SelectTokenProps {
 export default function SelectToken({
   setCurrentStep,
   searchQuery,
+  otherTokenList,
   setSearchQuery,
-  resolvedToken,
+  resolvedTokenElement,
   pinnedTokens,
   tokenList,
-  steps,
 }: SelectTokenProps) {
   const emptyQuery = useMemo(
     () => searchQuery.trim().length === 0,
@@ -55,43 +54,21 @@ export default function SelectToken({
       <div className="mx-2 h-[1px] bg-lightBlue" />
       <ul className="px-6 pt-6 max-h-[320px] overflow-y-scroll scrollbar-hide">
         {tokenList}
+        {otherTokenList}
       </ul>
 
-      {resolvedToken && (
-        <div className="pt-6 h-[320px] px-6">
-          <div className="justify-between flex items-center">
-            <div className="flex space-x-4 items-center">
-              <div className="h-10 bg-[#CADAF4] w-10 p-1 rounded-full flex items-center justify-center">
-                <span className="text-lightBlue text-base overflow-hidden">
-                  {resolvedToken.symbol}
-                </span>
-              </div>
-              <div className="flex flex-col space-y-[3.5px]">
-                <h4 className="font-medium text-base text-black">
-                  {resolvedToken.name}
-                </h4>
-                <span className="text-[13px] text-lightBlue">
-                  {resolvedToken.symbol}
-                </span>
-              </div>
-            </div>
-            <Button
-              text="Import"
-              onClick={() => setCurrentStep(steps.IMPORT_TOKEN)}
-              className="h-8 p-0 w-[72px] flex items-center justify-center text-[13px]"
-            />
+      {resolvedTokenElement}
+      {!resolvedTokenElement &&
+        tokenList.length === 0 &&
+        otherTokenList.length === 0 && (
+          <div className="flex justify-center mt-[10px] mb-[40px] italic text-lightBlue">
+            No tokens found
           </div>
-        </div>
-      )}
-      {!resolvedToken && tokenList.length === 0 && (
-        <div className="flex justify-center mt-[10px] mb-[40px] italic text-lightBlue">
-          No tokens found
-        </div>
-      )}
+        )}
       <div className="pb-[11px] flex items-center justify-center">
         <button
           type="button"
-          onClick={() => setCurrentStep(steps.CUSTOM_TOKENS)}
+          onClick={() => setCurrentStep(Steps.CUSTOM_TOKENS)}
           className="flex items-center space-x-[12.95px]"
         >
           <Settings />

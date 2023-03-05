@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React from "react"
+import { ERC20Token } from "@pancakeswap/sdk"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { doNothing } from "../../utils/functions"
@@ -8,25 +9,25 @@ import SelectToken from "./SelectToken"
 import { Modal } from "../general"
 import useModal from "../../hooks/useModal"
 import useTokens from "../../state/tokens/hooks"
-import useTokenModalInterface from "../../hooks/interfaces/useTokenModalInterface"
-
-const steps = {
-  IMPORT_TOKEN: "IMPORT_TOKEN",
-  DEFAULT: "DEFAULT",
-  CUSTOM_TOKENS: "CUSTOM_TOKENS",
-}
+import useTokenModalInterface, {
+  Steps,
+} from "../../hooks/interfaces/useTokenModalInterface"
 
 export default function TokenModal() {
   const { hideModal } = useModal("token_modal")
-  const [currentStep, setCurrentStep] = useState<string>(steps.DEFAULT)
-  const { tokens, logoURIs } = useTokens()
+  const { tokens, logoURIs, otherLogoURIs, otherTokens } = useTokens()
   const {
     pinnedTokens,
     tokenList,
     setSearchQuery,
     searchQuery,
+    currentStep,
+    setCurrentStep,
     resolvedToken,
-  } = useTokenModalInterface(tokens, logoURIs)
+    resolvedTokenElement,
+    selectedInactiveToken,
+    otherTokenList,
+  } = useTokenModalInterface(tokens, logoURIs, otherTokens, otherLogoURIs)
 
   return (
     <Modal
@@ -37,19 +38,19 @@ export default function TokenModal() {
         <button
           type="button"
           onClick={() =>
-            currentStep === steps.DEFAULT
+            currentStep === Steps.DEFAULT
               ? hideModal()
-              : setCurrentStep(steps.DEFAULT)
+              : setCurrentStep(Steps.DEFAULT)
           }
         >
           <ArrowLeft />
         </button>
         <h3 className="text-xl text-black font-medium">
-          {currentStep === steps.DEFAULT && "Select a token"}
-          {currentStep === steps.IMPORT_TOKEN && "Import Tokens"}
-          {currentStep === steps.CUSTOM_TOKENS && "Custom Tokens"}
+          {currentStep === Steps.DEFAULT && "Select a token"}
+          {currentStep === Steps.IMPORT_TOKEN && "Import Tokens"}
+          {currentStep === Steps.CUSTOM_TOKENS && "Custom Tokens"}
         </h3>
-        {currentStep !== steps.IMPORT_TOKEN ? (
+        {currentStep !== Steps.IMPORT_TOKEN ? (
           <button
             type="button"
             onClick={doNothing}
@@ -60,30 +61,36 @@ export default function TokenModal() {
         ) : (
           <button
             type="button"
-            onClick={() => setCurrentStep(steps.DEFAULT)}
+            onClick={() => setCurrentStep(Steps.DEFAULT)}
             className="border-none outline-none"
           >
             <Exit className="h-3 w-3 path-primary" />
           </button>
         )}
       </div>
-      {currentStep === steps.DEFAULT && (
+      {currentStep === Steps.DEFAULT && (
         <SelectToken
           {...{
-            steps,
             setCurrentStep,
             tokenList,
+            otherTokenList,
             pinnedTokens,
             searchQuery,
             setSearchQuery,
-            resolvedToken,
+            resolvedTokenElement,
           }}
         />
       )}
-      {currentStep === steps.IMPORT_TOKEN && resolvedToken !== null && (
-        <TokenImport token={resolvedToken} />
-      )}
-      {currentStep === steps.CUSTOM_TOKENS && <CustomTokens />}
+      {currentStep === Steps.IMPORT_TOKEN &&
+        (selectedInactiveToken !== null || resolvedToken !== null) && (
+          <TokenImport
+            token={
+              selectedInactiveToken ||
+              ([resolvedToken, ""] as [ERC20Token, string])
+            }
+          />
+        )}
+      {currentStep === Steps.CUSTOM_TOKENS && <CustomTokens />}
     </Modal>
   )
 }

@@ -82,11 +82,11 @@ const useConverterInterface = (): ReturnTypes => {
     stableCoin
   )
 
-  console.log(
-    tradeIn?.outputAmount.toExact(),
-    sellToken.symbol,
-    tradeIn?.route.path.map((t) => t.symbol)
-  )
+  // console.log(
+  //   tradeIn?.outputAmount.toExact(),
+  //   sellToken.symbol,
+  //   tradeIn?.route.path.map((t) => t.symbol)
+  // )
 
   const stableCoinAmount = useMemo(
     () =>
