@@ -10,8 +10,9 @@ import { isAddress } from "../../utils"
 import { useSingleContractWithCallData } from "../../utils/multicall"
 import { blockNumberAtom } from "../../state/blockAtoms"
 import getContracts from "../../utils/getContracts"
-import { Button } from "../../components/general"
-import TokenImage from "../../components/transactions/TokenImage"
+import ResolvedToken from "../../components/transactions/ResolvedToken"
+import TokenRow from "../../components/transactions/TokenRow"
+import InactiveToken from "../../components/transactions/InactiveToken"
 
 export enum Steps {
   IMPORT_TOKEN = "IMPORT_TOKEN",
@@ -43,93 +44,16 @@ const callDatas: string[] = [
 let tokenList: JSX.Element[] = []
 let otherTokenList: JSX.Element[] = []
 
-function ResolvedToken(
-  token: ERC20Token,
-  logo: string,
-  handleClick: () => void
-) {
-  const { name, symbol, address } = token
-  return (
-    <div className="pt-6 h-[320px] px-6" key={address}>
-      <div className="justify-between flex items-center">
-        <div className="flex space-x-4 items-center">
-          <TokenImage token={token} resolved url={logo} />
-          <div className="flex flex-col space-y-[3.5px]">
-            <h4 className="font-medium text-base text-black">{name}</h4>
-            <span className="text-[13px] text-lightBlue">{symbol}</span>
-          </div>
-        </div>
-        <Button
-          text="Import"
-          onClick={handleClick}
-          className="h-8 p-0 w-[72px] flex items-center justify-center text-[13px]"
-        />
-      </div>
-    </div>
-  )
-}
-
-function InactiveToken(
-  token: ERC20Token,
-  logo: string,
-  handleClick: (token: ERC20Token, logo: string) => void
-) {
-  const { name, symbol, address } = token
-
-  return (
-    <li key={address}>
-      <div className="flex justify-between">
-        <div className="w-full text-left flex space-x-4 items-center mb-8">
-          <TokenImage token={token} url={logo} />
-          <div className="flex flex-col space-y-[3.5px]">
-            <h4 className="font-medium text-base text-black">{name}</h4>
-            <span className="text-[13px] text-lightBlue">{symbol}</span>
-          </div>
-        </div>
-        <Button
-          text="Import"
-          onClick={() => handleClick(token, logo)}
-          className="h-8 p-0 w-[72px] flex items-center justify-center text-[13px]"
-        />
-      </div>
-    </li>
-  )
-}
-
-function TokenRow(
-  token: ERC20Token,
-  logo: string,
-  handleClick: (token: ERC20Token, logo: string) => void
-) {
-  const { name, symbol, address } = token
-
-  return (
-    <li key={address}>
-      <button
-        onClick={() => handleClick(token, logo)}
-        type="button"
-        className="w-full text-left flex space-x-4 items-center mb-8"
-      >
-        <TokenImage token={token} url={logo} />
-        <div className="flex flex-col space-y-[3.5px]">
-          <h4 className="font-medium text-base text-black">{name}</h4>
-          <span className="text-[13px] text-lightBlue">{symbol}</span>
-        </div>
-      </button>
-    </li>
-  )
-}
-
 const tokenstoElements = (
   tokens: ERC20Token[],
   searchQuery: string,
   logos: string[],
   handleSelectToken: (token: ERC20Token, logo: string) => void,
-  component: (
-    token: ERC20Token,
-    logo: string,
+  component: (props: {
+    token: ERC20Token
+    logo: string
     handleClick: (token: ERC20Token, logo: string) => void
-  ) => JSX.Element
+  }) => JSX.Element
 ): JSX.Element[] => {
   const query = searchQuery.trim().toLowerCase()
 
@@ -148,7 +72,9 @@ const tokenstoElements = (
         a.symbol.localeCompare(b.symbol, "en", { sensitivity: "base" })
       )
       // map tokens to token element
-      .map(([token, logo]) => component(token, logo, handleSelectToken))
+      .map(([token, logo]) =>
+        component({ token, logo, handleClick: handleSelectToken })
+      )
   )
 }
 
@@ -169,7 +95,7 @@ const useTokenModalInterface = (
     )
   )
   const [currentStep, setCurrentStep] = useState<Steps>(Steps.DEFAULT)
-  const { hideModal, isActive } = useModal("token_modal")
+  const { hideModal, isActive } = useModal("TOKEN_MODAL")
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedInactiveToken, setSelectedInactiveToken] = useState<
     null | [ERC20Token, string]
@@ -213,11 +139,13 @@ const useTokenModalInterface = (
 
   const resolvedTokenElement = useMemo(
     () =>
-      resolvedToken
-        ? ResolvedToken(resolvedToken, "", () =>
-            setCurrentStep(Steps.IMPORT_TOKEN)
-          )
-        : null,
+      resolvedToken ? (
+        <ResolvedToken
+          token={resolvedToken}
+          logo=""
+          handleClick={() => setCurrentStep(Steps.IMPORT_TOKEN)}
+        />
+      ) : null,
     [resolvedToken]
   )
 
