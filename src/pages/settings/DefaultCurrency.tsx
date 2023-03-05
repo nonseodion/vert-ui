@@ -3,7 +3,7 @@ import { Wrapper } from "../../components/general"
 import { Navigator } from "../../components/navigation"
 import { ReactComponent as Search } from "../../assets/icons/search.svg"
 import { ReactComponent as Right } from "../../assets/icons/right.svg"
-import SettingsContent from "../../components/settings/SettingsContent"
+import { SettingsContent } from "../../components/settings"
 import { userFiatCurrencies } from "../../dummy/currencies"
 
 export default function DefaultCurrency() {

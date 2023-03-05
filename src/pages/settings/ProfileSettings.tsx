@@ -1,8 +1,8 @@
 import React from "react"
 import { Button, Wrapper } from "../../components/general"
-import Input from "../../components/inputs/Input"
+import { Input } from "../../components/inputs"
 import { Navigator } from "../../components/navigation"
-import SettingsContent from "../../components/settings/SettingsContent"
+import { SettingsContent } from "../../components/settings"
 
 export default function ProfileSettings() {
   return (

@@ -4,7 +4,7 @@ import isEmail from "validator/lib/isEmail"
 import { Link, useNavigate } from "react-router-dom"
 import { ReactComponent as LoneLogo } from "../../assets/icons/logo-lone.svg"
 import { Button, Glow, Wrapper } from "../../components/general"
-import Input from "../../components/inputs/Input"
+import { Input } from "../../components/inputs"
 import { PageRoutes } from "../../utils/constants"
 
 interface SignUpWithEmailValues {
