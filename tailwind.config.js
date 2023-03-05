@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        "mobile": "400px"
+      },
       colors: {
         nav: '#2D2B28',
         black: '#1E1E1E',

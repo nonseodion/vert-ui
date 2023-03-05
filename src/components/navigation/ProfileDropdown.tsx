@@ -4,10 +4,12 @@ import { ReactComponent as Profile } from "../../assets/icons/profile.svg"
 import { ReactComponent as History } from "../../assets/icons/history.svg"
 import { ReactComponent as Settings } from "../../assets/icons/settings-white.svg"
 import { ReactComponent as SignOut } from "../../assets/icons/sign-out.svg"
+import { ReactComponent as PowerSwitch } from "../../assets/icons/power-switch.svg"
+import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
+import metamask from "../../assets/icons/metamask.png"
 import useAuth from "../../hooks/useAuth"
 import { PageRoutes } from "../../utils/constants"
 import { handleProfileDropdown } from "../../utils/functions"
-import Button from "../general/Button"
 
 interface ProfileDropdownLink {
   icon: JSX.Element
@@ -19,6 +21,12 @@ interface ProfileDropdownLink {
 export default function ProfileDropdown() {
   const { user, logOut } = useAuth()
   const navigate = useNavigate()
+
+  const signUserOut = () => {
+    logOut()
+    navigate(PageRoutes.HOME)
+  }
+
   const links: ProfileDropdownLink[] = [
     {
       icon: <Profile className="fill-white" />,
@@ -38,10 +46,7 @@ export default function ProfileDropdown() {
     {
       icon: <SignOut />,
       text: "Sign out",
-      onClick: () => {
-        logOut()
-        navigate(PageRoutes.HOME)
-      },
+      onClick: signUserOut,
     },
   ]
 
@@ -64,12 +69,12 @@ export default function ProfileDropdown() {
     <div
       onClick={(e) => e.stopPropagation()}
       role="presentation"
-      className="opacity-0 transition-all duration-150 pointer-events-none absolute backdrop-blur-[5px] top-[95px] lg:top-[120px] rounded-3xl right-4 lg:right-[77px] w-[283px] bg-[#292929]/[.62] profile-dropdown p-[30px] py-8 z-[3]"
+      className="opacity-0 transition-all duration-150 pointer-events-none absolute backdrop-blur-[5px] top-[95px] lg:top-[120px] rounded-3xl right-4 lg:right-[77px] w-[320px] mobile:w-[370px] bg-[#292929]/[.62] profile-dropdown px-[30px] pt-8 pb-[41.19px] z-[3]"
     >
       <p className="text-primary font-medium text-base">
         Hello {user?.username}!
       </p>
-      <ul className="mt-4 mb-8 flex flex-col space-y-4">
+      <ul className="mt-4 mb-[27px] flex flex-col space-y-4">
         {links.map((link) => (
           <li key={link.text}>
             <button
@@ -85,15 +90,43 @@ export default function ProfileDropdown() {
           </li>
         ))}
       </ul>
-      <Button
-        text="Manage Wallets"
-        background="transparent"
-        textColor="white"
-        className="text-[13px]"
-        bordered
-        fullWidth
-        onClick={() => onClick(PageRoutes.MANAGE_WALLETS)}
-      />
+      <div className="flex mb-[13px]">
+        <button
+          type="button"
+          onClick={() => onClick(PageRoutes.MANAGE_WALLETS)}
+          className="text-white/[.6] ml-auto font-medium text-13"
+        >
+          Manage Wallets
+        </button>
+      </div>
+      <div className="flex py-[13px] px-3 border-[0.25px] justify-between border-primary rounded-xl">
+        <div className="flex items-center space-x-3">
+          <div className="h-7 w-7 rounded-full bg-[#FFD3A2] flex items-center justify-center">
+            <img src={metamask} alt="Metmask logo" />
+          </div>
+          <div className="flex flex-col space-y-[9.5px]">
+            <div className="flex space-x-2 items-center">
+              <span className="text-white font-medium text-[15px] leading-4">
+                0x6810...9568
+              </span>
+              <Copy className="stroke-lightBlue" />
+            </div>
+            <div className="flex space-x-1 items-center">
+              <div className="h-2 w-2 rounded-full bg-[#48D38A]" />
+              <span className="text-[11.13px] text-white leading-4">
+                connected
+              </span>
+            </div>
+          </div>
+        </div>
+        <button
+          className="bg-primary/[.16] h-10 w-10 flex items-center justify-center rounded-xl"
+          type="button"
+          onClick={signUserOut}
+        >
+          <PowerSwitch />
+        </button>
+      </div>
     </div>
   )
 }
