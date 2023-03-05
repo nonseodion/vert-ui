@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { ReactComponent as Calendar } from "../../assets/icons/calendar.svg"
 import { ReactComponent as Filter } from "../../assets/icons/filter.svg"
+import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
 import { ReactComponent as Cash } from "../../assets/icons/cash.svg"
 import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 import { ReactComponent as ArrowRight } from "../../assets/icons/arrow-right.svg"
@@ -13,6 +14,7 @@ import { PageRoutes, TABLE_ROW_SIZE } from "../../utils/constants"
 import Paginator from "../../components/general/Paginator"
 import { TransactionListSkeleton } from "../../components/skeletons"
 import { goBackConditionally } from "../../utils/functions"
+import { TransactionStatus } from "../../components/transactions"
 
 const columns: TableColumn<Transaction>[] = [
   {
@@ -30,21 +32,37 @@ const columns: TableColumn<Transaction>[] = [
   },
   {
     name: "BANK DETAILS",
-    selector: ({ bank_details }) =>
-      `${bank_details.name} ${bank_details.account_number} ${bank_details.bank}`,
+    cell: ({ bank_details }) => (
+      <div className="py-[15px]">
+        <p>
+          {bank_details.name} {bank_details.account_number} {bank_details.bank}
+        </p>
+      </div>
+    ),
     wrap: true,
   },
   {
     name: "REFERENCE NO",
     selector: (row) => row.reference_no,
+    cell: ({ reference_no }) => (
+      <div className="flex space-x-2 items-center">
+        <p className="text-12 text-black/[.7] font-medium">{reference_no}</p>
+        <Copy className="flex-shrink-0 stroke-lightBlue" />
+      </div>
+    ),
   },
   {
     name: "Wallet Address",
-    selector: (row) => row.wallet_address,
+    cell: ({ wallet_address }) => (
+      <div className="flex space-x-2 items-center">
+        <p className="text-12 text-black/[.7] font-medium">{wallet_address}</p>
+        <Copy className="flex-shrink-0 stroke-lightBlue" />
+      </div>
+    ),
   },
   {
     name: "STATUS",
-    selector: (row) => row.status,
+    cell: ({ status }) => <TransactionStatus status={status} />,
   },
   {
     name: "BLOCKCHAIN TRX",

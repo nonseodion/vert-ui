@@ -10,7 +10,7 @@ export interface Transaction {
   }
   reference_no: string
   wallet_address: string
-  status: string
+  status: "pending" | "failed" | "success"
   blockchain_txn: string
 }
 
@@ -27,7 +27,7 @@ const transactions: Transaction[] = [
     },
     reference_no: "GW9015183360000",
     wallet_address: "0x6810...9568",
-    status: "SUCCESS",
+    status: "success",
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
@@ -42,7 +42,7 @@ const transactions: Transaction[] = [
     },
     reference_no: "GW9015183360000",
     wallet_address: "0x6810...9568",
-    status: "SUCCESS",
+    status: "pending",
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
@@ -57,7 +57,7 @@ const transactions: Transaction[] = [
     },
     reference_no: "GW9015183360000",
     wallet_address: "0x6810...9568",
-    status: "SUCCESS",
+    status: "success",
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
@@ -72,7 +72,7 @@ const transactions: Transaction[] = [
     },
     reference_no: "GW9015183360000",
     wallet_address: "0x6810...9568",
-    status: "SUCCESS",
+    status: "failed",
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
@@ -87,7 +87,7 @@ const transactions: Transaction[] = [
     },
     reference_no: "GW9015183360000",
     wallet_address: "0x6810...9568",
-    status: "SUCCESS",
+    status: "success",
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
@@ -102,7 +102,7 @@ const transactions: Transaction[] = [
     },
     reference_no: "GW9015183360000",
     wallet_address: "0x6810...9568",
-    status: "SUCCESS",
+    status: "pending",
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
@@ -117,7 +117,7 @@ const transactions: Transaction[] = [
     },
     reference_no: "GW9015183360000",
     wallet_address: "0x6810...9568",
-    status: "SUCCESS",
+    status: "success",
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
@@ -132,7 +132,7 @@ const transactions: Transaction[] = [
     },
     reference_no: "GW9015183360000",
     wallet_address: "0x6810...9568",
-    status: "SUCCESS",
+    status: "success",
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
@@ -147,7 +147,7 @@ const transactions: Transaction[] = [
     },
     reference_no: "GW9015183360000",
     wallet_address: "0x6810...9568",
-    status: "SUCCESS",
+    status: "success",
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
@@ -162,7 +162,7 @@ const transactions: Transaction[] = [
     },
     reference_no: "GW9015183360000",
     wallet_address: "0x6810...9568",
-    status: "SUCCESS",
+    status: "success",
     blockchain_txn: "0x450ae5a49aa6861...",
   },
 ]
