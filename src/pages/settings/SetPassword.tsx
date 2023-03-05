@@ -1,9 +1,10 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { Button, Wrapper } from "../../components/general"
 import Input from "../../components/inputs/Input"
+import { BackButton } from "../../components/navigation"
 import SettingsContent from "../../components/settings/SettingsContent"
+import { PageRoutes } from "../../utils/constants"
 
 export default function SetPassword() {
   const navigate = useNavigate()
@@ -15,14 +16,9 @@ export default function SetPassword() {
             My Account
           </h3>
           <div className="flex flex-col space-y-[26.5px]">
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="border-none flex h-[40px] outline-none items-center space-x-[10px]"
-            >
-              <ArrowLeft />
-              <span className="text-primary text-sm font-medium">Back</span>
-            </button>
+            <BackButton
+              onClick={() => navigate(PageRoutes.SECURITY_SETTINGS)}
+            />
             <div className="flex flex-col space-y-[10px]">
               <h3 className="text-base font-semibold text-white">
                 Set Password

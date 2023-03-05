@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { ReactComponent as LoneLogo } from "../../assets/icons/logo-lone.svg"
 import { Button, Glow, Wrapper } from "../../components/general"
 import Input from "../../components/inputs/Input"
-import { routes } from "../../utils/constants"
+import { PageRoutes } from "../../utils/constants"
 
 interface SignUpWithEmailValues {
   email: string
@@ -22,7 +22,7 @@ export default function SignUpWithEmail() {
   const navigate = useNavigate()
   const onSubmit = handleSubmit((data) => {
     localStorage.setItem("data", JSON.stringify(data))
-    navigate(routes.email_verification)
+    navigate(PageRoutes.EMAIL_VERIFICATION)
   })
 
   return (
@@ -112,7 +112,7 @@ export default function SignUpWithEmail() {
                 <Button
                   text="Sign up with Wallet"
                   background="transparent"
-                  onClick={() => navigate(routes.sign_up_with_wallet)}
+                  onClick={() => navigate(PageRoutes.SIGN_UP_WITH_WALLET)}
                   fullWidth
                   className="text-[14.48px] font-semibold"
                   textColor="dark"
@@ -124,7 +124,7 @@ export default function SignUpWithEmail() {
               Already have an account?{" "}
               <Link
                 className="text-[15px] text-primary underline"
-                to={routes.sign_in_with_email}
+                to={PageRoutes.SIGN_IN_WITH_EMAIL}
               >
                 Sign in
               </Link>

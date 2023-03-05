@@ -1,6 +1,8 @@
 import { BigintIsh, JSBI } from "@pancakeswap/sdk"
 import { getAddress } from "ethers/lib/utils"
 import { memoize } from "lodash"
+import { Location, NavigateFunction } from "react-router-dom"
+import { PageRoutes } from "./constants"
 
 export const doNothing = (): void => {}
 
@@ -72,3 +74,16 @@ export const checkIfImageExists = (url: string): Promise<boolean> =>
     }
     img.src = url
   })
+export const canGoBack = (location: Location) => location.key !== "default"
+
+export const goBackConditionally = (
+  navigate: NavigateFunction,
+  location: Location,
+  page: PageRoutes
+) => {
+  if (canGoBack(location)) {
+    navigate(-1)
+    return
+  }
+  navigate(page)
+}

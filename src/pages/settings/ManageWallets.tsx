@@ -69,13 +69,13 @@ export default function ManageWallets() {
                   text="Unlink"
                   onClick={() =>
                     showModal({
-                      modal: "unlink_wallet",
+                      modal: "UNLINK_WALLET",
                       onConfirm: unlinkWallet,
                     })
                   }
                   bordered
                   background="transparent"
-                  className="border-dark h-10 py-0 text-[#010304] font-semibold text-sm"
+                  className="border-dark h-10 !py-0 text-[#010304] font-semibold text-sm"
                 />
               </div>
             ))}

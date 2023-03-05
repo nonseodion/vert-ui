@@ -23,7 +23,20 @@ export default function ConverterSide({
 }: ConverterSideProps) {
   return (
     <div className="bg-white min-h-[104px] rounded-xl py-[13.5px] px-4">
-      <p className="uppercase text-12 mb-[25.5px]">you {side}</p>
+      <div className="flex justify-between items-center mb-[25.5px]">
+        <p className="uppercase text-12">you {side}</p>
+        {side === "sell" && (
+          <div className="flex items-center space-x-[3.52px]">
+            <span className="text-lightBlue text-12">Balance:0</span>
+            <button
+              type="button"
+              className="bg-[#1AFF91]/[.13] rounded-[4px] px-[3px] py-[2px] text-[#1AFF91] font-medium text-12"
+            >
+              MAX
+            </button>
+          </div>
+        )}
+      </div>
       <div className="flex items-center">
         <div className="flex-1">
           <input
@@ -45,7 +58,7 @@ export default function ConverterSide({
                 alt={`${token.symbol} logo`}
                 className="h-6 w-6 rounded-xl"
               />
-              <span className="font-semibold text-[#280D5F] text-base">
+              <span className="font-semibold text-black text-base">
                 {token.symbol}
               </span>
             </div>

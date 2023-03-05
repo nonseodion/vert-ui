@@ -4,10 +4,10 @@ import { WalletConfirmation } from "../general"
 import Modal from "../general/Modal"
 
 export default function RemoveTokenApprovalModal() {
-  const { hideModal } = useModal("remove_token_approval")
+  const { hideModal } = useModal("REMOVE_TOKEN_APPROVAL")
   return (
     <Modal
-      name="remove_token_approval"
+      name="REMOVE_TOKEN_APPROVAL"
       bodyClassNames="!mt-[19vh] !lg:max-w-[392px] border border-primary/[.25] rounded-2xl !py-[23px] !px-5"
     >
       <WalletConfirmation
