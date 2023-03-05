@@ -58,6 +58,17 @@ export const shortenAddress = memoize((value: string): string => {
   if (!address) {
     return value
   }
-
   return `${address.slice(0, 5)}...${address.slice(-3)}`
 })
+
+export const checkIfImageExists = (url: string): Promise<boolean> =>
+  new Promise<boolean>((res) => {
+    const img = new Image()
+    img.onload = () => {
+      res(true)
+    }
+    img.onerror = () => {
+      res(false)
+    }
+    img.src = url
+  })

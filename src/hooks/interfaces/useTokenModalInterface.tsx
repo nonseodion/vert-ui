@@ -11,6 +11,7 @@ import { useSingleContractWithCallData } from "../../utils/multicall"
 import { blockNumberAtom } from "../../state/blockAtoms"
 import getContracts from "../../utils/getContracts"
 import { Button } from "../../components/general"
+import TokenImage from "../../components/transactions/TokenImage"
 
 export enum Steps {
   IMPORT_TOKEN = "IMPORT_TOKEN",
@@ -52,11 +53,7 @@ function ResolvedToken(
     <div className="pt-6 h-[320px] px-6" key={address}>
       <div className="justify-between flex items-center">
         <div className="flex space-x-4 items-center">
-          <div className="h-10 bg-[#CADAF4] w-10 p-1 rounded-full flex items-center justify-center">
-            <span className="text-lightBlue text-base overflow-hidden">
-              {symbol.slice(0, 4)}
-            </span>
-          </div>
+          <TokenImage token={token} resolved url={logo} />
           <div className="flex flex-col space-y-[3.5px]">
             <h4 className="font-medium text-base text-black">{name}</h4>
             <span className="text-[13px] text-lightBlue">{symbol}</span>
@@ -83,9 +80,7 @@ function InactiveToken(
     <li key={address}>
       <div className="flex justify-between">
         <div className="w-full text-left flex space-x-4 items-center mb-8">
-          <div>
-            <img src={logo} alt={name} className="h-10 w-10 rounded-[20px]" />
-          </div>
+          <TokenImage token={token} url={logo} />
           <div className="flex flex-col space-y-[3.5px]">
             <h4 className="font-medium text-base text-black">{name}</h4>
             <span className="text-[13px] text-lightBlue">{symbol}</span>
@@ -115,7 +110,7 @@ function TokenRow(
         type="button"
         className="w-full text-left flex space-x-4 items-center mb-8"
       >
-        <img src={logo} alt={name} className="h-10 w-10 rounded-[20px]" />
+        <TokenImage token={token} url={logo} />
         <div className="flex flex-col space-y-[3.5px]">
           <h4 className="font-medium text-base text-black">{name}</h4>
           <span className="text-[13px] text-lightBlue">{symbol}</span>
