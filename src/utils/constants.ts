@@ -28,6 +28,7 @@ export enum Modals {
   SUCCESSFUL_SIGN_UP = "successful_sign_up",
   RESET_PASSWORD_MODAL = "reset_password_modal",
   RESET_PASSWORD_SUCCESSFUL_MODAL = "reset_password_successful_modal",
+  APPROVE_TRANSACTION = "approve_transaction",
 }
 
 export const TABLE_ROW_SIZE = 6

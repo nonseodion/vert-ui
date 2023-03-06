@@ -57,6 +57,9 @@ const useModal = (name?: Modal) => {
     ? false
     : !!modals.find((activeModal) => Object.keys(activeModal)[0] === name)
 
+  const modalIsOpen = (modalName: Modal) =>
+    !modals.find((activeModal) => Object.keys(activeModal)[0] === modalName)
+
   const modalValues = name
     ? modals.find((activeModal) => Object.keys(activeModal)[0] === name)?.[
         name
@@ -68,6 +71,7 @@ const useModal = (name?: Modal) => {
     hideModal,
     isActive,
     modalValues,
+    modalIsOpen,
   }
 }
 

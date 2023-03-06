@@ -5,11 +5,15 @@ import { ReactComponent as DropdownIcon } from "../../assets/icons/arrow-down.sv
 export interface ConverterSideProps {
   side: "sell" | "buy"
   onTokenSelect: (_: any) => void
+  onValueChange: (value: number | null) => void
+  value: number | null
 }
 
 export default function ConverterSide({
   side,
   onTokenSelect,
+  onValueChange,
+  value,
 }: ConverterSideProps) {
   const isBuySide = useMemo(() => side === "buy", [side])
   return (
@@ -18,7 +22,7 @@ export default function ConverterSide({
         <p className="uppercase text-12">you {side}</p>
         {side === "sell" && (
           <div className="flex items-center space-x-[3.52px]">
-            <span className="text-lightBlue text-12">Balance:0</span>
+            <span className="text-purple text-12">Balance:0</span>
             <button
               type="button"
               className="bg-[#1AFF91]/[.13] rounded-[4px] px-[3px] py-[2px] text-[#1AFF91] font-medium text-12"
@@ -29,11 +33,24 @@ export default function ConverterSide({
         )}
       </div>
       <div className="flex items-center">
-        <div className="flex-1">
-          <input
-            className="w-full border-none outline-none focus:outline-none placeholder:text-placeholder text-xl"
-            placeholder="0.0"
-          />
+        <div className="flex flex-col space-y-[5px]">
+          <div className="flex-1">
+            <input
+              className="w-full border-none outline-none focus:outline-none placeholder:text-placeholder text-xl"
+              placeholder="0.0"
+              value={value ?? ""}
+              onChange={({ target }) =>
+                onValueChange(target.value ? Number(target.value) : null)
+              }
+            />
+          </div>
+          {value ? (
+            <span className="leading-none text-[9px] text-purple font-medium">
+              ~28,380.16 USD.
+            </span>
+          ) : (
+            <div className="h-[9px] w-4" />
+          )}
         </div>
         <button
           type="button"
