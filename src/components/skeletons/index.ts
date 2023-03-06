@@ -1,10 +1,10 @@
 import BanksSkeleton from "./BanksSkeleton"
 import TokenApprovalsSkeleton from "./TokenApprovalsSkeleton"
-import TransactionListSkeleton from "./TransactionListSkeleton"
+import TableRowItemSkeleton from "./TableRowItemSkeleton"
 import WalletListSkeleton from "./WalletListSkeleton"
 
 export {
-  TransactionListSkeleton,
+  TableRowItemSkeleton,
   BanksSkeleton,
   WalletListSkeleton,
   TokenApprovalsSkeleton,

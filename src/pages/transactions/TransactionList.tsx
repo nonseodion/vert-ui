@@ -12,7 +12,6 @@ import { Wrapper, Table } from "../../components/general"
 import transactions, { Transaction } from "../../dummy/transactions"
 import { PageRoutes, TABLE_ROW_SIZE } from "../../utils/constants"
 import Paginator from "../../components/general/Paginator"
-import { TransactionListSkeleton } from "../../components/skeletons"
 import { goBackConditionally } from "../../utils/functions"
 import { TransactionStatus } from "../../components/transactions"
 
@@ -157,16 +156,13 @@ export default function TransactionList() {
           </div>
           <div className="mt-[30px]">
             <div className="hidden md:block">
-              {loading ? (
-                <TransactionListSkeleton />
-              ) : (
-                <Table
-                  columns={columns}
-                  className="transactions-list"
-                  data={displayedData}
-                  onRowClicked={onTransactionClick}
-                />
-              )}
+              <Table
+                columns={columns}
+                className="transactions-list"
+                data={displayedData}
+                onRowClicked={onTransactionClick}
+                loading={loading}
+              />
             </div>
             <div className="md:hidden">
               <ul className="flex flex-col space-y-[3px]">
