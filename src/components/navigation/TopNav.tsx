@@ -8,16 +8,19 @@ import { ReactComponent as Dropdown } from "../../assets/icons/dropdown.svg"
 import { ReactComponent as Hamburger } from "../../assets/icons/hamburger.svg"
 import { ReactComponent as User } from "../../assets/icons/user.svg"
 import useAuth from "../../hooks/useAuth"
-import { PageRoutes } from "../../utils/constants"
+import { Modals, PageRoutes } from "../../utils/constants"
 import { handleProfileDropdown } from "../../utils/functions"
 import Button from "../general/Button"
 import ProfileDropdown from "./ProfileDropdown"
+import useModal from "../../hooks/useModal"
 
 export default function TopNav() {
   const navigate = useNavigate()
   const location = useLocation()
   const [showSlider, setShowSlider] = useState<boolean>(false)
   const { isAuthenticated, user } = useAuth()
+  const { hideModal } = useModal(Modals.CONNECT_WALLET)
+
   return (
     <div className="z-[998] fixed left-0  w-full bg-nav">
       <div className="max-w-[1500px] h-[60px] lg:h-[100px] lg:py-[13px]  relative mx-auto flex items-center justify-between px-4 lg:pl-[80px] lg:pr-[95px]">
@@ -72,7 +75,7 @@ export default function TopNav() {
                   />
                   <Button
                     text="Connect Wallet"
-                    onClick={() => navigate(PageRoutes.SIGN_UP_WITH_WALLET)}
+                    onClick={() => hideModal(Modals.CONNECT_WALLET)}
                   />
                 </div>
               </div>

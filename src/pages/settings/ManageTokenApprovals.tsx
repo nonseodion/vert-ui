@@ -9,7 +9,7 @@ import { RemoveTokenApprovalModal } from "../../components/settings"
 import useModal from "../../hooks/useModal"
 import { BackButton } from "../../components/navigation"
 import { goBackConditionally } from "../../utils/functions"
-import { PageRoutes } from "../../utils/constants"
+import { Modals, PageRoutes } from "../../utils/constants"
 
 interface TokenApproval {
   asset: string
@@ -167,7 +167,7 @@ export default function ManageTokenApprovals() {
                         onClick={() => {
                           setTokenToRevoke(approval)
                           showModal({
-                            modal: "REMOVE_TOKEN_APPROVAL",
+                            modal: Modals.REMOVE_TOKEN_APPROVAL,
                             onCloseCallback: () => setTokenToRevoke(null),
                           })
                         }}

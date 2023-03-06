@@ -2,12 +2,12 @@ import React from "react"
 import { useNavigate } from "react-router-dom"
 import { ReactComponent as Successful } from "../../assets/icons/successful.svg"
 import useModal from "../../hooks/useModal"
-import { PageRoutes } from "../../utils/constants"
+import { Modals, PageRoutes } from "../../utils/constants"
 import { Button, Modal } from "../general"
 
 export default function ResetPasswordSuccessfulModal() {
   const navigate = useNavigate()
-  const { hideModal } = useModal("RESET_PASSWORD_SUCCESSFUL_MODAL")
+  const { hideModal } = useModal(Modals.RESET_PASSWORD_SUCCESSFUL_MODAL)
 
   const returnToLogin = () => {
     hideModal()
@@ -16,7 +16,7 @@ export default function ResetPasswordSuccessfulModal() {
 
   return (
     <Modal
-      name="RESET_PASSWORD_SUCCESSFUL_MODAL"
+      name={Modals.RESET_PASSWORD_SUCCESSFUL_MODAL}
       bodyClassNames="!pb-0 !lg:w-[375px] !px-7 !pt-[45.67px] !pb-[30px]"
     >
       <div>

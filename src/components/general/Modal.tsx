@@ -2,13 +2,13 @@ import React, { useEffect } from "react"
 import clsx from "classnames"
 import useModal from "../../hooks/useModal"
 import { doNothing } from "../../utils/functions"
-import { Modal as ModalType } from "../../contexts/ModalContext"
+import { Modals } from "../../utils/constants"
 
 export interface ModalProps {
   children: React.ReactNode
   bodyClassNames?: string
   onClose?: () => void
-  name: ModalType
+  name: Modals
 }
 
 export default function Modal({

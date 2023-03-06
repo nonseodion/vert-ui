@@ -8,7 +8,7 @@ import Input from "../../components/inputs/Input"
 import ConnectWallet from "../../components/transactions/ConnectWallet"
 import useAuth from "../../hooks/useAuth"
 import useModal from "../../hooks/useModal"
-import { PageRoutes } from "../../utils/constants"
+import { PageRoutes, Modals } from "../../utils/constants"
 
 interface SignInWithEmailValues {
   email: string
@@ -98,7 +98,7 @@ export default function SignInWithEmail() {
                   <Button
                     text="Connect Wallet"
                     background="transparent"
-                    onClick={() => showModal({ modal: "CONNECT_WALLET" })}
+                    onClick={() => showModal({ modal: Modals.CONNECT_WALLET })}
                     fullWidth
                     className="text-[14.48px] font-semibold"
                     textColor="dark"

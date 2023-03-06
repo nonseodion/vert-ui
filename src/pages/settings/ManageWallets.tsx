@@ -6,6 +6,7 @@ import { Navigator } from "../../components/navigation"
 import { SettingsContent, UnlinkWalletModal } from "../../components/settings"
 import { userWallets } from "../../dummy/currencies"
 import useModal from "../../hooks/useModal"
+import { Modals } from "../../utils/constants"
 
 export default function ManageWallets() {
   const { showModal, hideModal } = useModal()
@@ -69,7 +70,7 @@ export default function ManageWallets() {
                   text="Unlink"
                   onClick={() =>
                     showModal({
-                      modal: "UNLINK_WALLET",
+                      modal: Modals.UNLINK_WALLET,
                       onConfirm: unlinkWallet,
                     })
                   }

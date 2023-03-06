@@ -6,6 +6,7 @@ import { BankAccountDetails, banks } from "../../dummy/currencies"
 import { Modal, Button } from "../general"
 import { Input } from "../inputs"
 import Select, { OptionType } from "../inputs/Select"
+import { Modals } from "../../utils/constants"
 
 interface AddBankAccountModalProps {
   adding: boolean
@@ -50,7 +51,7 @@ export default function AddBankAccountModal({
 
   return (
     <Modal
-      name="BANK_ACCOUNT"
+      name={Modals.BANK_ACCOUNT}
       onClose={reset}
       bodyClassNames="!mt-[22vh] !mb-[10vh] !lg:w-[508px] !rounded-3xl !pb-[30px] !px-[30px]"
     >

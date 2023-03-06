@@ -5,11 +5,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import { ReactComponent as LoneLogo } from "../../assets/icons/logo-lone.svg"
 import { Button, Glow, Wrapper } from "../../components/general"
 import Input from "../../components/inputs/Input"
-import { PageRoutes } from "../../utils/constants"
 import ConnectWallet from "../../components/transactions/ConnectWallet"
 import useModal from "../../hooks/useModal"
 import { BackButton } from "../../components/navigation"
 import { goBackConditionally } from "../../utils/functions"
+import { Modals, PageRoutes } from "../../utils/constants"
 
 interface SignUpWithEmailValues {
   email: string
@@ -27,7 +27,7 @@ export default function SignUpWithWallet() {
   const { showModal } = useModal()
   const onSubmit = handleSubmit((data) => {
     localStorage.setItem("data", JSON.stringify(data))
-    showModal({ modal: "CONNECT_WALLET" })
+    showModal({ modal: Modals.CONNECT_WALLET })
   })
   return (
     <Wrapper hideTopNav>

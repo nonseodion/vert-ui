@@ -12,9 +12,10 @@ import useTokens from "../../state/tokens/hooks"
 import useTokenModalInterface, {
   Steps,
 } from "../../hooks/interfaces/useTokenModalInterface"
+import { Modals } from "../../utils/constants"
 
 export default function TokenModal() {
-  const { hideModal } = useModal("TOKEN_MODAL")
+  const { hideModal } = useModal(Modals.TOKEN_MODAL)
   const { tokens, logoURIs, otherLogoURIs, otherTokens } = useTokens()
   const {
     pinnedTokens,
@@ -31,7 +32,7 @@ export default function TokenModal() {
 
   return (
     <Modal
-      name="TOKEN_MODAL"
+      name={Modals.TOKEN_MODAL}
       bodyClassNames="mt-[68px] lg:mt-[80px] mb-6 rounded-3xl !lg:w-[434px] pt-[30px] !px-0 !pb-0"
     >
       <div className="flex items-center justify-between mb-[21px] px-6">

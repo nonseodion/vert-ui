@@ -1,12 +1,15 @@
 import { useCallback, useContext, useMemo } from "react"
-import ModalContext, { Modal } from "../contexts/ModalContext"
+import ModalContext from "../contexts/ModalContext"
+import { Modals } from "../utils/constants"
 import { doNothing, handleBodyScroll } from "../utils/functions"
 
 type ModalParamsMap = {
-  [M in Modal]: M extends "RESET_PASSWORD_MODAL" ? { email: string } : null
+  [M in Modals]: M extends Modals.RESET_PASSWORD_MODAL
+    ? { email: string }
+    : null
 }
 
-interface ShowModalAttributes<M extends Modal> {
+interface ShowModalAttributes<M extends Modals> {
   onCloseCallback?: () => void
   onConfirm?: () => void
   modal: M
@@ -19,13 +22,15 @@ const emptyModalActions = {
   modalParams: null,
 }
 
-type ShowModalFunction = <M extends Modal>(attrs: ShowModalAttributes<M>) => any
+type ShowModalFunction = <M extends Modals>(
+  attrs: ShowModalAttributes<M>
+) => any
 
-const useModal = (name?: Modal) => {
+const useModal = (name?: Modals) => {
   const { modals, setModals } = useContext(ModalContext)
 
   const showModal: ShowModalFunction = useCallback(
-    <M extends Modal>(attrs: ShowModalAttributes<M>) => {
+    <M extends Modals>(attrs: ShowModalAttributes<M>) => {
       const { onCloseCallback, onConfirm, modal, modalParams } = attrs
       const newModal = {
         [modal]: {
@@ -42,7 +47,7 @@ const useModal = (name?: Modal) => {
   )
 
   const hideModal = useCallback(
-    (m?: Modal) => {
+    (m?: Modals) => {
       if (m) {
         setModals(
           modals.filter((activeModal) => Object.keys(activeModal)[0] !== m)

@@ -6,6 +6,7 @@ import ConverterSide from "./ConverterSide"
 import TokenModal from "./TokenModal"
 import useModal from "../../hooks/useModal"
 import useConverterInterface from "../../hooks/interfaces/useConverterInferface"
+import { Modals } from "../../utils/constants"
 
 export default function Converter() {
   const { showModal } = useModal()
@@ -56,7 +57,7 @@ export default function Converter() {
         <div className="flex flex-col space-y-4 mb-[15px]">
           <ConverterSide
             side="sell"
-            onTokenSelect={() => showModal({ modal: "TOKEN_MODAL" })}
+            onTokenSelect={() => showModal({ modal: Modals.TOKEN_MODAL })}
             token={sellToken}
             logo={sellLogo}
             amount={independentField === "sell" ? typedValue : sellAmount}
@@ -68,7 +69,7 @@ export default function Converter() {
             logo={buyLogo}
             amount={independentField === "buy" ? typedValue : buyAmount}
             setAmount={setBuyAmount}
-            onTokenSelect={() => showModal({ modal: "TOKEN_MODAL" })}
+            onTokenSelect={() => showModal({ modal: Modals.TOKEN_MODAL })}
           />
         </div>
         <p className="mb-[30px] text-center text-[#6C7689] text-12 font-bold">

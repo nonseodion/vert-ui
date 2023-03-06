@@ -6,7 +6,7 @@ import { Button, Wrapper } from "../../components/general"
 import { Input } from "../../components/inputs"
 import { BackButton } from "../../components/navigation"
 import useModal from "../../hooks/useModal"
-import { PageRoutes } from "../../utils/constants"
+import { PageRoutes, Modals } from "../../utils/constants"
 import { goBackConditionally } from "../../utils/functions"
 
 interface ResetPasswordValues {
@@ -41,7 +41,7 @@ export default function ResetPassword() {
     setTimeout(() => {
       setLoading(false)
       showModal({
-        modal: "RESET_PASSWORD_SUCCESSFUL_MODAL",
+        modal: Modals.RESET_PASSWORD_SUCCESSFUL_MODAL,
       })
     }, 2000)
   }

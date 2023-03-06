@@ -13,6 +13,7 @@ import getContracts from "../../utils/getContracts"
 import ResolvedToken from "../../components/transactions/ResolvedToken"
 import TokenRow from "../../components/transactions/TokenRow"
 import InactiveToken from "../../components/transactions/InactiveToken"
+import { Modals } from "../../utils/constants"
 
 export enum Steps {
   IMPORT_TOKEN = "IMPORT_TOKEN",
@@ -95,7 +96,7 @@ const useTokenModalInterface = (
     )
   )
   const [currentStep, setCurrentStep] = useState<Steps>(Steps.DEFAULT)
-  const { hideModal, isActive } = useModal("TOKEN_MODAL")
+  const { hideModal, isActive } = useModal(Modals.TOKEN_MODAL)
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedInactiveToken, setSelectedInactiveToken] = useState<
     null | [ERC20Token, string]
