@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { TableColumn } from "react-data-table-component/dist/src/DataTable/types"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { ReactComponent as Calendar } from "../../assets/icons/calendar.svg"
 import { ReactComponent as Filter } from "../../assets/icons/filter.svg"
@@ -8,12 +8,12 @@ import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
 import { ReactComponent as Cash } from "../../assets/icons/cash.svg"
 import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 import { ReactComponent as ArrowRight } from "../../assets/icons/arrow-right.svg"
-import { Wrapper } from "../../components/general"
-import Table from "../../components/general/Table"
+import { Wrapper, Table } from "../../components/general"
 import transactions, { Transaction } from "../../dummy/transactions"
-import { TABLE_ROW_SIZE } from "../../utils/constants"
+import { PageRoutes, TABLE_ROW_SIZE } from "../../utils/constants"
 import Paginator from "../../components/general/Paginator"
-import TransactionStatus from "../../components/transactions/TransactionStatus"
+import { goBackConditionally } from "../../utils/functions"
+import { TransactionStatus } from "../../components/transactions"
 
 const columns: TableColumn<Transaction>[] = [
   {
@@ -81,7 +81,9 @@ const columns: TableColumn<Transaction>[] = [
 
 export default function TransactionList() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(true)
   const displayedData = useMemo(
     () =>
       transactions.slice(TABLE_ROW_SIZE * (page - 1), TABLE_ROW_SIZE * page),
@@ -92,11 +94,22 @@ export default function TransactionList() {
     navigate(`/transactions/${transaction.id}`)
   }
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 3000)
+  }, [])
+
   return (
     <Wrapper>
       <div className="py-[23px] px-4 lg:py-[56px] lg:px-[87px]">
         <div className="flex items-center space-x-[27px]">
-          <button type="button" onClick={() => navigate(-1)}>
+          <button
+            type="button"
+            onClick={() =>
+              goBackConditionally(navigate, location, PageRoutes.HOME)
+            }
+          >
             <ArrowLeft className="path-white" />
           </button>
           <h3 className="font-bold text-white text-xl lg:text-[30px]">
@@ -148,6 +161,7 @@ export default function TransactionList() {
                 className="transactions-list"
                 data={displayedData}
                 onRowClicked={onTransactionClick}
+                loading={loading}
               />
             </div>
             <div className="md:hidden">
