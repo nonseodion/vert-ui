@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react"
 import clsx from "classnames"
 import { BrowserRouter as Router } from "react-router-dom"
+import { SkeletonTheme } from "react-loading-skeleton"
 import { Banner } from "./components/general"
 import AuthContext, { AuthStateValues } from "./contexts/AuthContext"
 import Routes from "./Routes"
@@ -10,6 +11,7 @@ import {
 } from "./utils/functions"
 import ToastDisplay from "./components/general/ToastDisplay"
 import ModalContext, { ActiveModalsArrayValue } from "./contexts/ModalContext"
+import "react-loading-skeleton/dist/skeleton.css"
 
 function App() {
   const [showBanner] = useState(true)
@@ -27,25 +29,30 @@ function App() {
     <AuthContext.Provider value={value}>
       <ModalContext.Provider value={modalStateValue}>
         <ToastDisplay />
-        <Router>
-          <div
-            className="bg-black min-h-screen"
-            onClick={() => {
-              handleProfileDropdown("hide")
-              handleMobileNavDropdown("hide")
-            }}
-            role="presentation"
-          >
-            {showBanner && <Banner />}
+        <SkeletonTheme
+          baseColor="#262626"
+          highlightColor="rgba(229, 231, 235, .4)"
+        >
+          <Router>
             <div
-              className={clsx("max-w-[1500px] mx-auto", {
-                "pt-7 md:pt-10": showBanner,
-              })}
+              className="bg-black min-h-screen"
+              onClick={() => {
+                handleProfileDropdown("hide")
+                handleMobileNavDropdown("hide")
+              }}
+              role="presentation"
             >
-              <Routes />
+              {showBanner && <Banner />}
+              <div
+                className={clsx("max-w-[1500px] mx-auto", {
+                  "pt-7 md:pt-10": showBanner,
+                })}
+              >
+                <Routes />
+              </div>
             </div>
-          </div>
-        </Router>
+          </Router>
+        </SkeletonTheme>
       </ModalContext.Provider>
     </AuthContext.Provider>
   )

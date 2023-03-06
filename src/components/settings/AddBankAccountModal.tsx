@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import { SingleValue } from "react-select"
 import { FilterOptionOption } from "react-select/dist/declarations/src/filters"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
@@ -13,30 +13,35 @@ interface AddBankAccountModalProps {
   onConfirm: (_bank_info: BankAccountDetails) => void
 }
 
+const initialState = {
+  bank_name: "",
+  account_name: "",
+  account_number: "",
+  selected_bank: { value: "", label: "" },
+}
+
 export default function AddBankAccountModal({
   adding,
   onConfirm,
   onClose,
 }: AddBankAccountModalProps) {
   const [bankInfo, setBankInfo] = useState<BankAccountDetails>({
-    bank_name: "",
-    account_name: "",
-    account_number: "",
+    ...initialState,
   })
 
   const onChange = (
-    key: "bank_name" | "account_name" | "account_number",
+    key: "account_name" | "account_number" | "selected_bank",
     value: string
   ) => {
     setBankInfo({ ...bankInfo, [key]: value })
   }
 
-  const reset = () => {
-    setBankInfo({ bank_name: "", account_name: "", account_number: "" })
-  }
+  const reset = useCallback(() => {
+    setBankInfo({ ...initialState })
+  }, [])
 
   const onBankChange = (bank: SingleValue<OptionType> | unknown | any) => {
-    onChange("bank_name", bank?.value ?? "")
+    onChange("selected_bank", bank)
   }
 
   const filterOption = (
@@ -71,6 +76,7 @@ export default function AddBankAccountModal({
               filterOption={filterOption}
               label="Bank name"
               options={banks}
+              value={bankInfo.selected_bank}
               onChange={onBankChange}
             />
             <div />

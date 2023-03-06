@@ -1,7 +1,7 @@
 import React from "react"
 import { SuccessfulSignup } from "../../components/auth"
 import { Wrapper } from "../../components/general"
-import Converter from "../../components/transactions/Converter"
+import { Converter } from "../../components/transactions"
 
 export default function Home() {
   return (

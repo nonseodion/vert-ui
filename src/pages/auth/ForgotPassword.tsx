@@ -18,7 +18,7 @@ export default function ForgotPassword() {
   const { showModal, hideModal } = useModal()
   const navigate = useNavigate()
   const location = useLocation()
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const {
     control,
     formState: { errors },

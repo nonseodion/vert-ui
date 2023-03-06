@@ -20,7 +20,11 @@ import {
   SecuritySettings,
   SetPassword,
 } from "./pages/settings"
-import { TransactionDetail, TransactionList } from "./pages/transactions"
+import {
+  TransactionDetail,
+  TransactionList,
+  SelectBankAccount,
+} from "./pages/transactions"
 import Error from "./pages/utils/Error"
 import NotFound from "./pages/utils/NotFound"
 import { PageRoutes } from "./utils/constants"
@@ -125,6 +129,14 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <TransactionDetail />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PageRoutes.SELECT_BANK_ACCOUNT}
+        element={
+          <ProtectedRoute>
+            <SelectBankAccount />
           </ProtectedRoute>
         }
       />

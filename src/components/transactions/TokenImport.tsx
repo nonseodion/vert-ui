@@ -5,8 +5,8 @@ import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
 import { Button } from "../general"
 
 export default function TokenImport() {
-  const [confirmed, setConfirmed] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [confirmed, setConfirmed] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   return (
     <div className="px-6">
       <div className="p-[17px] flex space-x-3 items-center border border-primary rounded-2xl">

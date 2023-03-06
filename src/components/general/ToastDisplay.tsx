@@ -7,7 +7,7 @@ export default function ToastDisplay() {
       {(t: Toast) => (
         <ToastBar toast={t}>
           {({ message }) => (
-            <div className="py-[27.5px]  w-[312px] rounded-2xl px-[15px] bg-[#E6F5ED]">
+            <div className="py-[14.5px] border-[#40B274]/[.8] w-[312px] rounded-2xl px-[15px] bg-[#E6F5ED]">
               <button
                 type="button"
                 className="absolute top-3 right-3"

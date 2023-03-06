@@ -1,4 +1,6 @@
-import React, { useState } from "react"
+import React, { useState, useRef, useEffect } from "react"
+import { toast } from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
 import { ReactComponent as Proceed } from "../../assets/icons/proceed.svg"
 import { ReactComponent as Refresh } from "../../assets/icons/refresh.svg"
 import { ReactComponent as Retry } from "../../assets/icons/retry.svg"
@@ -10,18 +12,28 @@ import { doNothing } from "../../utils/functions"
 import useModal from "../../hooks/useModal"
 import { Button } from "../general"
 import ApproveTransactionModal from "./ApproveTranasactionModal"
+import { PageRoutes } from "../../utils/constants"
 
 export default function Converter() {
+  const navigate = useNavigate()
   const { showModal, modalIsOpen, hideModal } = useModal()
   const [amountToSell, setAmountToSell] = useState<number | null>(null)
   const [amountToBuy, setAmountToBuy] = useState<number | null>(null)
   const [transactionApproved, setTransactionApproved] = useState<boolean>(false)
 
+  const approveModalVisibility = modalIsOpen("APPROVE_TRANSACTION")
+  const approveModalVisibilityRef = useRef(approveModalVisibility)
+
+  useEffect(() => {
+    approveModalVisibilityRef.current = approveModalVisibility
+  }, [approveModalVisibility])
+
   const startApprovalProcess = () => {
     showModal({ modal: "APPROVE_TRANSACTION" })
     setTimeout(() => {
-      if (modalIsOpen("APPROVE_TRANSACTION")) {
+      if (approveModalVisibilityRef.current) {
         setTransactionApproved(true)
+        toast.success("Transaction approved successfully.")
         hideModal("APPROVE_TRANSACTION")
       }
     }, 3000)
@@ -91,6 +103,7 @@ export default function Converter() {
               className="rounded-lg !py-0 h-[48px] w-full"
               text="Proceed"
               icon={<Proceed />}
+              onClick={() => navigate(PageRoutes.SELECT_BANK_ACCOUNT)}
             />
           ) : (
             <Button

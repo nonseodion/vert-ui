@@ -16,6 +16,7 @@ export enum PageRoutes {
   TRANSACTION_DETAIL = "/transactions/:transactionId",
   FORGOT_PASSWORD = "/forgot-password",
   RESET_PASSWORD = "/reset-password",
+  SELECT_BANK_ACCOUNT = "/select_bank_account",
   ERROR = "/error",
 }
 

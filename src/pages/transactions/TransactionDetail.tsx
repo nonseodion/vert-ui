@@ -1,20 +1,28 @@
 import React from "react"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { ReactComponent as Right } from "../../assets/icons/right.svg"
 import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
 import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 
 import { Wrapper } from "../../components/general"
+import { goBackConditionally } from "../../utils/functions"
+import { PageRoutes } from "../../utils/constants"
 
 export default function TransactionDetail() {
   const navigate = useNavigate()
+  const location = useLocation()
 
   return (
     <Wrapper>
       <div className="py-[23px] px-4 lg:py-[56px] lg:px-[87px]">
         <div className="flex items-center space-x-[27px]">
-          <button type="button" onClick={() => navigate(-1)}>
+          <button
+            type="button"
+            onClick={() =>
+              goBackConditionally(navigate, location, PageRoutes.HOME)
+            }
+          >
             <ArrowLeft className="path-white" />
           </button>
           <h3 className="font-bold text-white text-xl lg:text-[30px]">
