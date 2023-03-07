@@ -6,7 +6,7 @@ import { Navigator } from "../../components/navigation"
 import { SettingsContent, UnlinkWalletModal } from "../../components/settings"
 import { WalletListSkeleton } from "../../components/skeletons"
 import { userWallets } from "../../dummy/currencies"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
 
 export default function ManageWallets() {
   const { showModal, hideModal } = useModal()

@@ -33,7 +33,7 @@ export default function TokenImport() {
               type="button"
               className="border-none outline-none flex items-center space-x-[5.45px]"
             >
-              <span className="text-13 text-lightBlue">BscScan</span>
+              <span className="text-13 text-purple">BscScan</span>
               <LinkIcon />
             </button>
           </div>

@@ -6,7 +6,7 @@ import { ResetPasswordModal } from "../../components/auth"
 import { Button, Wrapper } from "../../components/general"
 import { Input } from "../../components/inputs"
 import { BackButton } from "../../components/navigation"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
 import { PageRoutes } from "../../utils/constants"
 import { goBackConditionally } from "../../utils/functions"
 
@@ -74,6 +74,7 @@ export default function ForgotPassword() {
                   hasError={!!errors.email}
                   autoFocus
                   {...field}
+                  ref={null}
                 />
               )}
             />

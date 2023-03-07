@@ -65,9 +65,9 @@ export default function AddBankAccountModal({
           onClick={() => onClose()}
           className="absolute top-4 right-4 lg:top-[32.57px] lg:right-[32.57px]"
         >
-          <Exit />
+          <Exit className="fill-[#929AA5]" />
         </button>
-        <h3 className="text-black text-[25px] font-semibold mb-[40px]">
+        <h3 className="text-black text-25 font-semibold mb-[40px]">
           Personal Bank Account
         </h3>
         <form className="flex flex-col space-y-[30px]">

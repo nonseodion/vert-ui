@@ -3,12 +3,14 @@ import clsx from "classnames"
 import { ReactComponent as Bank } from "../../assets/icons/bank.svg"
 import { ReactComponent as Pencil } from "../../assets/icons/pencil.svg"
 import { ReactComponent as Trash } from "../../assets/icons/trash.svg"
+import { doNothing } from "../../utils/functions"
 
 interface BankAccountProps {
   bank_name: string
   account_name: string
   account_number: string
   className?: string
+  onClick?: (_: any) => void
 }
 
 export default function BankAccount({
@@ -16,12 +18,16 @@ export default function BankAccount({
   account_number,
   bank_name,
   className,
+  onClick,
 }: BankAccountProps) {
   return (
     <div
+      role="presentation"
+      onClick={onClick}
       className={clsx(
         className,
-        "p-[21px] flex justify-between items-center bg-white rounded-lg"
+        "p-[21px] flex justify-between items-center bg-white rounded-lg",
+        { "cursor-pointer": onClick }
       )}
     >
       <div className="flex space-x-[10px] items-center">
@@ -37,7 +43,7 @@ export default function BankAccount({
       </div>
       <div className="flex items-center space-x-[24.72px] flex-shrink-0 ml-3">
         <button type="button">
-          <Pencil />
+          <Pencil className="fill-black/[.4]" />
         </button>
         <button type="button">
           <Trash />
@@ -49,4 +55,5 @@ export default function BankAccount({
 
 BankAccount.defaultProps = {
   className: "",
+  onClick: doNothing,
 }

@@ -3,7 +3,7 @@ import OtpInput from "react-otp-input"
 import { useLocation, useNavigate } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { Button, Loader, Wrapper } from "../../components/general"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
 import { PageRoutes } from "../../utils/constants"
 import { doNothing, goBackConditionally } from "../../utils/functions"
 

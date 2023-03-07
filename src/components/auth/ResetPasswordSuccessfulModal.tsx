@@ -1,7 +1,7 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import { ReactComponent as Successful } from "../../assets/icons/successful.svg"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
 import { PageRoutes } from "../../utils/constants"
 import { Button, Modal } from "../general"
 

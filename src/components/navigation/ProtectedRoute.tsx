@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import useAuth from "../../hooks/useAuth"
+import { useAuth } from "../../hooks"
 import { PageRoutes } from "../../utils/constants"
 
 interface ProtectedRouteProps {

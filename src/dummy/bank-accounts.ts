@@ -5,7 +5,7 @@ const bankAccounts = [
     account_name: "ELUJOBA EMMANUEL AYOBAMI",
   },
   {
-    account_number: "0245786573",
+    account_number: "0245786533",
     bank_name: "GT Bank Plc",
     account_name: "CHRISTOPHER MAURICE BROWN",
   },

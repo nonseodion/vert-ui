@@ -6,7 +6,7 @@ import TokenImport from "./TokenImport"
 import CustomTokens from "./CustomTokens"
 import SelectToken from "./SelectToken"
 import { Modal } from "../general"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
 
 const steps = {
   IMPORT_TOKEN: "IMPORT_TOKEN",
@@ -55,7 +55,7 @@ export default function TokenModal() {
             onClick={() => setCurrentStep(steps.DEFAULT)}
             className="border-none outline-none"
           >
-            <Exit className="h-3 w-3 path-primary" />
+            <Exit className="h-3 w-3 path-primary fill-[#929AA5]" />
           </button>
         )}
       </div>

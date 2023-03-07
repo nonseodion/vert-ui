@@ -24,6 +24,7 @@ import {
   TransactionDetail,
   TransactionList,
   SelectBankAccount,
+  ProcessTransaction,
 } from "./pages/transactions"
 import Error from "./pages/utils/Error"
 import NotFound from "./pages/utils/NotFound"
@@ -137,6 +138,14 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <SelectBankAccount />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PageRoutes.PROCESS_TRANSACTION}
+        element={
+          <ProtectedRoute>
+            <ProcessTransaction />
           </ProtectedRoute>
         }
       />

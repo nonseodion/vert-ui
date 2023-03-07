@@ -5,13 +5,9 @@ import { SkeletonTheme } from "react-loading-skeleton"
 import { Banner } from "./components/general"
 import AuthContext, { AuthStateValues } from "./contexts/AuthContext"
 import Routes from "./Routes"
-import {
-  handleMobileNavDropdown,
-  handleProfileDropdown,
-} from "./utils/functions"
+import { hideAllHideables } from "./utils/functions"
 import ToastDisplay from "./components/general/ToastDisplay"
 import ModalContext, { ActiveModalsArrayValue } from "./contexts/ModalContext"
-import "react-loading-skeleton/dist/skeleton.css"
 
 function App() {
   const [showBanner] = useState(true)
@@ -37,8 +33,7 @@ function App() {
             <div
               className="bg-black min-h-screen"
               onClick={() => {
-                handleProfileDropdown("hide")
-                handleMobileNavDropdown("hide")
+                hideAllHideables()
               }}
               role="presentation"
             >

@@ -40,7 +40,7 @@ export default function Button({
       type={type === "submit" ? "submit" : "button"}
       onClick={onClick}
       className={clsx(
-        "text-white disabled:cursor-pointer bg-primary py-[14px] px-4 rounded-xl",
+        "text-white disabled:cursor-not-allowed bg-primary py-[14px] px-4 rounded-xl",
         { "bg-transparent": background === "transparent" },
         { "!text-black": textColor === "dark" },
         { "border border-primary": bordered },

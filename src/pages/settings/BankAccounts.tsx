@@ -7,7 +7,7 @@ import { AddBankAccountModal, SettingsContent } from "../../components/settings"
 import { BanksSkeleton } from "../../components/skeletons"
 import { BankAccount } from "../../components/transactions"
 import { BankAccountDetails } from "../../dummy/currencies"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
 
 export default function BankAccounts() {
   const [accounts, setAccounts] = useState<BankAccountDetails[]>([])

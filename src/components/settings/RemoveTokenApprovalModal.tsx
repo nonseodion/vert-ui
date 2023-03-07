@@ -1,5 +1,5 @@
 import React from "react"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
 import { WalletConfirmation } from "../general"
 import Modal from "../general/Modal"
 

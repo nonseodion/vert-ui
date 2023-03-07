@@ -4,7 +4,7 @@ import Skeleton from "react-loading-skeleton"
 export default function TokenApprovalsSkeleton() {
   return (
     <div className="flex flex-col space-y-[13px]">
-      <div className="h-[71px] flex w-full px-5 items-center justify-between bg-white border-y-[0.25px] border-lightBlue">
+      <div className="overflow-x-hidden h-[71px] flex w-full px-5 items-center justify-between bg-white border-y-[0.25px] border-lightBlue">
         <Skeleton
           baseColor="#F9FAFB"
           highlightColor="#E5E7EB"
@@ -21,7 +21,7 @@ export default function TokenApprovalsSkeleton() {
           className="!w-[161px] f rounded-lglex justify-end"
         />
       </div>
-      <div className="h-[71px] flex w-full px-5 items-center justify-between bg-white border-y-[0.25px] border-lightBlue">
+      <div className="overflow-x-hidden h-[71px] flex w-full px-5 items-center justify-between bg-white border-y-[0.25px] border-lightBlue">
         <Skeleton
           baseColor="#F9FAFB"
           highlightColor="#E5E7EB"
@@ -38,7 +38,7 @@ export default function TokenApprovalsSkeleton() {
           className="!w-[161px] f rounded-lglex justify-end"
         />
       </div>
-      <div className="h-[71px] flex w-full px-5 items-center justify-between bg-white border-y-[0.25px] border-lightBlue">
+      <div className="overflow-x-hidden h-[71px] flex w-full px-5 items-center justify-between bg-white border-y-[0.25px] border-lightBlue">
         <Skeleton
           baseColor="#F9FAFB"
           highlightColor="#E5E7EB"
@@ -55,7 +55,7 @@ export default function TokenApprovalsSkeleton() {
           className="!w-[161px] f rounded-lglex justify-end"
         />
       </div>
-      <div className="h-[71px] flex w-full px-5 items-center justify-between bg-white border-top-[0.25px] border-lightBlue">
+      <div className="overflow-x-hidden h-[71px] flex w-full px-5 items-center justify-between bg-white border-top-[0.25px] border-lightBlue">
         <Skeleton
           baseColor="#F9FAFB"
           highlightColor="#E5E7EB"

@@ -5,14 +5,14 @@ import { ReactComponent as Proceed } from "../../assets/icons/proceed.svg"
 import { ReactComponent as Refresh } from "../../assets/icons/refresh.svg"
 import { ReactComponent as Retry } from "../../assets/icons/retry.svg"
 import { ReactComponent as Retry2 } from "../../assets/icons/retry-2.svg"
-import { ReactComponent as Question } from "../../assets/icons/question.svg"
 import ConverterSide from "./ConverterSide"
 import TokenModal from "./TokenModal"
-import { doNothing } from "../../utils/functions"
-import useModal from "../../hooks/useModal"
-import { Button } from "../general"
-import ApproveTransactionModal from "./ApproveTranasactionModal"
+import { doNothing, getRandomBoolean } from "../../utils/functions"
+import { useModal } from "../../hooks"
+import { Button, Info } from "../general"
+import ApproveTransactionModal from "./ApproveTransactionModal"
 import { PageRoutes } from "../../utils/constants"
+import ConverterCurrencySelect from "./ConverterCurrencySelect"
 
 export default function Converter() {
   const navigate = useNavigate()
@@ -30,13 +30,19 @@ export default function Converter() {
 
   const startApprovalProcess = () => {
     showModal({ modal: "APPROVE_TRANSACTION" })
-    setTimeout(() => {
-      if (approveModalVisibilityRef.current) {
-        setTransactionApproved(true)
-        toast.success("Transaction approved successfully.")
-        hideModal("APPROVE_TRANSACTION")
-      }
-    }, 3000)
+    const approvalSuccessful = getRandomBoolean()
+    if (approvalSuccessful) {
+      setTimeout(() => {
+        if (approveModalVisibilityRef.current) {
+          setTransactionApproved(true)
+          toast.success("Transaction approved successfully.")
+          hideModal("APPROVE_TRANSACTION")
+        }
+      }, 3000)
+    } else {
+      hideModal("APPROVE_TRANSACTION")
+      toast.error("Transaction failed")
+    }
   }
 
   const isDisabled = !amountToBuy || !amountToSell
@@ -63,9 +69,7 @@ export default function Converter() {
               <span> = </span>
               <span>206,611.10</span>
             </p>
-            <select className="ml-1 font-bold text-13 bg-transparent mt-[-2px]">
-              <option value="NGN">NGN</option>
-            </select>
+            <ConverterCurrencySelect />
           </div>
           <button
             type="button"
@@ -92,12 +96,18 @@ export default function Converter() {
           <span className="text-primary">Rate:</span> 1 USD ≈ 760.22 NGN
         </p>
         <div className="flex flex-col space-y-[3px]">
-          <div className="flex space-x-[3px] items-center">
-            <span className="text-[8px] text-purple font-medium">
-              Why Approve?{" "}
-            </span>
-            <Question />
-          </div>
+          <Info text="Why Approve?" tooltip_id="why-approve">
+            <div className="flex flex-col space-y-1 max-w-[273px]">
+              <h3 className="!text-tooltip text-sm font-inter font-semibold leading-5">
+                Give permission to exchange BNB
+              </h3>
+              <p className="!text-tooltip font-inter text-12 leading-5">
+                To continue, you need to allow Vert finance contracts to use
+                your BNB. This has to be done only once for each token.{" "}
+                <span className="text-primary">Learn more</span>
+              </p>
+            </div>
+          </Info>
           {transactionApproved ? (
             <Button
               className="rounded-lg !py-0 h-[48px] w-full"
@@ -107,7 +117,7 @@ export default function Converter() {
             />
           ) : (
             <Button
-              className="disabled:bg-disabled rounded-lg py-[17px] h-[48px] w-full text-white disabled:!text-[black]/[.3] text-sm font-semibold leading-[2px] disabled:cursor-not-allowed"
+              className="disabled:bg-disabled rounded-lg py-[17px] h-[48px] w-full text-white disabled:!text-[black]/[.3] text-sm font-semibold leading-[2px]"
               text={isDisabled ? "Enter amount to change" : "Approve BNB"}
               fullWidth
               disabled={isDisabled}

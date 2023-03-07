@@ -3,7 +3,7 @@ import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { Button, Modal, WalletConfirmation } from "../general"
 import { providers } from "../../dummy/providers"
 import { doNothing } from "../../utils/functions"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
 
 export default function ConnectWallet() {
   const { hideModal } = useModal("CONNECT_WALLET")
@@ -26,7 +26,7 @@ export default function ConnectWallet() {
             type="button"
             onClick={() => hideModal()}
           >
-            <Exit />
+            <Exit className="fill-[#929AA5]" />
           </button>
           <h3 className="text-black text-[22px] font-bold mb-[10.5px]">
             Connect Wallet

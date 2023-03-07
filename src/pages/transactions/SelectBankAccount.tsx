@@ -8,7 +8,7 @@ import { Wrapper } from "../../components/general"
 import { BankAccount } from "../../components/transactions"
 import fakeBankAccounts from "../../dummy/bank-accounts"
 import { SelectBankListSkeleton } from "../../components/skeletons"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
 import { AddBankAccountModal } from "../../components/settings"
 import { BankAccountDetails } from "../../dummy/currencies"
 
@@ -58,7 +58,7 @@ export default function SelectBankAccount() {
             >
               <ArrowLeft />
             </button>
-            <h2 className="text-black text-center text-xl md:text-[25px] font-semibold leading-[37.5px]">
+            <h2 className="text-black text-center text-xl md:text-25 font-semibold leading-[37.5px]">
               Select a Bank Account
             </h2>
             <button type="button" className="opacity-0 pointer-events-none">
@@ -88,14 +88,14 @@ export default function SelectBankAccount() {
             {!loading && (
               <ul className="flex flex-col space-y-4">
                 {bankAccounts.map((account) => (
-                  <li key={account.account_number}>
-                    <BankAccount
-                      className="bg-[#F4FFF2]"
-                      bank_name={account.bank_name}
-                      account_name={account.account_name}
-                      account_number={account.account_number}
-                    />
-                  </li>
+                  <BankAccount
+                    key={account.account_number}
+                    onClick={() => navigate(PageRoutes.PROCESS_TRANSACTION)}
+                    className="bg-[#F4FFF2]"
+                    bank_name={account.bank_name}
+                    account_name={account.account_name}
+                    account_number={account.account_number}
+                  />
                 ))}
               </ul>
             )}

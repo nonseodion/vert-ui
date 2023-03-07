@@ -8,7 +8,7 @@ import {
   SettingsContent,
   RemoveTokenApprovalModal,
 } from "../../components/settings"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
 import { BackButton } from "../../components/navigation"
 import { goBackConditionally } from "../../utils/functions"
 import { PageRoutes } from "../../utils/constants"

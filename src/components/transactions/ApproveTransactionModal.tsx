@@ -1,6 +1,6 @@
 import React from "react"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
 import { Button, Loader, Modal } from "../general"
 
 export default function ApproveTransactionModal() {
@@ -8,11 +8,11 @@ export default function ApproveTransactionModal() {
   return (
     <Modal name="APPROVE_TRANSACTION" bodyClassNames="!px-[30px] !py-5">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-[25px] text-black">
+        <h3 className="font-semibold text-25 text-black">
           Approve transaction
         </h3>
         <button type="button" onClick={() => hideModal()}>
-          <Exit />
+          <Exit className="fill-[#929AA5]" />
         </button>
       </div>
       <div className="py-[62.5px] flex items-center justify-center">

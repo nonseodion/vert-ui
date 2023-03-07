@@ -36,7 +36,7 @@ export default function ConverterSide({
         <div className="flex flex-col space-y-[5px]">
           <div className="flex-1">
             <input
-              className="w-full border-none outline-none focus:outline-none placeholder:text-placeholder text-xl"
+              className="w-full font-medium border-none outline-none focus:outline-none placeholder:text-placeholder text-xl"
               placeholder="0.0"
               value={value ?? ""}
               onChange={({ target }) =>
