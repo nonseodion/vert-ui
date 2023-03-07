@@ -27,6 +27,7 @@ import {
   exchangeAtom,
   handleSetExchangeAtomCreator,
 } from "../../state/exchange/atoms"
+import { getTokenLogoURL } from "../../utils"
 
 let independentField: "sell" | "buy"
 
@@ -38,11 +39,11 @@ interface ReturnTypes {
     value: { token: ERC20Token; logo: string }
   }) => void
   setSellAmount: (_: string) => void
-  sellLogo: string
+  sellLogos: string[]
 
   buyToken: Fiat
   buyAmount: string
-  buyLogo: string
+  buyLogos: string[]
   setBuyAmount: (_: string) => void
 
   typedValue: string
@@ -228,12 +229,12 @@ const useConverterInterface = (): ReturnTypes => {
     sellToken,
     setSellToken,
     setSellAmount: setSellAmount1,
-    sellLogo,
+    sellLogos: [sellLogo, getTokenLogoURL(sellToken) ?? ""],
 
     buyToken,
     buyAmount:
       buyAmount === "" ? buyAmount : removeTrailingZeros(buyAmount.toFixed()),
-    buyLogo: ngnLogo,
+    buyLogos: [ngnLogo],
     setBuyAmount: setBuyAmount1,
 
     typedValue,

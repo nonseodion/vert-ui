@@ -1,7 +1,8 @@
 import React from "react"
 import { ERC20Token } from "@pancakeswap/sdk"
-import TokenImage from "./TokenImage"
 import { Button } from "../general"
+import { getTokenLogoURL } from "../../utils"
+import CurrencyLogo from "./CurrencyLogo"
 
 interface ResolvedTokenProps {
   token: ERC20Token
@@ -19,7 +20,10 @@ export default function ResolvedToken({
     <div className="pt-6 h-[320px] px-6" key={address}>
       <div className="justify-between flex items-center">
         <div className="flex space-x-4 items-center">
-          <TokenImage token={token} resolved url={logo} />
+          <CurrencyLogo
+            currency={token}
+            srcs={[logo, getTokenLogoURL(token) ?? ""]}
+          />
           <div className="flex flex-col space-y-[3.5px]">
             <h4 className="font-medium text-base text-black">{name}</h4>
             <span className="text-[13px] text-lightBlue">{symbol}</span>

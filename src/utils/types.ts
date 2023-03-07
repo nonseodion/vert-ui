@@ -6,3 +6,12 @@ export enum LOADSTATE {
   UNLOADED = "unloaded",
   LOADED = "loaded",
 }
+
+export interface TokenInfo {
+  readonly chainId: number
+  readonly address: `0x${string}`
+  readonly name: string
+  readonly decimals: number
+  readonly symbol: string
+  readonly logoURI?: string
+}

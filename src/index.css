@@ -86,3 +86,16 @@ html.hide-overflow {
   background: #e6f5ed !important;
   padding: 0 !important;
 }
+
+.pinnedToken > img,
+.pinnedToken > div:first-child,
+.converter-side > img,
+.converter-side > div:first-child {
+  height: 24px !important;
+  width: 24px !important;
+}
+
+.pinnedToken > div:first-child span,
+.converter-side > div:first-child span {
+  font-size: 10px !important;
+}

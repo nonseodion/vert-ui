@@ -4,7 +4,6 @@ import { useAtom } from "jotai"
 import { groupBy, uniqBy } from "lodash"
 import { activeChainId } from "../../utils/config"
 import {
-  TokenInfo,
   TokenList,
   defaultTokensAtom,
   defaultTokensStateAtom,
@@ -12,7 +11,7 @@ import {
   otherTokensStateAtom,
 } from "./atoms"
 import { defaultTokenInfo as initialTokenInfo } from "../../utils/constants/tokens"
-import { LOADSTATE } from "../../utils/types"
+import { LOADSTATE, TokenInfo } from "../../utils/types"
 import {
   TokenResponse,
   DEFAULT_TOKEN_LIST_URLS,
@@ -20,6 +19,7 @@ import {
 } from "../../utils/constants/tokens/urls"
 import { fetch } from "../../utils/api"
 import { isAddress } from "../../utils"
+import { LocalStorage, ONE_DAY_IN_MILLISECONDS } from "../../utils/constants"
 
 interface UseTokensReturnType {
   tokens: ERC20Token[]
@@ -28,20 +28,49 @@ interface UseTokensReturnType {
   otherLogoURIs: string[]
 }
 
+type LocalTokenInfo = {
+  [key: string]: { tokenInfo: TokenInfo[]; timestamp: number }
+}
+
 // get all tokens from urls
 const fetchTokenInfo = async (urls: string[]): Promise<TokenInfo[]> => {
-  const calls: Promise<TokenResponse | null>[] = []
+  const calls: (Promise<TokenResponse | null> | TokenResponse)[] = []
+  const localTokenInfo: LocalTokenInfo = JSON.parse(
+    localStorage.getItem(LocalStorage.TOKEN_INFO) || "{}"
+  )
+  const timestamp1 = Date.now()
+
   urls.forEach((url) => {
-    calls.push(fetch<TokenResponse>(url))
+    const { tokenInfo, timestamp } = localTokenInfo[url] ?? {}
+    calls.push(
+      tokenInfo && timestamp + ONE_DAY_IN_MILLISECONDS >= timestamp1
+        ? ({ tokens: tokenInfo } as TokenResponse)
+        : fetch<TokenResponse>(url)
+    )
   })
   const results = (await Promise.all(calls)).filter(
     (result) => result !== null
   ) as TokenResponse[]
   let tokenInfo: TokenInfo[] = []
-  results.forEach((result) => {
+
+  results.forEach((result, i) => {
+    const { timestamp } = localTokenInfo[urls[i]] ?? { timestamp: 0 }
+    const timestamp2 = Date.now()
+    // timestamp1 & timestamp2 are used to handle time change between the two comparisons
+    if (
+      timestamp + ONE_DAY_IN_MILLISECONDS + timestamp2 - timestamp1 <=
+      timestamp2
+    ) {
+      localTokenInfo[urls[i]] = {
+        tokenInfo: result.tokens,
+        timestamp: Date.now(),
+      }
+    }
+
     tokenInfo = [...tokenInfo, ...result.tokens]
   })
 
+  localStorage.setItem(LocalStorage.TOKEN_INFO, JSON.stringify(localTokenInfo))
   return tokenInfo
 }
 
@@ -157,16 +186,6 @@ const useTokens = (): UseTokensReturnType => {
     setOtherTokensState,
     defaultTokens,
   ])
-
-  // set local tokens as default upon initial load
-  useEffect(() => {
-    const tokenList = groupBy(
-      initialTokenInfo,
-      (tokenInfo) => tokenInfo.chainId
-    ) as TokenList
-    setDefaultTokens(tokenList)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const [activeTokens, activelogoURIs] = useMemo(
     (): [ERC20Token[], string[]] =>

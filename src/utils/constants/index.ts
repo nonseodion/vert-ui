@@ -33,6 +33,10 @@ export enum Modals {
   RESET_PASSWORD_SUCCESSFUL_MODAL = "reset_password_successful_modal",
 }
 
+export enum LocalStorage {
+  TOKEN_INFO = "token_Info",
+}
+
 export const BIPS_BASE = JSBI.BigInt(10000)
 export const BETTER_TRADE_LESS_HOPS_THRESHOLD = new Percent(
   JSBI.BigInt(50),
@@ -45,3 +49,5 @@ export type ChainMap<T> = {
 export type ChainTokenList = ChainMap<Token[]>
 
 export const TABLE_ROW_SIZE = 6
+
+export const ONE_DAY_IN_MILLISECONDS = 86400000

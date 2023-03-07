@@ -1,16 +1,8 @@
 import { atom } from "jotai"
-
+import { groupBy } from "lodash"
 import { ChainId } from "../../utils/config"
-import { LOADSTATE } from "../../utils/types"
-
-export interface TokenInfo {
-  readonly chainId: number
-  readonly address: `0x${string}`
-  readonly name: string
-  readonly decimals: number
-  readonly symbol: string
-  readonly logoURI?: string
-}
+import { LOADSTATE, TokenInfo } from "../../utils/types"
+import { defaultTokenInfo } from "../../utils/constants/tokens"
 
 export type TokenList = {
   [key in ChainId]: TokenInfo[]
@@ -23,7 +15,9 @@ const EMPTY_LIST = {
 
 export const defaultTokensStateAtom = atom<LOADSTATE>(LOADSTATE.UNLOADED)
 
-export const defaultTokensAtom = atom<TokenList>(EMPTY_LIST)
+export const defaultTokensAtom = atom<TokenList>(
+  groupBy(defaultTokenInfo, (tokenInfo) => tokenInfo.chainId) as TokenList
+)
 
 export const otherTokensStateAtom = atom<LOADSTATE>(LOADSTATE.UNLOADED)
 

@@ -3,12 +3,13 @@ import { Currency } from "@pancakeswap/sdk"
 // import { buyableCurrencies, sellableCurrencies } from "../../dummy/currencies"
 import { ReactComponent as DropdownIcon } from "../../assets/icons/arrow-down.svg"
 import Fiat from "../../utils/Fiat"
+import TokenImage from "./CurrencyLogo"
 
 export interface ConverterSideProps {
   side: "sell" | "buy"
   token: Fiat | Currency
   amount: string
-  logo: string
+  logos: string[]
   setAmount: (amount: string) => void
   onTokenSelect: (_: any) => void
 }
@@ -18,7 +19,7 @@ export default function ConverterSide({
   onTokenSelect,
   token,
   amount,
-  logo,
+  logos,
   setAmount,
 }: ConverterSideProps) {
   return (
@@ -52,12 +53,8 @@ export default function ConverterSide({
           onClick={onTokenSelect}
         >
           <div className="w-[130px] h-[40px] flex space-x-[10.1px] justify-center items-center rounded border border-borderLight">
-            <div className="flex space-x-4 items-center">
-              <img
-                src={logo}
-                alt={`${token.symbol} logo`}
-                className="h-6 w-6 rounded-xl"
-              />
+            <div className="flex space-x-4 items-center converter-side">
+              <TokenImage currency={token} srcs={logos} />
               <span className="font-semibold text-black text-base">
                 {token.symbol}
               </span>

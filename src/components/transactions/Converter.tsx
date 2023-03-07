@@ -13,8 +13,8 @@ export default function Converter() {
   const {
     buyToken,
     sellToken,
-    sellLogo,
-    buyLogo,
+    sellLogos,
+    buyLogos,
     typedValue,
     buyAmount,
     setSellAmount,
@@ -59,14 +59,14 @@ export default function Converter() {
             side="sell"
             onTokenSelect={() => showModal({ modal: Modals.TOKEN_MODAL })}
             token={sellToken}
-            logo={sellLogo}
+            logos={sellLogos}
             amount={independentField === "sell" ? typedValue : sellAmount}
             setAmount={setSellAmount}
           />
           <ConverterSide
             side="buy"
             token={buyToken}
-            logo={buyLogo}
+            logos={buyLogos}
             amount={independentField === "buy" ? typedValue : buyAmount}
             setAmount={setBuyAmount}
             onTokenSelect={() => showModal({ modal: Modals.TOKEN_MODAL })}

@@ -1,4 +1,4 @@
-import { TokenInfo } from "../../../state/tokens/atoms"
+import { TokenInfo } from "../../types"
 
 export const PANCAKE_EXTENDED =
   "https://tokens.pancakeswap.finance/pancakeswap-extended.json"

@@ -1,8 +1,9 @@
-import { BigintIsh, JSBI } from "@pancakeswap/sdk"
+import { BigintIsh, ChainId, ERC20Token, JSBI } from "@pancakeswap/sdk"
 import { getAddress } from "ethers/lib/utils"
 import { memoize } from "lodash"
 import { Location, NavigateFunction } from "react-router-dom"
 import { PageRoutes } from "./constants"
+import { activeChainId } from "./config"
 
 export const doNothing = (): void => {}
 
@@ -63,17 +64,6 @@ export const shortenAddress = memoize((value: string): string => {
   return `${address.slice(0, 5)}...${address.slice(-3)}`
 })
 
-export const checkIfImageExists = (url: string): Promise<boolean> =>
-  new Promise<boolean>((res) => {
-    const img = new Image()
-    img.onload = () => {
-      res(true)
-    }
-    img.onerror = () => {
-      res(false)
-    }
-    img.src = url
-  })
 export const canGoBack = (location: Location) => location.key !== "default"
 
 export const goBackConditionally = (
@@ -87,3 +77,33 @@ export const goBackConditionally = (
   }
   navigate(page)
 }
+
+const mapping = {
+  [ChainId.BSC]: "smartchain",
+  [ChainId.ETHEREUM]: "ethereum",
+  [ChainId.BSC_TESTNET]: "",
+}
+
+export const getTokenLogoURL = memoize(
+  (token?: ERC20Token) => {
+    if (token && mapping[activeChainId]) {
+      return `https://assets-cdn.trustwallet.com/blockchains/${
+        mapping[activeChainId]
+      }/assets/${getAddress(token.address)}/logo.png`
+    }
+    return null
+  },
+  (t) => `${t?.chainId}#${t?.address}`
+)
+
+export const getTokenLogoURLByAddress = memoize(
+  (address?: string, chainId?: number) => {
+    if (address && chainId && mapping[activeChainId]) {
+      return `https://assets-cdn.trustwallet.com/blockchains/${
+        mapping[activeChainId]
+      }/assets/${getAddress(address)}/logo.png`
+    }
+    return null
+  },
+  (address, chainId) => `${chainId}#${address}`
+)

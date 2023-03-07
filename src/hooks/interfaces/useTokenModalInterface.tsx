@@ -14,6 +14,8 @@ import ResolvedToken from "../../components/transactions/ResolvedToken"
 import TokenRow from "../../components/transactions/TokenRow"
 import InactiveToken from "../../components/transactions/InactiveToken"
 import { Modals } from "../../utils/constants"
+import { Balance } from "../../state/balances/hooks"
+// import useWallet from "../../state/auth/useWallet"
 
 export enum Steps {
   IMPORT_TOKEN = "IMPORT_TOKEN",
@@ -32,6 +34,7 @@ interface ReturnTypes {
   currentStep: Steps
   setCurrentStep: React.Dispatch<React.SetStateAction<Steps>>
   selectedInactiveToken: [ERC20Token, string] | null
+  balances: Balance[]
 }
 
 const { erc20Token } = getContracts()
@@ -54,27 +57,37 @@ const tokenstoElements = (
     token: ERC20Token
     logo: string
     handleClick: (token: ERC20Token, logo: string) => void
-  }) => JSX.Element
+    balance?: Balance
+  }) => JSX.Element,
+  balances?: Balance[]
 ): JSX.Element[] => {
   const query = searchQuery.trim().toLowerCase()
+  const filteredBalances: Balance[] = []
 
   return (
     tokens
       .map<[ERC20Token, string]>((token, index) => [token, logos[index]])
       // filter tokens with searchQuery
-      .filter(
-        ([token]) =>
+      .filter(([token], i) => {
+        const matching =
           token.symbol.toLowerCase().includes(query) ||
           token.name?.toLowerCase().includes(query) ||
           token.address.toLowerCase() === query.trim()
-      )
+        if (balances && matching) filteredBalances.push(balances[i])
+        return matching
+      })
       // sort tokens
       .sort(([a], [b]) =>
         a.symbol.localeCompare(b.symbol, "en", { sensitivity: "base" })
       )
       // map tokens to token element
-      .map(([token, logo]) =>
-        component({ token, logo, handleClick: handleSelectToken })
+      .map(([token, logo], i) =>
+        component({
+          token,
+          logo,
+          handleClick: handleSelectToken,
+          balance: filteredBalances[i],
+        })
       )
   )
 }
@@ -95,6 +108,12 @@ const useTokenModalInterface = (
       []
     )
   )
+
+  // const {address} = useWallet();
+  const balances: Balance[] = useMemo(() => [], []) // useBalances(tokens, address);
+
+  // console.log("balances", balances.map(bal => [bal.amount?.toExact(), bal.amount?.currency.symbol]));
+
   const [currentStep, setCurrentStep] = useState<Steps>(Steps.DEFAULT)
   const { hideModal, isActive } = useModal(Modals.TOKEN_MODAL)
   const [searchQuery, setSearchQuery] = useState("")
@@ -164,7 +183,7 @@ const useTokenModalInterface = (
         <PinnedToken
           onClick={() => handleSelectToken(token, logo)}
           key={token.address}
-          name={token.symbol}
+          token={token}
           icon={logo}
           className="mb-1 mr-[6px] cursor-pointer"
         />
@@ -220,6 +239,7 @@ const useTokenModalInterface = (
     currentStep,
     setCurrentStep,
     selectedInactiveToken,
+    balances,
   }
 }
 

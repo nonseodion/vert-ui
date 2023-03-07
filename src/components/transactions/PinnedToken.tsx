@@ -1,30 +1,36 @@
 import React from "react"
 import clsx from "classnames"
+import { ERC20Token } from "@pancakeswap/sdk"
+import { getTokenLogoURL } from "../../utils"
+import CurrencyLogo from "./CurrencyLogo"
 
 interface PinnedTokenProps {
-  name: string
   icon: string
+  token: ERC20Token
   className?: string
   onClick: () => void
 }
 
 export default function PinnedToken({
   onClick,
-  name,
+  token,
   icon,
   className,
 }: PinnedTokenProps) {
   return (
     <button
       className={clsx(
-        "border-lightBlue border outline-none flex items-center h-[42px] rounded-lg px-3 space-x-2",
+        "border-lightBlue border outline-none flex items-center h-[42px] rounded-lg px-3 space-x-2 pinnedToken",
         className
       )}
       type="button"
       onClick={onClick}
     >
-      <img alt={name} src={icon} className="no-select h-6 w-6 rounded-xl" />
-      <span className="text-[13px] text-black">{name}</span>
+      <CurrencyLogo
+        currency={token}
+        srcs={[icon, getTokenLogoURL(token) ?? ""]}
+      />
+      <span className="text-[13px] text-black">{token.symbol}</span>
     </button>
   )
 }
