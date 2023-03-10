@@ -20,7 +20,7 @@ export default function BankAccounts() {
     setTimeout(() => {
       setAdding(false)
       hideModal("BANK_ACCOUNT")
-      setAccounts([...accounts, bank_info])
+      setAccounts([...accounts, { ...bank_info, account_name: "Emmanuel" }])
       toast("Bank account information added successfully.")
     }, 3000)
   }

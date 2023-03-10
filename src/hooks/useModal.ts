@@ -1,9 +1,14 @@
 import { useCallback, useContext, useMemo } from "react"
 import ModalContext, { Modal } from "../contexts/ModalContext"
+import { BankAccountDetails } from "../dummy/currencies"
 import { doNothing, handleBodyScroll } from "../utils/functions"
 
 type ModalParamsMap = {
-  [M in Modal]: M extends "RESET_PASSWORD_MODAL" ? { email: string } : null
+  [M in Modal]: M extends "RESET_PASSWORD_MODAL"
+    ? { email: string }
+    : M extends "BANK_ACCOUNT"
+    ? BankAccountDetails
+    : null
 }
 
 interface ShowModalAttributes<M extends Modal> {
