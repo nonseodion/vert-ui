@@ -1,6 +1,6 @@
 import React from "react"
 import { Route, Routes } from "react-router-dom"
-import { ProtectedRoute } from "./components/navigation"
+import { ProtectedRoute, UnProtectedRoute } from "./components/navigation"
 import {
   SignInWithEmail,
   SignUpWithEmail,
@@ -35,23 +35,54 @@ export default function AppRoutes() {
     <Routes>
       <Route path={PageRoutes.HOME} element={<Home />} />
       <Route path={PageRoutes.ERROR} element={<Error />} />
+
       <Route
         path={PageRoutes.SIGN_IN_WITH_EMAIL}
-        element={<SignInWithEmail />}
+        element={
+          <UnProtectedRoute>
+            <SignInWithEmail />
+          </UnProtectedRoute>
+        }
       />
-      <Route path={PageRoutes.FORGOT_PASSWORD} element={<ForgotPassword />} />
-      <Route path={PageRoutes.RESET_PASSWORD} element={<ResetPassword />} />
+      <Route
+        path={PageRoutes.FORGOT_PASSWORD}
+        element={
+          <UnProtectedRoute>
+            <ForgotPassword />
+          </UnProtectedRoute>
+        }
+      />
+      <Route
+        path={PageRoutes.RESET_PASSWORD}
+        element={
+          <UnProtectedRoute>
+            <ResetPassword />
+          </UnProtectedRoute>
+        }
+      />
       <Route
         path={PageRoutes.SIGN_UP_WITH_EMAIL}
-        element={<SignUpWithEmail />}
+        element={
+          <UnProtectedRoute>
+            <SignUpWithEmail />
+          </UnProtectedRoute>
+        }
       />
       <Route
         path={PageRoutes.SIGN_UP_WITH_WALLET}
-        element={<SignUpWithWallet />}
+        element={
+          <UnProtectedRoute>
+            <SignUpWithWallet />
+          </UnProtectedRoute>
+        }
       />
       <Route
         path={PageRoutes.EMAIL_VERIFICATION}
-        element={<EmailVerification />}
+        element={
+          <UnProtectedRoute>
+            <EmailVerification />
+          </UnProtectedRoute>
+        }
       />
       <Route
         path={PageRoutes.PROFILE_SETTINGS}
