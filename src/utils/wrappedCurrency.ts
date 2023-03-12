@@ -1,6 +1,7 @@
 import {
   Currency,
   CurrencyAmount,
+  ERC20Token,
   Native,
   Token,
   WNATIVE,
@@ -10,7 +11,7 @@ import { ChainId } from "./config"
 export function wrappedCurrency(
   currency: Currency | undefined,
   chainId: ChainId | undefined
-): Token | undefined {
+): ERC20Token | undefined {
   let token: Token | undefined
 
   if (chainId && currency?.isNative) {

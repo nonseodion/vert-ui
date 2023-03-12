@@ -2,6 +2,9 @@ import { ERC20Token } from "@pancakeswap/sdk"
 import { ChainId, activeChainId } from "../config"
 import { ChainTokenList } from "."
 import { bscTokens, bscTestnetTokens } from "./tokens"
+import ngnLogo from "../../assets/icons/ngn.png"
+import usdLogo from "../../assets/icons/usd.png"
+import { NGN, USD } from "../Fiat"
 
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.BSC]: [
@@ -23,9 +26,22 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
 export const stableCoin =
   activeChainId === ChainId.BSC ? bscTokens.busd : bscTestnetTokens.busd
 export const defaultSellToken =
-  activeChainId === ChainId.BSC ? bscTokens.wbnb : bscTestnetTokens.wbnb
+  activeChainId === ChainId.BSC ? bscTokens.busd : bscTestnetTokens.busd
 export const defaultSellLogo =
   "https://tokens.pancakeswap.finance/images/symbol/bnb.png"
+
+export const supportedFiat = {
+  usd: {
+    token: USD,
+    logo: usdLogo,
+  },
+  ngn: {
+    token: NGN,
+    logo: ngnLogo,
+  },
+}
+
+export type SupportedFiat = keyof typeof supportedFiat
 
 export const pinnedTokens: { [key in ChainId]: [ERC20Token, string][] } = {
   [ChainId.BSC]: [

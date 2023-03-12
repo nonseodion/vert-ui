@@ -9,7 +9,7 @@ import { VertRouter } from "./abis/types"
 import getContracts, { getAbis } from "./getContracts"
 import { call } from "./blockClient"
 import FiatAmount from "./FiatAmount"
-import { NGN, USD } from "./Fiat"
+import Fiat, { USD } from "./Fiat"
 
 const { vertRouter } = getContracts()
 const { VertRouterAbi } = getAbis()
@@ -54,7 +54,7 @@ export const getAmountIn = async (buyAmount: CurrencyAmount<ERC20Token>) => {
 export const fiatToStableCoinAmount = (
   buyAmount: FiatAmount,
   stableCoin: ERC20Token,
-  dollarRate: string
+  dollarRate: number
 ): CurrencyAmount<ERC20Token> => {
   const usdAmount = buyAmount.toDollarAmount(dollarRate)
   const rawBUSDAmount = usdAmount
@@ -68,13 +68,14 @@ export const fiatToStableCoinAmount = (
 
 export const stableCoinAmountToFiat = (
   stableCoinAmount: CurrencyAmount<Currency>,
-  dollarRate: string
+  dollarRate: number,
+  fiat: Fiat
 ): FiatAmount => {
   const USDAmount = FiatAmount.fromFractionalAmount(
     USD,
     stableCoinAmount.multiply(100).numerator,
-    JSBI.exponentiate(TEN, JSBI.BigInt(stableCoinAmount.currency.decimals))
+    JSBI.multiply(stableCoinAmount.decimalScale, stableCoinAmount.denominator)
   )
-  const NGNAmount = FiatAmount.fromOtherAmount(NGN, USDAmount, dollarRate)
-  return NGNAmount
+  const fiatAmount = FiatAmount.fromOtherAmount(fiat, USDAmount, dollarRate)
+  return fiatAmount
 }
