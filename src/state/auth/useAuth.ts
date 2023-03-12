@@ -1,8 +1,10 @@
 import { useContext } from "react"
-import AuthContext from "../contexts/AuthContext"
+import AuthContext from "../../contexts/AuthContext"
+import useWallet from "./useWallet"
 
 const useAuth = () => {
   const { authState, setAuthState } = useContext(AuthContext)
+  const { connected, disconnect } = useWallet()
 
   const updateAuthState = (data: object) =>
     setAuthState({ ...authState, ...data })
@@ -13,11 +15,11 @@ const useAuth = () => {
       user: { username: "sketchbreezy" },
     })
 
-  const logOut = () => updateAuthState({ isAuthenticated: false, user: null })
+  const logOut = disconnect
 
   return {
-    isAuthenticated: authState.isAuthenticated,
-    user: authState.user,
+    isAuthenticated: connected,
+    user: { username: "nonseodion" },
     updateAuthState,
     authenticateUser,
     logOut,

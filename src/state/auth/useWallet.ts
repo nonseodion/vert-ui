@@ -5,27 +5,41 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask"
 import { InjectedConnector } from "wagmi/connectors/injected"
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
 // import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
-import { activeChainId } from "../utils/config"
+import { activeChainId } from "../../utils/config"
+import trustwallet from "../../assets/icons/trustwallet.png"
+import walletconnect from "../../assets/icons/walletconnect.png"
+import metamask from "../../assets/icons/metamask.png"
+// import binance from "../../assets/icons/binance.png"
 
 export enum Wallets {
-  METAMASK = "metamask",
-  INJECTED = "injected",
-  WALLETCONNECT = "walletconnect",
+  METAMASK = "MetaMask",
+  TRUST_WALLET = "Trust Wallet",
+  WALLET_CONNECT = "WalletConnect",
   COINBASE = "COINBASE",
+  BINANCE_WALLET = "Binance Chain Wallet",
 }
+
+export const walletProviders = [
+  { wallet: Wallets.METAMASK, icon: metamask },
+  // { wallet: Wallets., icon: binance },
+  { wallet: Wallets.TRUST_WALLET, icon: trustwallet },
+  { wallet: Wallets.WALLET_CONNECT, icon: walletconnect },
+]
 
 export interface Wallet {
   connected: boolean
   connect: (name: Wallets) => Promise<void>
   disconnect: () => Promise<void>
   address: `0x${string}` | undefined
+  connecting: boolean
+  walletProvider: { name: Wallets; icon: string }
 }
 
 const walletToConnector = new Map<Wallets, Connector>([
   [Wallets.METAMASK, new MetaMaskConnector()],
-  [Wallets.INJECTED, new InjectedConnector()],
+  [Wallets.TRUST_WALLET, new InjectedConnector()],
   [
-    Wallets.WALLETCONNECT,
+    Wallets.WALLET_CONNECT,
     new WalletConnectConnector({
       options: { qrcode: true },
     }),
@@ -33,16 +47,25 @@ const walletToConnector = new Map<Wallets, Connector>([
   // [Connectors.COINBASE, new CoinbaseWalletConnector()]
 ])
 
-const useWrapWagmi = (): Wallet => {
+const useWallet = (): Wallet => {
   const { connectAsync } = useConnect({ chainId: activeChainId })
   const { disconnectAsync } = useDisconnect()
-  const { address, isConnected } = useAccount()
+  const { address, isConnected, isConnecting } = useAccount()
+  let walletProvider: { name: Wallets; icon: string } = {
+    name: Wallets.METAMASK,
+    icon: metamask,
+  }
 
   const connectWallet = async (name: Wallets): Promise<void> => {
     try {
       await connectAsync({
         connector: walletToConnector.get(name),
       })
+      walletProvider = {
+        name,
+        icon: walletProviders.filter((provider) => provider.wallet === name)[0]
+          .icon,
+      }
     } catch (err) {
       throw Error((err as Error).message)
     }
@@ -61,7 +84,9 @@ const useWrapWagmi = (): Wallet => {
     disconnect: disconnectWallet,
     address,
     connected: isConnected,
+    connecting: isConnecting,
+    walletProvider,
   }
 }
 
-export default useWrapWagmi
+export default useWallet

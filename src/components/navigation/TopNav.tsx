@@ -7,7 +7,7 @@ import { ReactComponent as USD } from "../../assets/icons/usd.svg"
 import { ReactComponent as Dropdown } from "../../assets/icons/dropdown.svg"
 import { ReactComponent as Hamburger } from "../../assets/icons/hamburger.svg"
 import { ReactComponent as User } from "../../assets/icons/user.svg"
-import useAuth from "../../hooks/useAuth"
+import useAuth from "../../state/auth/useAuth"
 import { Modals, PageRoutes } from "../../utils/constants"
 import { handleProfileDropdown } from "../../utils/functions"
 import Button from "../general/Button"
@@ -19,7 +19,7 @@ export default function TopNav() {
   const location = useLocation()
   const [showSlider, setShowSlider] = useState<boolean>(false)
   const { isAuthenticated, user } = useAuth()
-  const { hideModal } = useModal(Modals.CONNECT_WALLET)
+  const { showModal } = useModal(Modals.CONNECT_WALLET)
 
   return (
     <div className="z-[998] fixed left-0  w-full bg-nav">
@@ -41,13 +41,13 @@ export default function TopNav() {
                   </span>
                   <Dropdown className="h-[10px] w-[10px] mb-[1px]" />
                 </button>
-                <button
+                <div
                   onClick={(e) => {
                     e.stopPropagation()
                     handleProfileDropdown("toggle")
                   }}
-                  type="button"
-                  className="h-[30px] lg:h-[52px] rounded-xl bg-[#D7FFD0]/[.25] flex items-center px-2"
+                  role="presentation"
+                  className="h-[30px] lg:h-[52px] rounded-xl bg-[#D7FFD0]/[.25] flex items-center px-2 cursor-pointer"
                 >
                   <User className="mr-0 lg:mr-[7px]" />
                   <Button
@@ -55,7 +55,7 @@ export default function TopNav() {
                     className="lg:block hidden h-9 text-[15px] rounded-[10px] px-[10px] !py-0 max-w-[121px]"
                   />
                   <Dropdown className="ml-[13.41px] h-3 w-3" />
-                </button>
+                </div>
               </div>
             ) : (
               <div>
@@ -75,7 +75,7 @@ export default function TopNav() {
                   />
                   <Button
                     text="Connect Wallet"
-                    onClick={() => hideModal(Modals.CONNECT_WALLET)}
+                    onClick={() => showModal({ modal: Modals.CONNECT_WALLET })}
                   />
                 </div>
               </div>
@@ -107,7 +107,7 @@ export default function TopNav() {
                 fullWidth
                 bordered
                 textColor="white"
-                onClick={() => navigate(PageRoutes.SIGN_UP_WITH_WALLET)}
+                onClick={() => showModal({ modal: Modals.CONNECT_WALLET })}
               />
             </div>
           </>

@@ -17,6 +17,7 @@ import {
 import ToastDisplay from "./components/general/ToastDisplay"
 import ModalContext, { ActiveModalsArrayValue } from "./contexts/ModalContext"
 import { blockNumberAtom } from "./state/blockAtoms"
+import ConnectWallet from "./components/transactions/ConnectWallet"
 
 function App() {
   const [showBanner] = useState(true)
@@ -41,6 +42,7 @@ function App() {
               blocksPerFetch={6}
             />
             <ToastDisplay />
+            <ConnectWallet />
             <Router>
               <div
                 className="bg-black min-h-screen"
