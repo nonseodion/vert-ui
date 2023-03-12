@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { ERC20Token } from "@pancakeswap/sdk"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
@@ -8,27 +8,21 @@ import CustomTokens from "./CustomTokens"
 import SelectToken from "./SelectToken"
 import { Modal } from "../general"
 import useModal from "../../hooks/useModal"
-import useTokens from "../../state/tokens/hooks"
-import useTokenModalInterface, {
-  Steps,
-} from "../../hooks/interfaces/useTokenModalInterface"
 import { Modals } from "../../utils/constants"
+import { Steps } from "../../utils/types"
 
 export default function TokenModal() {
   const { hideModal } = useModal(Modals.TOKEN_MODAL)
-  const { tokens, logoURIs, otherLogoURIs, otherTokens } = useTokens()
-  const {
-    pinnedTokens,
-    tokenList,
-    setSearchQuery,
-    searchQuery,
-    currentStep,
-    setCurrentStep,
-    resolvedToken,
-    resolvedTokenElement,
-    selectedInactiveToken,
-    otherTokenList,
-  } = useTokenModalInterface(tokens, logoURIs, otherTokens, otherLogoURIs)
+  const [currentStep, setCurrentStep] = useState<Steps>(Steps.DEFAULT)
+  const [importingToken, importToken] = useState<{
+    token: ERC20Token | undefined
+    logo: string
+  }>({ token: undefined, logo: "" })
+
+  const startImportingToken = (token: ERC20Token, logo: string) => {
+    importToken({ token, logo })
+    setCurrentStep(Steps.IMPORT_TOKEN)
+  }
 
   return (
     <Modal
@@ -73,24 +67,13 @@ export default function TokenModal() {
         <SelectToken
           {...{
             setCurrentStep,
-            tokenList,
-            otherTokenList,
-            pinnedTokens,
-            searchQuery,
-            setSearchQuery,
-            resolvedTokenElement,
+            startImportingToken,
           }}
         />
       )}
-      {currentStep === Steps.IMPORT_TOKEN &&
-        (selectedInactiveToken !== null || resolvedToken !== null) && (
-          <TokenImport
-            token={
-              selectedInactiveToken ||
-              ([resolvedToken, ""] as [ERC20Token, string])
-            }
-          />
-        )}
+      {currentStep === Steps.IMPORT_TOKEN && importingToken.token && (
+        <TokenImport token={importingToken.token} logo={importingToken.logo} />
+      )}
       {currentStep === Steps.CUSTOM_TOKENS && <CustomTokens />}
     </Modal>
   )

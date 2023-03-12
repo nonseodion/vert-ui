@@ -3,15 +3,9 @@ import { useEffect, useMemo } from "react"
 import { useAtom } from "jotai"
 import { groupBy, uniqBy } from "lodash"
 import { activeChainId } from "../../utils/config"
-import {
-  TokenList,
-  defaultTokensAtom,
-  defaultTokensStateAtom,
-  otherTokensAtom,
-  otherTokensStateAtom,
-} from "./atoms"
+import { TokenList, defaultTokensAtom, otherTokensAtom } from "./atoms"
 import { defaultTokenInfo as initialTokenInfo } from "../../utils/constants/tokens"
-import { LOADSTATE, TokenInfo } from "../../utils/types"
+import { LoadState, TokenInfo } from "../../utils/types"
 import {
   TokenResponse,
   DEFAULT_TOKEN_LIST_URLS,
@@ -76,33 +70,32 @@ const fetchTokenInfo = async (urls: string[]): Promise<TokenInfo[]> => {
 
 const tokenListToTokens = (infoList: TokenInfo[]): [ERC20Token[], string[]] => {
   const URIs: string[] = []
-  const tokens = infoList.map((tokenInfo) => {
-    const { chainId, symbol, address, logoURI, name, decimals } = tokenInfo
-    URIs.push(logoURI || "")
-    return new ERC20Token(chainId, address, decimals, symbol, name)
-  })
+  const tokens =
+    infoList?.map((tokenInfo) => {
+      const { chainId, symbol, address, logoURI, name, decimals } = tokenInfo
+      URIs.push(logoURI || "")
+      return new ERC20Token(chainId, address, decimals, symbol, name)
+    }) || []
 
   return [tokens, URIs]
 }
 
+let defaultTokensState: "unloaded" | "loading" | "loaded" = "unloaded"
+let otherTokensState: "unloaded" | "loading" | "loaded" = "unloaded"
+
 const useTokens = (): UseTokensReturnType => {
   const [defaultTokens, setDefaultTokens] = useAtom(defaultTokensAtom)
-  const [defaultTokensState, setDefaultTokensState] = useAtom(
-    defaultTokensStateAtom
-  )
-
   const [otherTokens, setOtherTokens] = useAtom(otherTokensAtom)
-  const [otherTokensState, setOtherTokensState] = useAtom(otherTokensStateAtom)
 
   // fetch all tokens and merge with default list
   useEffect(() => {
     ;(async () => {
       if (
-        defaultTokensState === LOADSTATE.LOADED ||
-        defaultTokensState === LOADSTATE.LOADING
+        defaultTokensState === LoadState.LOADED ||
+        defaultTokensState === LoadState.LOADING
       )
         return
-      setDefaultTokensState(LOADSTATE.LOADING)
+      defaultTokensState = "loading"
 
       let allTokenInfo = [
         ...initialTokenInfo,
@@ -124,28 +117,23 @@ const useTokens = (): UseTokensReturnType => {
         allTokenInfo,
         (tokenInfo) => tokenInfo.chainId
       ) as TokenList
-      setDefaultTokens(tokenList)
 
-      setDefaultTokensState(LOADSTATE.LOADED)
+      setDefaultTokens(tokenList)
+      defaultTokensState = "loaded"
     })()
-  }, [
-    defaultTokens,
-    setDefaultTokens,
-    defaultTokensState,
-    setDefaultTokensState,
-  ])
+  }, [defaultTokens, setDefaultTokens])
 
   // fetch other tokens and filter with default
   useEffect(() => {
     ;(async () => {
       if (
-        otherTokensState === LOADSTATE.LOADED ||
-        otherTokensState === LOADSTATE.LOADING ||
-        defaultTokensState === LOADSTATE.LOADING ||
-        defaultTokensState === LOADSTATE.UNLOADED
+        otherTokensState === LoadState.LOADED ||
+        otherTokensState === LoadState.LOADING ||
+        defaultTokensState === LoadState.LOADING ||
+        defaultTokensState === LoadState.UNLOADED
       )
         return
-      setOtherTokensState(LOADSTATE.LOADING)
+      otherTokensState = LoadState.LOADING
 
       let allTokenInfo = [...(await fetchTokenInfo(OTHER_TOKEN_LIST_URLS))]
       allTokenInfo = uniqBy(
@@ -174,18 +162,11 @@ const useTokens = (): UseTokensReturnType => {
         allTokenInfo,
         (tokenInfo) => tokenInfo.chainId
       ) as TokenList
-      setOtherTokens(tokenList)
 
-      setOtherTokensState(LOADSTATE.LOADED)
+      setOtherTokens(tokenList)
+      otherTokensState = LoadState.LOADED
     })()
-  }, [
-    otherTokens,
-    defaultTokensState,
-    setOtherTokens,
-    otherTokensState,
-    setOtherTokensState,
-    defaultTokens,
-  ])
+  }, [otherTokens, setOtherTokens, defaultTokens])
 
   const [activeTokens, activelogoURIs] = useMemo(
     (): [ERC20Token[], string[]] =>

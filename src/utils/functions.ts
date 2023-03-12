@@ -91,7 +91,7 @@ export const getTokenLogoURL = memoize(
         mapping[activeChainId]
       }/assets/${getAddress(token.address)}/logo.png`
     }
-    return null
+    return undefined
   },
   (t) => `${t?.chainId}#${t?.address}`
 )

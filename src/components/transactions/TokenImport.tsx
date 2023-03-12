@@ -11,13 +11,14 @@ const blockExplorer = chain.blockExplorers
 
 export default function TokenImport({
   token,
+  logo,
 }: {
-  token: [ERC20Token, string]
+  token: ERC20Token
+  logo: string
 }) {
   const [confirmed, setConfirmed] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { symbol, address, name } = token[0]
-  const logo = token[1]
+  const { symbol, address, name } = token
 
   return (
     <div className="px-6">

@@ -28,6 +28,8 @@ import {
   handleSetExchangeAtomCreator,
 } from "../../state/exchange/atoms"
 import { getTokenLogoURL } from "../../utils"
+import { activeChainId } from "../../utils/config"
+import { wrappedCurrency } from "../../utils/wrappedCurrency"
 
 let independentField: "sell" | "buy"
 
@@ -55,9 +57,9 @@ interface ReturnTypes {
 const useConverterInterface = (): ReturnTypes => {
   const { tokens } = useTokens()
   const buyToken = NGN
-  const dollarRate = "745"
   const {
     sellToken: { token: sellToken, logo: sellLogo },
+    dollarRate,
   } = useAtomValue(exchangeAtom)
   const [, setSellToken] = useAtom(
     useMemo(
@@ -180,7 +182,7 @@ const useConverterInterface = (): ReturnTypes => {
         const amountOut = tradeIn?.outputAmount ?? ""
         const NGNAmount =
           amountOut !== ""
-            ? stableCoinAmountToFiat(amountOut, dollarRate)
+            ? stableCoinAmountToFiat(amountOut, dollarRate, NGN)
             : amountOut
         setBuyAmount(NGNAmount)
       })()
@@ -229,7 +231,10 @@ const useConverterInterface = (): ReturnTypes => {
     sellToken,
     setSellToken,
     setSellAmount: setSellAmount1,
-    sellLogos: [sellLogo, getTokenLogoURL(sellToken) ?? ""],
+    sellLogos: [
+      sellLogo,
+      getTokenLogoURL(wrappedCurrency(sellToken, activeChainId)) ?? "",
+    ],
 
     buyToken,
     buyAmount:

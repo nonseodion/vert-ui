@@ -1,30 +1,32 @@
-import { CurrencyAmount, ERC20Token } from "@pancakeswap/sdk"
+import { Currency, CurrencyAmount } from "@pancakeswap/sdk"
 import { atom } from "jotai"
-import Fiat, { NGN } from "../../utils/Fiat"
+import Fiat from "../../utils/Fiat"
 import FiatAmount from "../../utils/FiatAmount"
 import {
   defaultSellLogo,
   defaultSellToken,
+  supportedFiat,
 } from "../../utils/constants/exchange"
-import ngnLogo from "../../assets/icons/ngn.png"
 
 interface Exchange {
-  sellToken: { token: ERC20Token; logo: string }
-  sellAmount: CurrencyAmount<ERC20Token> | ""
+  sellToken: { token: Currency; logo: string }
+  sellAmount: CurrencyAmount<Currency> | ""
 
   buyToken: { token: Fiat; logo: string }
   buyAmount: FiatAmount | ""
 
-  dollarRate: string
+  dollarRate: number
+  preferredFiat: { token: Fiat; logo: string }
 }
 
 export const exchangeAtom = atom<Exchange>({
   sellToken: { token: defaultSellToken, logo: defaultSellLogo },
   sellAmount: "",
 
-  buyToken: { token: NGN, logo: ngnLogo },
+  buyToken: supportedFiat.ngn,
   buyAmount: "",
-  dollarRate: "",
+  dollarRate: 1,
+  preferredFiat: supportedFiat.ngn,
 })
 
 export const sellAmountAtom = atom(
@@ -33,6 +35,11 @@ export const sellAmountAtom = atom(
     set(exchangeAtom, { ...get(exchangeAtom), sellAmount })
   }
 )
+
+export const exchangeSettingsAtom = atom((get) => {
+  const { preferredFiat, dollarRate } = get(exchangeAtom)
+  return { preferredFiat, dollarRate }
+})
 
 export const handleSetExchangeAtomCreator = <
   T extends keyof Exchange,
