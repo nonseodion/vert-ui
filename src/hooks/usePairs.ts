@@ -34,24 +34,22 @@ export function usePairs(
 
   const pairAddresses = useMemo(
     () =>
-      tokens
-        .map(([tokenA, tokenB]) => {
-          try {
-            return tokenA && tokenB && !tokenA.equals(tokenB)
-              ? Pair.getAddress(tokenA, tokenB)
-              : undefined
-          } catch (error: any) {
-            // Debug Invariant failed related to this line
-            console.error(
-              error.msg,
-              `- pairAddresses: ${tokenA?.address}-${tokenB?.address}`,
-              `chainId: ${tokenA?.chainId}`
-            )
+      tokens.map(([tokenA, tokenB]) => {
+        try {
+          return tokenA && tokenB && !tokenA.equals(tokenB)
+            ? Pair.getAddress(tokenA, tokenB)
+            : undefined
+        } catch (error: any) {
+          // Debug Invariant failed related to this line
+          console.error(
+            error.msg,
+            `- pairAddresses: ${tokenA?.address}-${tokenB?.address}`,
+            `chainId: ${tokenA?.chainId}`
+          )
 
-            return undefined
-          }
-        })
-        .filter((pair): boolean => pair !== undefined) as string[],
+          return undefined
+        }
+      }),
     [tokens]
   )
 
@@ -67,7 +65,8 @@ export function usePairs(
 
   return useMemo(
     () =>
-      results.map(({ result }, i) => {
+      results.map(({ result, loading }, i) => {
+        if (loading) return [PairState.LOADING, null]
         const { reserve0, reserve1 } = {
           reserve0: result?.reserve0,
           reserve1: result?.reserve1,

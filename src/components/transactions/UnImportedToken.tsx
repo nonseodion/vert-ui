@@ -10,7 +10,7 @@ interface InactiveTokenProps {
   handleClick: (token: ERC20Token, logo: string) => void
 }
 
-export default function InactiveToken({
+export default function UnImportedToken({
   token,
   logo,
   handleClick,

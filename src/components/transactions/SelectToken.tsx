@@ -1,31 +1,48 @@
 import React, { useMemo } from "react"
+import { ERC20Token } from "@pancakeswap/sdk"
 import { ReactComponent as Search } from "../../assets/icons/search.svg"
 import { ReactComponent as Settings } from "../../assets/icons/settings.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import { Steps } from "../../hooks/interfaces/useTokenModalInterface"
+import useSelectTokenInterface from "../../hooks/interfaces/useSelectTokenInterface"
+import { pinnedTokens } from "../../utils/constants/exchange"
+import PinnedToken from "./PinnedToken"
+import { activeChainId } from "../../utils/config"
+import TokenList from "./TokenList"
+import { Steps } from "../../utils/types"
 
 interface SelectTokenProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<Steps>>
-  tokenList: JSX.Element[]
-  otherTokenList: JSX.Element[]
-  pinnedTokens: JSX.Element[]
-  resolvedTokenElement: JSX.Element | null
-  searchQuery: string
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>
+  startImportingToken: (token: ERC20Token, logo: string) => void
 }
 
 export default function SelectToken({
   setCurrentStep,
-  searchQuery,
-  otherTokenList,
-  setSearchQuery,
-  resolvedTokenElement,
-  pinnedTokens,
-  tokenList,
+  startImportingToken,
 }: SelectTokenProps) {
-  const emptyQuery = useMemo(
-    () => searchQuery.trim().length === 0,
-    [searchQuery]
+  const {
+    tokens,
+    logos,
+    fiatBalances,
+    tokenBalances,
+    searchQuery,
+    setSearchQuery,
+    handleSelectToken,
+    otherTokens,
+    otherLogos,
+  } = useSelectTokenInterface()
+
+  const pinnedTokenList = useMemo(
+    () =>
+      pinnedTokens[activeChainId].map(([token, logo]) => (
+        <PinnedToken
+          onClick={() => handleSelectToken(token, logo)}
+          key={token.address}
+          token={token}
+          icon={logo}
+          className="mb-1 mr-[6px] cursor-pointer"
+        />
+      )),
+    [handleSelectToken]
   )
 
   return (
@@ -40,7 +57,7 @@ export default function SelectToken({
           value={searchQuery}
           onChange={({ target: { value } }) => setSearchQuery(value)}
         />
-        {!emptyQuery && (
+        {!(searchQuery.trim().length === 0) && (
           <button
             type="button"
             onClick={() => setSearchQuery("")}
@@ -50,21 +67,21 @@ export default function SelectToken({
           </button>
         )}
       </div>
-      <div className="mx-6 flex flex-wrap pb-[9px]">{pinnedTokens}</div>
+      <div className="mx-6 flex flex-wrap pb-[9px]">{pinnedTokenList}</div>
       <div className="mx-2 h-[1px] bg-lightBlue" />
-      <ul className="px-6 pt-6 max-h-[320px] overflow-y-scroll scrollbar-hide">
-        {tokenList}
-        {otherTokenList}
-      </ul>
-
-      {resolvedTokenElement}
-      {!resolvedTokenElement &&
-        tokenList.length === 0 &&
-        otherTokenList.length === 0 && (
-          <div className="flex justify-center mt-[10px] mb-[40px] italic text-lightBlue">
-            No tokens found
-          </div>
-        )}
+      <TokenList
+        {...{
+          tokens,
+          otherTokens,
+          logos,
+          otherLogos,
+          fiatBalances,
+          tokenBalances,
+          handleSelectToken,
+          searchQuery,
+          startImportingToken,
+        }}
+      />
       <div className="pb-[11px] flex items-center justify-center">
         <button
           type="button"
