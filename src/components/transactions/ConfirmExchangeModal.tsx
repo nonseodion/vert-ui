@@ -1,10 +1,11 @@
 import React from "react"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { useModal } from "../../hooks"
+import { Modals } from "../../utils/constants"
 import { Button, Loader, Modal } from "../general"
 
 export default function ConfirmExchangeModal() {
-  const { hideModal } = useModal("CONFIRM_EXCHANGE")
+  const { hideModal } = useModal(Modals.CONFIRM_EXCHANGE)
   return (
     <Modal name="CONFIRM_EXCHANGE" bodyClassNames="!px-[30px] !py-5">
       <div className="flex items-center justify-between">

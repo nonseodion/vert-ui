@@ -1,13 +1,14 @@
 import React from "react"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { useModal } from "../../hooks"
+import { Modals } from "../../utils/constants"
 import { Button, Modal } from "../general"
 
 export default function TransactionCancelledModal() {
-  const { hideModal } = useModal("TRANSACTION_CANCELLED")
+  const { hideModal } = useModal(Modals.TRANSACTION_CANCELLED)
   return (
     <Modal
-      name="TRANSACTION_CANCELLED"
+      name={Modals.TRANSACTION_CANCELLED}
       bodyClassNames="!max-w-[430px] px-[30px] py-5"
     >
       <button

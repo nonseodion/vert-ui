@@ -1,12 +1,13 @@
 import React from "react"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { useModal } from "../../hooks"
+import { Modals } from "../../utils/constants"
 import { Button, Loader, Modal } from "../general"
 
 export default function ApproveTransactionModal() {
-  const { hideModal } = useModal("APPROVE_TRANSACTION")
+  const { hideModal } = useModal(Modals.APPROVE_TRANSACTION)
   return (
-    <Modal name="APPROVE_TRANSACTION" bodyClassNames="!px-[30px] !py-5">
+    <Modal name={Modals.APPROVE_TRANSACTION} bodyClassNames="!px-[30px] !py-5">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold text-25 text-black">
           Approve transaction

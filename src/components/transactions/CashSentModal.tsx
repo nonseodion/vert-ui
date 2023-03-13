@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react"
 import { ReactComponent as SmilingGirl } from "../../assets/images/smiling-girl.svg"
 import { useModal } from "../../hooks"
+import { Modals } from "../../utils/constants"
 import { handleBodyScroll } from "../../utils/functions"
 import { Button, Modal } from "../general"
 
 export default function CashSentModal() {
-  const { hideModal, isActive, showModal } = useModal("CASH_SENT")
+  const { hideModal, isActive, showModal } = useModal(Modals.CASH_SENT)
   const [showTransactionDetails, setShowTransactionDetails] = useState(false)
 
   useEffect(() => {
     if (!isActive && showTransactionDetails) {
       setShowTransactionDetails(false)
-      showModal({ modal: "TRANSACTION_DETAILS" })
+      showModal({ modal: Modals.TRANSACTION_DETAILS })
       setTimeout(() => {
         handleBodyScroll("disable")
       }, 500)
@@ -38,7 +39,7 @@ export default function CashSentModal() {
           className="!py-0 h-12 w-[203px]"
           onClick={() => {
             setShowTransactionDetails(true)
-            hideModal("CASH_SENT")
+            hideModal(Modals.CASH_SENT)
           }}
         />
         <Button
@@ -46,7 +47,7 @@ export default function CashSentModal() {
           className="!py-0 h-12 flex-1 !text-primary font-medium"
           text="close"
           background="transparent"
-          onClick={() => hideModal("CASH_SENT")}
+          onClick={() => hideModal(Modals.CASH_SENT)}
         />
       </div>
     </Modal>

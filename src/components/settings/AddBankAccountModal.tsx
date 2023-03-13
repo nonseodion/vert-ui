@@ -4,6 +4,7 @@ import { FilterOptionOption } from "react-select/dist/declarations/src/filters"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { BankAccountDetails, banks } from "../../dummy/currencies"
 import { useModal } from "../../hooks"
+import { Modals } from "../../utils/constants"
 import { Modal, Button } from "../general"
 import { Input } from "../inputs"
 import Select, { OptionType } from "../inputs/Select"
@@ -28,7 +29,7 @@ export default function AddBankAccountModal({
 }: AddBankAccountModalProps) {
   const {
     modalValues: { modalParams },
-  } = useModal("BANK_ACCOUNT")
+  } = useModal(Modals.BANK_ACCOUNT)
   const [bankInfo, setBankInfo] = useState<BankAccountDetails>({
     ...initialState,
   })
@@ -74,7 +75,7 @@ export default function AddBankAccountModal({
 
   return (
     <Modal
-      name="BANK_ACCOUNT"
+      name={Modals.BANK_ACCOUNT}
       onClose={reset}
       bodyClassNames="!mt-[22vh] !mb-[10vh] !lg:w-[508px] !rounded-3xl !pb-[30px] !px-[30px]"
     >

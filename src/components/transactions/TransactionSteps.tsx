@@ -12,6 +12,7 @@ import { Button, Loader } from "../general"
 import { useModal } from "../../hooks"
 import ConfirmExchangeModal from "./ConfirmExchangeModal"
 import { getRandomBoolean } from "../../utils/functions"
+import { Modals } from "../../utils/constants"
 
 interface TransactionStepProps {
   proceed: () => void
@@ -62,9 +63,9 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
   const acceptRateChange = () => setRateChanged(false)
 
   const startConfirmation = () => {
-    showModal({ modal: "CONFIRM_EXCHANGE" })
+    showModal({ modal: Modals.CONFIRM_EXCHANGE })
     setTimeout(() => {
-      hideModal("CONFIRM_EXCHANGE")
+      hideModal(Modals.CONFIRM_EXCHANGE)
       setIsConfirmed(true)
       setTimeout(() => {
         proceed()
@@ -175,7 +176,7 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
               background="transparent"
               bordered
               text="Cancel"
-              onClick={() => showModal({ modal: "TRANSACTION_CANCELLED" })}
+              onClick={() => showModal({ modal: Modals.TRANSACTION_CANCELLED })}
               fullWidth
             />
             <Button
@@ -267,7 +268,7 @@ export function SuccessfulTransaction() {
 
   useEffect(() => {
     setTimeout(() => {
-      showModal({ modal: "CASH_SENT" })
+      showModal({ modal: Modals.CASH_SENT })
     }, 5000)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

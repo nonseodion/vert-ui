@@ -5,12 +5,13 @@ import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 import { useModal } from "../../hooks"
 import { Button, Modal } from "../general"
+import { Modals } from "../../utils/constants"
 
 export default function TransactionDetailsModal() {
-  const { hideModal } = useModal("TRANSACTION_DETAILS")
+  const { hideModal } = useModal(Modals.TRANSACTION_DETAILS)
   return (
     <Modal
-      name="TRANSACTION_DETAILS"
+      name={Modals.TRANSACTION_DETAILS}
       bodyClassNames="mt-[100px] lg-mt-[150px] px-8 max-w-[436px] pt-9 pb-[30px]"
     >
       <button

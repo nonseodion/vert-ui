@@ -8,6 +8,7 @@ import { BanksSkeleton } from "../../components/skeletons"
 import { BankAccount } from "../../components/transactions"
 import { BankAccountDetails } from "../../dummy/currencies"
 import { useModal } from "../../hooks"
+import { Modals } from "../../utils/constants"
 
 export default function BankAccounts() {
   const [accounts, setAccounts] = useState<BankAccountDetails[]>([])
@@ -19,7 +20,7 @@ export default function BankAccounts() {
     setAdding(true)
     setTimeout(() => {
       setAdding(false)
-      hideModal("BANK_ACCOUNT")
+      hideModal(Modals.BANK_ACCOUNT)
       setAccounts([...accounts, { ...bank_info, account_name: "Emmanuel" }])
       toast("Bank account information added successfully.")
     }, 3000)
@@ -32,7 +33,7 @@ export default function BankAccounts() {
   }, [])
 
   const onBankAccountModalClose = useCallback(
-    () => hideModal("BANK_ACCOUNT"),
+    () => hideModal(Modals.BANK_ACCOUNT),
     [hideModal]
   )
 
@@ -50,7 +51,7 @@ export default function BankAccounts() {
             <button
               className="ml-auto flex items-center px-[13px] py-[14px] rounded-lg bg-primary/[.1] space-x-[7.7px]"
               type="button"
-              onClick={() => showModal({ modal: "BANK_ACCOUNT" })}
+              onClick={() => showModal({ modal: Modals.BANK_ACCOUNT })}
             >
               <Plus className="fill-white" />
               <span className="text-sm text-white">Add new bank details</span>

@@ -4,9 +4,10 @@ import { Button, Modal, WalletConfirmation } from "../general"
 import { providers } from "../../dummy/providers"
 import { doNothing } from "../../utils/functions"
 import { useModal } from "../../hooks"
+import { Modals } from "../../utils/constants"
 
 export default function ConnectWallet() {
-  const { hideModal } = useModal("CONNECT_WALLET")
+  const { hideModal } = useModal(Modals.CONNECT_WALLET)
   const [selectedProvider, setSelectedProvider] = useState<null | string>(null)
   return (
     <Modal

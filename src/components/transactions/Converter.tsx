@@ -11,7 +11,7 @@ import { doNothing, getRandomBoolean } from "../../utils/functions"
 import { useModal } from "../../hooks"
 import { Button, Info } from "../general"
 import ApproveTransactionModal from "./ApproveTransactionModal"
-import { PageRoutes } from "../../utils/constants"
+import { Modals, PageRoutes } from "../../utils/constants"
 import ConverterCurrencySelect from "./ConverterCurrencySelect"
 
 export default function Converter() {
@@ -21,7 +21,7 @@ export default function Converter() {
   const [amountToBuy, setAmountToBuy] = useState<number | null>(null)
   const [transactionApproved, setTransactionApproved] = useState<boolean>(false)
 
-  const approveModalVisibility = modalIsOpen("APPROVE_TRANSACTION")
+  const approveModalVisibility = modalIsOpen(Modals.APPROVE_TRANSACTION)
   const approveModalVisibilityRef = useRef(approveModalVisibility)
 
   useEffect(() => {
@@ -29,18 +29,18 @@ export default function Converter() {
   }, [approveModalVisibility])
 
   const startApprovalProcess = () => {
-    showModal({ modal: "APPROVE_TRANSACTION" })
+    showModal({ modal: Modals.APPROVE_TRANSACTION })
     const approvalSuccessful = getRandomBoolean()
     if (approvalSuccessful) {
       setTimeout(() => {
         if (approveModalVisibilityRef.current) {
           setTransactionApproved(true)
           toast.success("Transaction approved successfully.")
-          hideModal("APPROVE_TRANSACTION")
+          hideModal(Modals.APPROVE_TRANSACTION)
         }
       }, 3000)
     } else {
-      hideModal("APPROVE_TRANSACTION")
+      hideModal(Modals.APPROVE_TRANSACTION)
       toast.error("Transaction failed")
     }
   }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { ReactComponent as Plus } from "../../assets/icons/plus.svg"
-import { PageRoutes } from "../../utils/constants"
+import { Modals, PageRoutes } from "../../utils/constants"
 import { goBackConditionally } from "../../utils/functions"
 import { Wrapper } from "../../components/general"
 import { BankAccount } from "../../components/transactions"
@@ -36,7 +36,7 @@ export default function SelectBankAccount() {
       }
       setBankAccounts([...bankAccounts, newBank])
       setAddingBank(false)
-      hideModal("BANK_ACCOUNT")
+      hideModal(Modals.BANK_ACCOUNT)
     }, 3000)
   }
 
@@ -45,7 +45,7 @@ export default function SelectBankAccount() {
       <AddBankAccountModal
         onConfirm={addNewBank}
         adding={addingBank}
-        onClose={() => hideModal("BANK_ACCOUNT")}
+        onClose={() => hideModal(Modals.BANK_ACCOUNT)}
       />
       <div className="px-[27px] flex items-center justify-center py-[100px] lg:py-[114px]">
         <div className="bg-white rounded-3xl py-[30px] px-6 w-full md:w-[510px]">
@@ -70,7 +70,7 @@ export default function SelectBankAccount() {
           </p>
           <button
             type="button"
-            onClick={() => showModal({ modal: "BANK_ACCOUNT" })}
+            onClick={() => showModal({ modal: Modals.BANK_ACCOUNT })}
             className="mt-[33px] items-center flex space-x-[7.7px] rounded-lg py-[11px] px-3 border border-primary"
           >
             <Plus className="!fill-primary" />

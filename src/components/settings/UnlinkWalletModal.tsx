@@ -3,6 +3,7 @@ import clsx from "classnames"
 import { Button, Modal, WalletConfirmation } from "../general"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { useModal } from "../../hooks"
+import { Modals } from "../../utils/constants"
 
 interface UnlinkWalletModalProps {
   unlinking: boolean
@@ -11,10 +12,10 @@ interface UnlinkWalletModalProps {
 export default function UnlinkWalletModal({
   unlinking,
 }: UnlinkWalletModalProps) {
-  const { modalValues, hideModal } = useModal("UNLINK_WALLET")
+  const { modalValues, hideModal } = useModal(Modals.UNLINK_WALLET)
   return (
     <Modal
-      name="UNLINK_WALLET"
+      name={Modals.UNLINK_WALLET}
       bodyClassNames={clsx(
         "!mt-[192px] border border-primary/[.3] rounded-2xl !lg:w-[452px] !px-[27px] !pt-[52px]",
         { "px-5 pt-[23px] !pb-[30px] lg:w-[392px] rounded-3xl": unlinking },

@@ -8,10 +8,8 @@ export interface ActiveModalValues {
   modalParams?: { [key: string]: any }
 }
 
-export type Modal = keyof typeof Modals
-
 export type ActiveModalsArrayValue = {
-  [key in Modal]?: ActiveModalValues
+  [key in Modals]?: ActiveModalValues
 }
 
 export interface ModalContextValues {
