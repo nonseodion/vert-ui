@@ -7,7 +7,7 @@ import { Button, Glow, Wrapper } from "../../components/general"
 import { Input } from "../../components/inputs"
 import { BackButton } from "../../components/navigation"
 import { ConnectWallet } from "../../components/transactions"
-import { PageRoutes } from "../../utils/constants"
+import { Modals, PageRoutes } from "../../utils/constants"
 import { useModal } from "../../hooks"
 import { goBackConditionally } from "../../utils/functions"
 
@@ -27,7 +27,7 @@ export default function SignUpWithWallet() {
   const { showModal } = useModal()
   const onSubmit = handleSubmit((data) => {
     localStorage.setItem("data", JSON.stringify(data))
-    showModal({ modal: "CONNECT_WALLET" })
+    showModal({ modal: Modals.CONNECT_WALLET })
   })
   return (
     <Wrapper hideTopNav>

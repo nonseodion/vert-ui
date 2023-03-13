@@ -83,7 +83,7 @@ export default function Converter() {
             onValueChange={setAmountToBuy}
             side="sell"
             value={amountToBuy}
-            onTokenSelect={() => showModal({ modal: "TOKEN_MODAL" })}
+            onTokenSelect={() => showModal({ modal: Modals.TOKEN_MODAL })}
           />
           <ConverterSide
             onValueChange={setAmountToSell}

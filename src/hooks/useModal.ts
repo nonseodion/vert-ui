@@ -4,16 +4,14 @@ import { BankAccountDetails } from "../dummy/currencies"
 import { Modals } from "../utils/constants"
 import { doNothing, handleBodyScroll } from "../utils/functions"
 
-// type ModalParamsMap = {
-//   [Modals.RESET_PASSWORD_MODAL]: {}
-// }
+type ModalParamsMapping = {
+  [Modals.RESET_PASSWORD_MODAL]: { email: string }
+  [Modals.BANK_ACCOUNT]: BankAccountDetails
+  [key: string]: {}
+}
 
 type ModalParamsMap = {
-  [M in Modals]: M extends "RESET_PASSWORD_MODAL"
-    ? { email: string }
-    : M extends "BANK_ACCOUNT"
-    ? BankAccountDetails
-    : null
+  [M in Modals]: ModalParamsMapping[M]
 }
 
 interface ShowModalAttributes<M extends Modals> {

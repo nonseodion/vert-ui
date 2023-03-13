@@ -11,7 +11,7 @@ export default function ConnectWallet() {
   const [selectedProvider, setSelectedProvider] = useState<null | string>(null)
   return (
     <Modal
-      name="CONNECT_WALLET"
+      name={Modals.CONNECT_WALLET}
       bodyClassNames={selectedProvider ? "pt-[23px] pb-[30px]" : ""}
     >
       {selectedProvider ? (

@@ -5,6 +5,7 @@ import { ReactComponent as Pencil } from "../../assets/icons/pencil.svg"
 import { ReactComponent as Trash } from "../../assets/icons/trash.svg"
 import { doNothing } from "../../utils/functions"
 import { useModal } from "../../hooks"
+import { Modals } from "../../utils/constants"
 
 interface BankAccountProps {
   bank_name: string
@@ -46,16 +47,17 @@ export default function BankAccount({
       <div className="flex items-center space-x-[24.72px] flex-shrink-0 ml-3">
         <button
           type="button"
-          onClick={() =>
+          onClick={(e) => {
+            e.stopPropagation()
             showModal({
-              modal: "BANK_ACCOUNT",
+              modal: Modals.BANK_ACCOUNT,
               modalParams: {
                 selected_bank: { label: bank_name, value: bank_name },
                 account_name,
                 account_number,
               },
             })
-          }
+          }}
         >
           <Pencil className="fill-black/[.4]" />
         </button>

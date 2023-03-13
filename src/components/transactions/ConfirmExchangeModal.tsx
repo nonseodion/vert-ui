@@ -7,7 +7,7 @@ import { Button, Loader, Modal } from "../general"
 export default function ConfirmExchangeModal() {
   const { hideModal } = useModal(Modals.CONFIRM_EXCHANGE)
   return (
-    <Modal name="CONFIRM_EXCHANGE" bodyClassNames="!px-[30px] !py-5">
+    <Modal name={Modals.CONFIRM_EXCHANGE} bodyClassNames="!px-[30px] !py-5">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold text-25 text-black">Confirm exchange</h3>
         <button type="button" onClick={() => hideModal()}>

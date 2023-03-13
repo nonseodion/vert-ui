@@ -20,7 +20,10 @@ export default function CashSentModal() {
   }, [isActive, showTransactionDetails, showModal])
 
   return (
-    <Modal name="CASH_SENT" bodyClassNames="mt-[100px] px-[30px] max-w-[386px]">
+    <Modal
+      name={Modals.CASH_SENT}
+      bodyClassNames="mt-[100px] px-[30px] max-w-[386px]"
+    >
       <div className="flex items-center justify-center mt-[-50px]">
         <SmilingGirl />
       </div>
