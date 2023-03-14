@@ -1,12 +1,11 @@
 import React, { useMemo } from "react"
-import { useAtomValue } from "jotai"
+import { useBlockNumber } from "wagmi"
 import { ERC20Token } from "@pancakeswap/sdk"
 import { Button } from "../general"
 import { getTokenLogoURL, isAddress } from "../../utils"
 import CurrencyLogo from "./CurrencyLogo"
 import { activeChainId } from "../../utils/config"
 import { useSingleContractWithCallData } from "../../utils/multicall"
-import { blockNumberAtom } from "../../state/blockAtoms"
 import getContracts from "../../utils/getContracts"
 
 interface ResolvedTokenProps {
@@ -22,7 +21,7 @@ const callDatas: string[] = [
 ]
 
 export default function ResolvedToken({ searchQuery }: ResolvedTokenProps) {
-  const blockNumber = useAtomValue(blockNumberAtom)
+  const { data: blockNumber } = useBlockNumber({ staleTime: Infinity })
   erc20Token.attach(isAddress(searchQuery) as string)
 
   // fetch user query token

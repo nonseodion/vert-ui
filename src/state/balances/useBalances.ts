@@ -1,11 +1,11 @@
 import { useEffect, useMemo } from "react"
+import { useBlockNumber } from "wagmi"
 import { CurrencyAmount, ERC20Token } from "@pancakeswap/sdk"
 import { Interface } from "ethers/lib/utils"
 import { useAtomValue, useSetAtom } from "jotai"
 import { balancesAtom, setBalancesAtom } from "./atoms"
 import { activeChainId } from "../../utils/config"
 import { useMultipleContractSingleData } from "../../utils/multicall"
-import { blockNumberAtom } from "../blockAtoms"
 import Erc20Abi from "../../utils/abis/contracts/ERC20Token.json"
 
 const Erc20Interface = new Interface(Erc20Abi)
@@ -43,7 +43,10 @@ export const useBalances = (
     [addresses, balances]
   )
 
-  const blockNumber = useAtomValue(blockNumberAtom)
+  const { data: blockNumber } = useBlockNumber({
+    staleTime: Infinity,
+  })
+
   const results = useMultipleContractSingleData(
     activeChainId,
     blockNumber,

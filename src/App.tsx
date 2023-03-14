@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from "react"
+import React, { useState, useMemo, useEffect } from "react"
 import clsx from "classnames"
 import { WagmiConfig } from "wagmi"
-import { useAtom } from "jotai"
+import { fetchBlockNumber } from "@wagmi/core"
 import { Provider as ReduxProvider } from "react-redux"
 import { BrowserRouter as Router } from "react-router-dom"
 import { Banner } from "./components/general"
@@ -16,20 +16,27 @@ import {
 } from "./utils/functions"
 import ToastDisplay from "./components/general/ToastDisplay"
 import ModalContext, { ActiveModalsArrayValue } from "./contexts/ModalContext"
-import { blockNumberAtom } from "./state/blockAtoms"
 import ConnectWallet from "./components/transactions/ConnectWallet"
 
 function App() {
   const [showBanner] = useState(true)
+  const [blkNum, setBlkNum] = useState<undefined | number>()
   const [authState, setAuthState] = useState<AuthStateValues>({
     isAuthenticated: false,
     user: null,
   })
 
   const [modals, setModals] = useState<ActiveModalsArrayValue[]>([])
-  const [blockNumber] = useAtom(blockNumberAtom)
   const value = useMemo(() => ({ authState, setAuthState }), [authState])
   const modalStateValue = useMemo(() => ({ modals, setModals }), [modals])
+
+  // get block number for Redux Multicall
+  useEffect(() => {
+    ;(async () => {
+      const no = await fetchBlockNumber({ chainId: activeChainId })
+      setBlkNum(no)
+    })()
+  }, [])
 
   return (
     <ReduxProvider store={store}>
@@ -38,7 +45,7 @@ function App() {
           <WagmiConfig client={client}>
             <MulticallUpdater
               chainId={activeChainId}
-              blockNumber={blockNumber}
+              blockNumber={blkNum}
               blocksPerFetch={6}
             />
             <ToastDisplay />

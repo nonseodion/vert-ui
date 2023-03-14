@@ -23,13 +23,9 @@ import {
 import { TransactionDetail, TransactionList } from "./pages/transactions"
 import Error from "./pages/utils/Error"
 import NotFound from "./pages/utils/NotFound"
-import { useBlockNumber } from "./state/blockAtoms"
 import { PageRoutes } from "./utils/constants"
 
 export default function AppRoutes() {
-  // allow block number to update
-  useBlockNumber()
-
   return (
     <Routes>
       <Route path={PageRoutes.HOME} element={<Home />} />

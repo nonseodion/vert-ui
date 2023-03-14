@@ -1,12 +1,11 @@
 import { Currency, Pair, CurrencyAmount } from "@pancakeswap/sdk"
 import { useMemo } from "react"
-import { useAtomValue } from "jotai"
+import { useBlockNumber } from "wagmi"
 import { Interface } from "ethers/lib/utils"
 import { wrappedCurrency } from "../utils/wrappedCurrency"
 import { activeChainId } from "../utils/config"
 import { getAbis } from "../utils/getContracts"
 import { useMultipleContractSingleData } from "../utils/multicall"
-import { blockNumberAtom } from "../state/blockAtoms"
 
 export enum PairState {
   LOADING,
@@ -53,7 +52,10 @@ export function usePairs(
     [tokens]
   )
 
-  const blockNumber = useAtomValue(blockNumberAtom)
+  const { data: blockNumber } = useBlockNumber({
+    scopeKey: "pairReserves",
+    cacheTime: 300000,
+  })
 
   const results = useMultipleContractSingleData(
     activeChainId,
@@ -87,7 +89,8 @@ export function usePairs(
           ),
         ]
       }),
-    [results, tokens]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [results]
   )
 }
 
