@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from "react"
 import { Currency, ERC20Token } from "@pancakeswap/sdk"
+import { v4 as uuidv4 } from "uuid"
 import { Balance } from "../../state/balances/useBalances"
 import ImportedToken from "./ImportedToken"
 import { wrappedCurrency } from "../../utils/wrappedCurrency"
@@ -42,12 +43,12 @@ export default function TokenList(props: TokenRowsProps) {
   const getRows = useCallback(
     (tokens: Currency[], unImportedTokens: boolean = false) =>
       tokens
-        .map<[Currency, FiatAmount | undefined, string, Balance | undefined]>(
+        .map<[Currency, FiatAmount | undefined, Balance | undefined, string]>(
           (token, index) => [
             token,
             fiatBalances?.[index],
-            unImportedTokens ? otherLogos[index] : logos[index],
             tokenBalances?.[index],
+            unImportedTokens ? otherLogos[index] : logos[index],
           ]
         )
         // filter tokens with searchQuery
@@ -62,21 +63,22 @@ export default function TokenList(props: TokenRowsProps) {
           return matching
         })
         // sort tokens
-        .sort(([a, balA], [b, balB]) => {
+        .sort(([a, fiatBalA], [b, fiatBalB]) => {
+          console.log()
           // sort with balance if balA or balA is more than 0 else use symbols
           if (
-            balA &&
-            balB &&
+            fiatBalA &&
+            fiatBalB &&
             !unImportedTokens &&
-            (balA.greaterThan(0) || balB.greaterThan(0))
+            (fiatBalA.greaterThan(0) || fiatBalB.greaterThan(0))
           ) {
-            return balA.lessThan(balB) ? 1 : -1
+            return fiatBalA.lessThan(fiatBalB) ? 1 : -1
           }
 
           return a.symbol.localeCompare(b.symbol, "en", { sensitivity: "base" })
         })
         // map tokens to token element
-        .map(([token, fiatBalance, logo, tokenBalance]) =>
+        .map(([token, fiatBalance, tokenBalance, logo]) =>
           !unImportedTokens ? (
             <ImportedToken
               {...{
@@ -86,6 +88,7 @@ export default function TokenList(props: TokenRowsProps) {
                 tokenBalance,
                 handleClick: handleSelectToken,
               }}
+              key={uuidv4()}
             />
           ) : (
             <UnImportedToken
@@ -94,6 +97,7 @@ export default function TokenList(props: TokenRowsProps) {
                 logo,
                 handleClick: startImportingToken,
               }}
+              key={uuidv4()}
             />
           )
         ),
@@ -109,21 +113,23 @@ export default function TokenList(props: TokenRowsProps) {
     ]
   )
 
-  const unImportedTokens = getRows(defaultTokens)
+  const importedTokens = getRows(defaultTokens)
   // return 20 max unimported tokens
-  const importedTokens =
+  const unImportedTokens =
     searchQuery.trim() !== "" ? getRows(otherTokens, true).slice(0, 20) : ""
   let noTokens = unImportedTokens.length + importedTokens.length === 0
   const resolvedToken = isAddress(searchQuery) && noTokens && (
-    <ResolvedToken searchQuery={searchQuery} />
+    <ResolvedToken
+      {...{ searchQuery, handleClick: startImportingToken, logo: "" }}
+    />
   )
-  noTokens = !!resolvedToken
+  noTokens = !resolvedToken && noTokens
 
   return (
     <>
       <ul className="px-6 pt-6 max-h-[320px] overflow-y-scroll scrollbar-hide">
-        {unImportedTokens}
         {importedTokens}
+        {unImportedTokens}
       </ul>
       {resolvedToken}
       {noTokens && (

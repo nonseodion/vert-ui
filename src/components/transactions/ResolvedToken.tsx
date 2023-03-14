@@ -10,6 +10,8 @@ import getContracts from "../../utils/getContracts"
 
 interface ResolvedTokenProps {
   searchQuery: string
+  logo: string
+  handleClick: (token: ERC20Token, logo: string) => void
 }
 
 const { erc20Token } = getContracts()
@@ -20,15 +22,22 @@ const callDatas: string[] = [
   erc20TokenInterface.encodeFunctionData("decimals"),
 ]
 
-export default function ResolvedToken({ searchQuery }: ResolvedTokenProps) {
+export default function ResolvedToken({
+  searchQuery,
+  handleClick,
+  logo,
+}: ResolvedTokenProps) {
   const { data: blockNumber } = useBlockNumber({ staleTime: Infinity })
-  erc20Token.attach(isAddress(searchQuery) as string)
+  const tokenContract = useMemo(
+    () => erc20Token.attach(isAddress(searchQuery) as string),
+    [searchQuery]
+  )
 
   // fetch user query token
   const results = useSingleContractWithCallData(
     activeChainId,
     blockNumber,
-    erc20Token,
+    tokenContract,
     callDatas
   )
 
@@ -65,7 +74,7 @@ export default function ResolvedToken({ searchQuery }: ResolvedTokenProps) {
           </div>
           <Button
             text="Import"
-            onClick={() => {}}
+            onClick={() => handleClick(token, logo)}
             className="h-8 p-0 w-[72px] flex items-center justify-center text-[13px]"
           />
         </div>

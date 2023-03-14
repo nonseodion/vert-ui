@@ -45,13 +45,17 @@ export default function useTokenPrices(
 
   const tokenPairs = getTokenPairs()
   const pairs = usePairs(tokenPairs)
-  const prices: (Price<Currency, Currency> | undefined)[] = []
-  for (let i = 0; i < currencies.length; i += 1) {
-    const j = i * 3
-    prices.push(
-      getBUSDPrice([pairs[j], pairs[j + 1], pairs[j + 2]], currencies[i])
-    )
-  }
+  const prices: (Price<Currency, Currency> | undefined)[] = useMemo(() => {
+    const pricesHolder: (Price<Currency, Currency> | undefined)[] = []
+    for (let i = 0; i < currencies.length; i += 1) {
+      const j = i * 3
+      pricesHolder.push(
+        getBUSDPrice([pairs[j], pairs[j + 1], pairs[j + 2]], currencies[i])
+      )
+    }
+
+    return pricesHolder
+  }, [currencies, pairs])
 
   return prices
 }

@@ -26,7 +26,7 @@ export default function ImportedToken({
   const { name, symbol } = token
 
   return (
-    <li key={`${name}-${symbol}`} className="w-full">
+    <li className="w-full">
       <button
         onClick={() => handleClick(token, logo)}
         type="button"
@@ -60,7 +60,7 @@ export default function ImportedToken({
           </div>
         </div>
         <div className="grow-0 text-right font-normal text text-13">
-          $ {removeTrailingZeros(fiatBalance?.toExact() ?? "")}
+          ${removeTrailingZeros(fiatBalance?.toExact() ?? "")}
         </div>
       </button>
     </li>

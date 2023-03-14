@@ -33,6 +33,7 @@ const useSelectTokenInterface = (): UseSelectInterfaceReturnType => {
     otherLogoURIs: otherLogos,
     otherTokens,
   } = useTokens()
+
   const [, setSellToken] = useAtom(
     useMemo(
       () =>
@@ -44,12 +45,14 @@ const useSelectTokenInterface = (): UseSelectInterfaceReturnType => {
     )
   )
 
+  // calculate fiat and token balances
   const { address } = useWallet()
   const balances: Balance[] = useBalances(tokens, address)
   const currencyAmounts = useMemo(
     () => balances.map((balance) => balance.amount),
     [balances]
   )
+
   const pricesInStable = useTokenPrices(currencyAmounts)
   const { preferredFiat, dollarRate } = useExchangeSettings()
   const fiatBalances = useMemo(() => {
@@ -60,10 +63,6 @@ const useSelectTokenInterface = (): UseSelectInterfaceReturnType => {
         )
           .multiply(tokenPriceInStable || "0")
           .multiply(tokenPriceInStable?.scalar || "0")
-        console.log(
-          dollarBalance.toExact(),
-          tokenPriceInStable?.baseCurrency.symbol
-        )
         const amount = stableCoinAmountToFiat(
           dollarBalance,
           dollarRate,
