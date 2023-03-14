@@ -39,7 +39,7 @@ export default function SelectToken({
             onClick={() => setAddress("")}
             className="outline-none border-none flex-shrink-0 ml-[3.05px]"
           >
-            <Exit className="h-3 w-3" />
+            <Exit className="h-3 w-3 fill-[#929AA5]" />
           </button>
         )}
       </div>

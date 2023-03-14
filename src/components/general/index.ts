@@ -1,6 +1,7 @@
 import Banner from "./Banner"
 import Button from "./Button"
 import Glow from "./Glow"
+import Info from "./Info"
 import Loader from "./Loader"
 import Modal from "./Modal"
 import Paginator from "./Paginator"
@@ -10,6 +11,7 @@ import WalletConfirmation from "./WalletConfirmation"
 import Wrapper from "./Wrapper"
 
 export {
+  Info,
   Banner,
   Button,
   Wrapper,

@@ -6,9 +6,8 @@ import { ReactComponent as LoneLogo } from "../../assets/icons/logo-lone.svg"
 import { Button, Glow, Wrapper } from "../../components/general"
 import { Input } from "../../components/inputs"
 import { ConnectWallet } from "../../components/transactions"
-import useAuth from "../../hooks/useAuth"
-import useModal from "../../hooks/useModal"
-import { PageRoutes } from "../../utils/constants"
+import { useAuth, useModal } from "../../hooks"
+import { Modals, PageRoutes } from "../../utils/constants"
 
 interface SignInWithEmailValues {
   email: string
@@ -37,7 +36,9 @@ export default function SignInWithEmail() {
       <Glow />
       <div className="flex justify-center pt-[58px]">
         <div className="flex flex-col justify-center items-center space-y-[50.75px] mb-[276px]">
-          <LoneLogo />
+          <button type="button" onClick={() => navigate(PageRoutes.HOME)}>
+            <LoneLogo />
+          </button>
           <div className="flex flex-col space-y-8">
             <p className="text-white text-center text-lg">
               Sign in to Vert finance
@@ -59,6 +60,7 @@ export default function SignInWithEmail() {
                       type="email"
                       hasError={!!errors.email}
                       {...field}
+                      ref={null}
                     />
                   )}
                 />
@@ -72,6 +74,7 @@ export default function SignInWithEmail() {
                       type="password"
                       hasError={!!errors.password}
                       {...field}
+                      ref={null}
                     />
                   )}
                 />
@@ -98,7 +101,7 @@ export default function SignInWithEmail() {
                   <Button
                     text="Connect Wallet"
                     background="transparent"
-                    onClick={() => showModal({ modal: "CONNECT_WALLET" })}
+                    onClick={() => showModal({ modal: Modals.CONNECT_WALLET })}
                     fullWidth
                     className="text-[14.48px] font-semibold"
                     textColor="dark"

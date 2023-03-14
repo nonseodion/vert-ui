@@ -6,6 +6,14 @@
   font-family: "Poppins", sans-serif;
 }
 
+:root {
+  --rt-opacity: 1;
+}
+
+.react-tooltip__tooltip_KtSkBq {
+  padding: 10px 12px;
+}
+
 html,
 body {
   scroll-behavior: smooth;
@@ -74,6 +82,12 @@ html.hide-overflow {
   pointer-events: all;
 }
 
+.converter-currency-select.active {
+  transform: translateY(0px);
+  opacity: 1;
+  pointer-events: all;
+}
+
 .active-link svg > path {
   fill: white !important;
 }
@@ -85,4 +99,9 @@ html.hide-overflow {
 .go2072408551 {
   background: #e6f5ed !important;
   padding: 0 !important;
+}
+
+.converter-currency-select {
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(36px);
 }

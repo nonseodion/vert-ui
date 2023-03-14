@@ -1,17 +1,18 @@
 import React from "react"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
+import { Modals } from "../../utils/constants"
 import { Button, Modal } from "../general"
 
 export default function ResetPasswordModal() {
   const {
     hideModal,
     modalValues: { modalParams, onConfirm },
-  } = useModal("RESET_PASSWORD_MODAL")
+  } = useModal(Modals.RESET_PASSWORD_MODAL)
 
   return (
     <Modal
-      name="RESET_PASSWORD_MODAL"
+      name={Modals.RESET_PASSWORD_MODAL}
       bodyClassNames="!pb-0 !lg:w-[375px] !px-[31.05px] !py-[16.05px]"
     >
       <div>
@@ -20,7 +21,7 @@ export default function ResetPasswordModal() {
           className="absolute top-[16.05px] right-[31.05px]"
           onClick={() => hideModal()}
         >
-          <Exit className="h-5 w-5" />
+          <Exit className="h-5 w-5 fill-[#929AA5]" />
         </button>
         <h3 className="text-center mx-auto mt-[13.95px] text-dark2 font-bold text-[19px] leading-[21px]">
           Forgot Password

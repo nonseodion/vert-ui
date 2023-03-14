@@ -7,7 +7,7 @@ import { ReactComponent as SignOut } from "../../assets/icons/sign-out.svg"
 import { ReactComponent as PowerSwitch } from "../../assets/icons/power-switch.svg"
 import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
 import metamask from "../../assets/icons/metamask.png"
-import useAuth from "../../hooks/useAuth"
+import { useAuth } from "../../hooks"
 import { PageRoutes } from "../../utils/constants"
 import { handleProfileDropdown } from "../../utils/functions"
 
@@ -112,7 +112,7 @@ export default function ProfileDropdown() {
               <Copy className="stroke-lightBlue" />
             </div>
             <div className="flex space-x-1 items-center">
-              <div className="h-2 w-2 rounded-full bg-[#48D38A]" />
+              <div className="h-2 w-2 rounded-full bg-brightGreen" />
               <span className="text-[11.13px] text-white leading-4">
                 connected
               </span>

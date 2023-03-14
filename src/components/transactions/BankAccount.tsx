@@ -1,21 +1,38 @@
 import React from "react"
+import clsx from "classnames"
 import { ReactComponent as Bank } from "../../assets/icons/bank.svg"
 import { ReactComponent as Pencil } from "../../assets/icons/pencil.svg"
 import { ReactComponent as Trash } from "../../assets/icons/trash.svg"
+import { doNothing } from "../../utils/functions"
+import { useModal } from "../../hooks"
+import { Modals } from "../../utils/constants"
 
 interface BankAccountProps {
   bank_name: string
   account_name: string
   account_number: string
+  className?: string
+  onClick?: (_: any) => void
 }
 
 export default function BankAccount({
   account_name,
   account_number,
   bank_name,
+  className,
+  onClick,
 }: BankAccountProps) {
+  const { showModal } = useModal()
   return (
-    <div className="p-[21px] flex justify-between items-center bg-white rounded-lg">
+    <div
+      role="presentation"
+      onClick={onClick}
+      className={clsx(
+        className,
+        "p-[21px] flex justify-between items-center bg-white rounded-lg",
+        { "cursor-pointer": onClick }
+      )}
+    >
       <div className="flex space-x-[10px] items-center">
         <div className="flex items-center flex-shrink-0 justify-center h-[50px] w-[50px] rounded-full bg-primary/[.15]">
           <Bank className="stroke-primary" />
@@ -28,8 +45,21 @@ export default function BankAccount({
         </div>
       </div>
       <div className="flex items-center space-x-[24.72px] flex-shrink-0 ml-3">
-        <button type="button">
-          <Pencil />
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            showModal({
+              modal: Modals.BANK_ACCOUNT,
+              modalParams: {
+                selected_bank: { label: bank_name, value: bank_name },
+                account_name,
+                account_number,
+              },
+            })
+          }}
+        >
+          <Pencil className="fill-black/[.4]" />
         </button>
         <button type="button">
           <Trash />
@@ -37,4 +67,9 @@ export default function BankAccount({
       </div>
     </div>
   )
+}
+
+BankAccount.defaultProps = {
+  className: "",
+  onClick: doNothing,
 }

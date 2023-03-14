@@ -3,6 +3,7 @@ import Footer from "./Footer"
 import Navigator from "./Navigator"
 import ProfileDropdown from "./ProfileDropdown"
 import ProtectedRoute from "./ProtectedRoute"
+import UnProtectedRoute from "./UnProtectedRoute"
 import TopNav from "./TopNav"
 
 export {
@@ -12,4 +13,5 @@ export {
   ProtectedRoute,
   Navigator,
   BackButton,
+  UnProtectedRoute,
 }

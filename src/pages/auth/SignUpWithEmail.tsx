@@ -30,7 +30,9 @@ export default function SignUpWithEmail() {
       <Glow />
       <div className="flex justify-center pt-[58px]">
         <div className="flex flex-col justify-center items-center space-y-[50.75px] mb-[276px]">
-          <LoneLogo />
+          <button type="button" onClick={() => navigate(PageRoutes.HOME)}>
+            <LoneLogo />
+          </button>
           <div className="flex flex-col space-y-8">
             <p className="text-white text-center text-lg">Sign up</p>
             <div className="bg-lightGreen rounded-xl w-[349px] p-7">
@@ -54,6 +56,7 @@ export default function SignUpWithEmail() {
                       hasError={!!errors.email}
                       errorMessage="The email you entered is not in the correct format. Please check."
                       {...field}
+                      ref={null}
                     />
                   )}
                 />
@@ -66,6 +69,7 @@ export default function SignUpWithEmail() {
                       placeholder="Username"
                       hasError={!!errors.username}
                       {...field}
+                      ref={null}
                     />
                   )}
                 />
@@ -79,6 +83,7 @@ export default function SignUpWithEmail() {
                       type="password"
                       hasError={!!errors.password}
                       {...field}
+                      ref={null}
                     />
                   )}
                 />

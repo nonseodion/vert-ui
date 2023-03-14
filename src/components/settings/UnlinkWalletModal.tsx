@@ -2,7 +2,8 @@ import React from "react"
 import clsx from "classnames"
 import { Button, Modal, WalletConfirmation } from "../general"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
+import { Modals } from "../../utils/constants"
 
 interface UnlinkWalletModalProps {
   unlinking: boolean
@@ -11,10 +12,10 @@ interface UnlinkWalletModalProps {
 export default function UnlinkWalletModal({
   unlinking,
 }: UnlinkWalletModalProps) {
-  const { modalValues, hideModal } = useModal("UNLINK_WALLET")
+  const { modalValues, hideModal } = useModal(Modals.UNLINK_WALLET)
   return (
     <Modal
-      name="UNLINK_WALLET"
+      name={Modals.UNLINK_WALLET}
       bodyClassNames={clsx(
         "!mt-[192px] border border-primary/[.3] rounded-2xl !lg:w-[452px] !px-[27px] !pt-[52px]",
         { "px-5 pt-[23px] !pb-[30px] lg:w-[392px] rounded-3xl": unlinking },
@@ -34,7 +35,7 @@ export default function UnlinkWalletModal({
             onClick={() => hideModal()}
             className="absolute top-[24.4px] right-[26.8px]"
           >
-            <Exit />
+            <Exit className="fill-[#929AA5]" />
           </button>
           <p className="mx-auto max-w-[340px] text-black text-center mb-[30px]">
             Unlinking this wallet will disconnect it from your account. Do you
@@ -50,7 +51,7 @@ export default function UnlinkWalletModal({
               text="Continue"
               bordered
               onClick={modalValues?.onConfirm}
-              className="w-[199px] text-primary"
+              className="w-[199px] !text-primary"
               background="transparent"
             />
           </div>

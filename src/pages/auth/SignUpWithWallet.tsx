@@ -7,8 +7,8 @@ import { Button, Glow, Wrapper } from "../../components/general"
 import { Input } from "../../components/inputs"
 import { BackButton } from "../../components/navigation"
 import { ConnectWallet } from "../../components/transactions"
-import { PageRoutes } from "../../utils/constants"
-import useModal from "../../hooks/useModal"
+import { Modals, PageRoutes } from "../../utils/constants"
+import { useModal } from "../../hooks"
 import { goBackConditionally } from "../../utils/functions"
 
 interface SignUpWithEmailValues {
@@ -27,7 +27,7 @@ export default function SignUpWithWallet() {
   const { showModal } = useModal()
   const onSubmit = handleSubmit((data) => {
     localStorage.setItem("data", JSON.stringify(data))
-    showModal({ modal: "CONNECT_WALLET" })
+    showModal({ modal: Modals.CONNECT_WALLET })
   })
   return (
     <Wrapper hideTopNav>
@@ -35,7 +35,9 @@ export default function SignUpWithWallet() {
       <ConnectWallet />
       <div className="flex justify-center pt-[58px]">
         <div className="flex flex-col justify-center items-center space-y-[50.75px] mb-[276px]">
-          <LoneLogo />
+          <button type="button" onClick={() => navigate(PageRoutes.HOME)}>
+            <LoneLogo />
+          </button>
           <div className="flex flex-col space-y-8">
             <p className="text-white text-center text-lg">Sign up</p>
             <div className="bg-lightGreen rounded-xl w-[349px] p-7">
@@ -55,6 +57,7 @@ export default function SignUpWithWallet() {
                       type="email"
                       hasError={!!errors.email}
                       {...field}
+                      ref={null}
                     />
                   )}
                 />
@@ -70,6 +73,7 @@ export default function SignUpWithWallet() {
                       autoFocus
                       hasError={!!errors.username}
                       {...field}
+                      ref={null}
                     />
                   )}
                 />

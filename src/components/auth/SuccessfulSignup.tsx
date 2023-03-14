@@ -1,14 +1,15 @@
 import React from "react"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { ReactComponent as Girl } from "../../assets/images/girl.svg"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
+import { Modals } from "../../utils/constants"
 import { Modal } from "../general"
 
 export default function SuccessfulSignup() {
-  const { hideModal } = useModal("SUCCESSFUL_SIGN_UP")
+  const { hideModal } = useModal(Modals.SUCCESSFUL_SIGN_UP)
   return (
     <Modal
-      name="SUCCESSFUL_SIGN_UP"
+      name={Modals.SUCCESSFUL_SIGN_UP}
       bodyClassNames="bg-[#EFFEED] !pb-0 !lg:w-[508px]"
     >
       <button
@@ -16,7 +17,7 @@ export default function SuccessfulSignup() {
         onClick={() => hideModal()}
         className="absolute top-4 right-4 lg:top-[34.1px] lg:right-[26.1px]"
       >
-        <Exit />
+        <Exit className="fill-[#929AA5]" />
       </button>
       <p className="text-center mt-[30px] text-primary font-bold text-[23px] lg:text-[26px]">
         You successfully signed up!

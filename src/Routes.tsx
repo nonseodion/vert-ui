@@ -1,6 +1,6 @@
 import React from "react"
 import { Route, Routes } from "react-router-dom"
-import { ProtectedRoute } from "./components/navigation"
+import { ProtectedRoute, UnProtectedRoute } from "./components/navigation"
 import {
   SignInWithEmail,
   SignUpWithEmail,
@@ -20,7 +20,12 @@ import {
   SecuritySettings,
   SetPassword,
 } from "./pages/settings"
-import { TransactionDetail, TransactionList } from "./pages/transactions"
+import {
+  TransactionDetail,
+  TransactionList,
+  SelectBankAccount,
+  ProcessTransaction,
+} from "./pages/transactions"
 import Error from "./pages/utils/Error"
 import NotFound from "./pages/utils/NotFound"
 import { PageRoutes } from "./utils/constants"
@@ -30,23 +35,54 @@ export default function AppRoutes() {
     <Routes>
       <Route path={PageRoutes.HOME} element={<Home />} />
       <Route path={PageRoutes.ERROR} element={<Error />} />
+
       <Route
         path={PageRoutes.SIGN_IN_WITH_EMAIL}
-        element={<SignInWithEmail />}
+        element={
+          <UnProtectedRoute>
+            <SignInWithEmail />
+          </UnProtectedRoute>
+        }
       />
-      <Route path={PageRoutes.FORGOT_PASSWORD} element={<ForgotPassword />} />
-      <Route path={PageRoutes.RESET_PASSWORD} element={<ResetPassword />} />
+      <Route
+        path={PageRoutes.FORGOT_PASSWORD}
+        element={
+          <UnProtectedRoute>
+            <ForgotPassword />
+          </UnProtectedRoute>
+        }
+      />
+      <Route
+        path={PageRoutes.RESET_PASSWORD}
+        element={
+          <UnProtectedRoute>
+            <ResetPassword />
+          </UnProtectedRoute>
+        }
+      />
       <Route
         path={PageRoutes.SIGN_UP_WITH_EMAIL}
-        element={<SignUpWithEmail />}
+        element={
+          <UnProtectedRoute>
+            <SignUpWithEmail />
+          </UnProtectedRoute>
+        }
       />
       <Route
         path={PageRoutes.SIGN_UP_WITH_WALLET}
-        element={<SignUpWithWallet />}
+        element={
+          <UnProtectedRoute>
+            <SignUpWithWallet />
+          </UnProtectedRoute>
+        }
       />
       <Route
         path={PageRoutes.EMAIL_VERIFICATION}
-        element={<EmailVerification />}
+        element={
+          <UnProtectedRoute>
+            <EmailVerification />
+          </UnProtectedRoute>
+        }
       />
       <Route
         path={PageRoutes.PROFILE_SETTINGS}
@@ -125,6 +161,22 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <TransactionDetail />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PageRoutes.SELECT_BANK_ACCOUNT}
+        element={
+          <ProtectedRoute>
+            <SelectBankAccount />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={PageRoutes.PROCESS_TRANSACTION}
+        element={
+          <ProtectedRoute>
+            <ProcessTransaction />
           </ProtectedRoute>
         }
       />

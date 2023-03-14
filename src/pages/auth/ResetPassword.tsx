@@ -5,8 +5,8 @@ import { ResetPasswordSuccessfulModal } from "../../components/auth"
 import { Button, Wrapper } from "../../components/general"
 import { Input } from "../../components/inputs"
 import { BackButton } from "../../components/navigation"
-import useModal from "../../hooks/useModal"
-import { PageRoutes } from "../../utils/constants"
+import { useModal } from "../../hooks"
+import { Modals, PageRoutes } from "../../utils/constants"
 import { goBackConditionally } from "../../utils/functions"
 
 interface ResetPasswordValues {
@@ -41,7 +41,7 @@ export default function ResetPassword() {
     setTimeout(() => {
       setLoading(false)
       showModal({
-        modal: "RESET_PASSWORD_SUCCESSFUL_MODAL",
+        modal: Modals.RESET_PASSWORD_SUCCESSFUL_MODAL,
       })
     }, 2000)
   }
@@ -80,6 +80,7 @@ export default function ResetPassword() {
                   autoFocus
                   errorMessage={errors?.password?.message}
                   {...field}
+                  ref={null}
                 />
               )}
             />
@@ -100,6 +101,7 @@ export default function ResetPassword() {
                   className="text-13"
                   hasError={!!errors.password2}
                   {...field}
+                  ref={null}
                 />
               )}
             />

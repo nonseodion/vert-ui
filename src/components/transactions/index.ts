@@ -1,7 +1,33 @@
+import ApproveTransactionModal from "./ApproveTransactionModal"
 import BankAccount from "./BankAccount"
+import CashSentModal from "./CashSentModal"
 import ConnectWallet from "./ConnectWallet"
 import Converter from "./Converter"
 import TokenModal from "./TokenModal"
+import TransactionCancelledModal from "./TransactionCancelledModal"
+import TransactionProgress from "./TransactionProgress"
+import TransactionDetailsModal from "./TransactionsDetailsModal"
 import TransactionStatus from "./TransactionStatus"
+import {
+  ConfirmTransaction,
+  WaitingForConfirmation,
+  SuccessfulTransaction,
+  ViewOnBsc,
+} from "./TransactionSteps"
 
-export { BankAccount, TransactionStatus, ConnectWallet, Converter, TokenModal }
+export {
+  TransactionDetailsModal,
+  CashSentModal,
+  TransactionProgress,
+  BankAccount,
+  TransactionStatus,
+  ConnectWallet,
+  Converter,
+  TokenModal,
+  ApproveTransactionModal,
+  ConfirmTransaction,
+  WaitingForConfirmation,
+  SuccessfulTransaction,
+  ViewOnBsc,
+  TransactionCancelledModal,
+}
