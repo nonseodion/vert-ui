@@ -1,4 +1,4 @@
-import { JSBI, Percent, Token } from "@pancakeswap/sdk"
+import { Token } from "@pancakeswap/sdk"
 import { ChainId } from "../config"
 
 export enum PageRoutes {
@@ -37,11 +37,7 @@ export enum LocalStorage {
   TOKEN_INFO = "token_Info",
 }
 
-export const BIPS_BASE = JSBI.BigInt(10000)
-export const BETTER_TRADE_LESS_HOPS_THRESHOLD = new Percent(
-  JSBI.BigInt(50),
-  BIPS_BASE
-)
+export const NULL_ADDRESS = "0x0000000000000000000000000000000000000000"
 
 export type ChainMap<T> = {
   readonly [id in ChainId]: T

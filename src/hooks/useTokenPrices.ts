@@ -1,10 +1,4 @@
-import {
-  WNATIVE,
-  Currency,
-  CurrencyAmount,
-  ERC20Token,
-  Price,
-} from "@pancakeswap/sdk"
+import { WNATIVE, Currency, CurrencyAmount, Price } from "@pancakeswap/sdk"
 import { useCallback, useMemo } from "react"
 import { activeChainId } from "../utils/config"
 import { bscTokens, bscTestnetTokens } from "../utils/constants/tokens"
@@ -12,7 +6,7 @@ import { usePairs } from "./usePairs"
 import getBUSDPrice from "../utils/getBUSDPrice"
 
 export default function useTokenPrices(
-  amounts?: (CurrencyAmount<ERC20Token> | undefined)[]
+  amounts?: (CurrencyAmount<Currency> | undefined)[]
 ): (Price<Currency, Currency> | undefined)[] {
   const currencies = useMemo(
     () => amounts?.map((amount) => amount?.currency) || [],

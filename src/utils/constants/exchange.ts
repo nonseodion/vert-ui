@@ -1,4 +1,4 @@
-import { ERC20Token } from "@pancakeswap/sdk"
+import { ERC20Token, JSBI, Percent } from "@pancakeswap/sdk"
 import { ChainId, activeChainId } from "../config"
 import { ChainTokenList } from "."
 import { bscTokens, bscTestnetTokens } from "./tokens"
@@ -78,3 +78,15 @@ export const pinnedTokens: { [key in ChainId]: [ERC20Token, string][] } = {
     ],
   ],
 }
+
+export const BIG_INT_TEN = JSBI.BigInt(10)
+export const BIG_INT_ZERO = JSBI.BigInt(0)
+
+// used to ensure the user doesn't send so much BNB so they end up with <.01
+export const MIN_BNB: JSBI = JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(16)) // .01 BNB
+
+export const BIPS_BASE = JSBI.BigInt(10000)
+export const BETTER_TRADE_LESS_HOPS_THRESHOLD = new Percent(
+  JSBI.BigInt(50),
+  BIPS_BASE
+)

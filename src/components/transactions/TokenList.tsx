@@ -9,6 +9,7 @@ import FiatAmount from "../../utils/FiatAmount"
 import ResolvedToken from "./ResolvedToken"
 import { isAddress } from "../../utils"
 import UnImportedToken from "./UnImportedToken"
+import { USD } from "../../utils/Fiat"
 
 interface TokenRowsProps {
   tokens: Currency[]
@@ -64,15 +65,17 @@ export default function TokenList(props: TokenRowsProps) {
         })
         // sort tokens
         .sort(([a, fiatBalA], [b, fiatBalB]) => {
-          console.log()
           // sort with balance if balA or balA is more than 0 else use symbols
           if (
-            fiatBalA &&
-            fiatBalB &&
+            (fiatBalA || fiatBalB) &&
             !unImportedTokens &&
-            (fiatBalA.greaterThan(0) || fiatBalB.greaterThan(0))
+            (fiatBalA?.greaterThan(0) || fiatBalB?.greaterThan(0))
           ) {
-            return fiatBalA.lessThan(fiatBalB) ? 1 : -1
+            const [balA, balB] = [
+              fiatBalA ?? FiatAmount.fromRawAmount(USD, "0"),
+              fiatBalB ?? FiatAmount.fromRawAmount(USD, "0"),
+            ]
+            return balA.lessThan(balB) ? 1 : -1
           }
 
           return a.symbol.localeCompare(b.symbol, "en", { sensitivity: "base" })
