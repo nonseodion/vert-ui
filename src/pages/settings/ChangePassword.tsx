@@ -1,4 +1,5 @@
 import React from "react"
+import { useForm, Controller } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { Button, Wrapper } from "../../components/general"
 import { Input } from "../../components/inputs"
@@ -6,7 +7,23 @@ import { BackButton } from "../../components/navigation"
 import { SettingsContent } from "../../components/settings"
 import { PageRoutes } from "../../utils/constants"
 
+interface PasswordValues {
+  old_password: string
+  new_password: string
+  confirm_new_password: string
+}
+
 export default function ChangePassword() {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<PasswordValues>()
+
+  const onSubmit = handleSubmit((data) => {
+    localStorage.setItem("data", JSON.stringify(data))
+  })
+
   const navigate = useNavigate()
   return (
     <Wrapper>
@@ -30,36 +47,77 @@ export default function ChangePassword() {
           </div>
         </div>
         <SettingsContent title="Security settings">
-          <div className="flex flex-col space-y-[30px]">
-            <div className="flex flex-col space-y-[10px]">
-              <p className="text-white font-medium">Old password</p>
-              <Input
-                placeholder="Please enter your current password"
-                type="password"
-                outerClassName="border border-white/[.5] rounded-lg"
-                className="placeholder:text-lightBlue !text-13 !text-white"
-              />
+          <form onSubmit={onSubmit}>
+            <div className="flex flex-col space-y-[30px]">
+              <div className="flex flex-col space-y-[10px]">
+                <p className="text-white font-medium">Old password</p>
+                <Controller
+                  control={control}
+                  name="old_password"
+                  rules={{
+                    required: true,
+                    validate: (v) => v?.trim()?.length > 0,
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      placeholder="Please enter your current password"
+                      type="password"
+                      outerClassName="border border-white/[.5] rounded-lg"
+                      className="placeholder:text-lightBlue !text-13 !text-white"
+                      hasError={!!errors.old_password}
+                      onChange={onChange}
+                      value={value}
+                    />
+                  )}
+                />
+              </div>
+              <div className="flex flex-col space-y-[10px]">
+                <p className="text-white font-medium">New password</p>
+                <Controller
+                  control={control}
+                  name="new_password"
+                  rules={{
+                    required: true,
+                    validate: (v) => v?.trim()?.length > 0,
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      placeholder="Please enter the new password"
+                      type="password"
+                      outerClassName="border border-white/[.5] rounded-lg"
+                      className="placeholder:text-lightBlue !text-13 !text-white"
+                      hasError={!!errors.new_password}
+                      onChange={onChange}
+                      value={value}
+                    />
+                  )}
+                />
+              </div>
+              <div className="flex flex-col space-y-[10px]">
+                <p className="text-white font-medium">Confirm new password</p>
+                <Controller
+                  control={control}
+                  name="confirm_new_password"
+                  rules={{
+                    required: true,
+                    validate: (v) => v?.trim()?.length > 0,
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      placeholder="Please enter the new password again"
+                      type="password"
+                      outerClassName="border border-white/[.5] rounded-lg"
+                      className="placeholder:text-lightBlue !text-13 !text-white"
+                      hasError={!!errors.confirm_new_password}
+                      onChange={onChange}
+                      value={value}
+                    />
+                  )}
+                />
+              </div>
             </div>
-            <div className="flex flex-col space-y-[10px]">
-              <p className="text-white font-medium">New password</p>
-              <Input
-                placeholder="Please enter the new password"
-                type="password"
-                outerClassName="border border-white/[.5] rounded-lg"
-                className="placeholder:text-lightBlue !text-13 !text-white"
-              />
-            </div>
-            <div className="flex flex-col space-y-[10px]">
-              <p className="text-white font-medium">Confirm new password</p>
-              <Input
-                placeholder="Please enter the new password again"
-                type="password"
-                outerClassName="border border-white/[.5] rounded-lg"
-                className="placeholder:text-lightBlue !text-13 !text-white"
-              />
-            </div>
-          </div>
-          <Button text="Confirm" className="mt-10" />
+            <Button text="Confirm" type="submit" className="mt-10" />
+          </form>
         </SettingsContent>
       </div>
     </Wrapper>

@@ -1,4 +1,5 @@
 import React from "react"
+import { useForm, Controller } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { Button, Wrapper } from "../../components/general"
 import { Input } from "../../components/inputs"
@@ -6,8 +7,23 @@ import { BackButton } from "../../components/navigation"
 import { SettingsContent } from "../../components/settings"
 import { PageRoutes } from "../../utils/constants"
 
+interface PasswordValues {
+  password: string
+  confirm_password: string
+}
+
 export default function SetPassword() {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<PasswordValues>()
   const navigate = useNavigate()
+
+  const onSubmit = handleSubmit((data) => {
+    localStorage.setItem("data", JSON.stringify(data))
+  })
+
   return (
     <Wrapper>
       <div className="px-4 pt-5 lg:pt-9 lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
@@ -31,27 +47,53 @@ export default function SetPassword() {
           </div>
         </div>
         <SettingsContent title="Security settings">
-          <div className="flex flex-col space-y-[30px]">
+          <form onSubmit={onSubmit} className="flex flex-col space-y-[30px]">
             <div className="flex flex-col space-y-[10px]">
               <p className="text-white font-medium">Enter password</p>
-              <Input
-                placeholder="Please enter password"
-                type="password"
-                outerClassName="border border-white/[.5] rounded-lg"
-                className="placeholder:text-lightBlue !text-13 !text-white"
+              <Controller
+                control={control}
+                name="password"
+                rules={{
+                  required: true,
+                  validate: (v) => v?.trim()?.length > 0,
+                }}
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    placeholder="Please enter password"
+                    type="password"
+                    outerClassName="border border-white/[.5] rounded-lg"
+                    className="placeholder:text-lightBlue !text-13 !text-white"
+                    hasError={!!errors.password}
+                    onChange={onChange}
+                    value={value}
+                  />
+                )}
               />
             </div>
             <div className="flex flex-col space-y-[10px]">
               <p className="text-white font-medium">Confirm password</p>
-              <Input
-                placeholder="Please confirm password"
-                type="password"
-                outerClassName="border border-white/[.5] rounded-lg"
-                className="placeholder:text-lightBlue !text-13 !text-white"
+              <Controller
+                control={control}
+                name="confirm_password"
+                rules={{
+                  required: true,
+                  validate: (v) => v?.trim()?.length > 0,
+                }}
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    placeholder="Please confirm password"
+                    type="password"
+                    outerClassName="border border-white/[.5] rounded-lg"
+                    className="placeholder:text-lightBlue !text-13 !text-white"
+                    hasError={!!errors.confirm_password}
+                    onChange={onChange}
+                    value={value}
+                  />
+                )}
               />
             </div>
-          </div>
-          <Button text="Confirm" className="mt-10" />
+            <Button text="Confirm" type="submit" className="mt-10 w-fit" />
+          </form>
         </SettingsContent>
       </div>
     </Wrapper>

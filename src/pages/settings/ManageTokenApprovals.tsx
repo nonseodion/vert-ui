@@ -171,12 +171,15 @@ export default function ManageTokenApprovals() {
                               alt={approval.asset}
                               className="h-7 w-7"
                             />
-                            <span className="text-13 text-black">
+                            <span className="text-13 text-black md:block hidden">
                               {approval.asset}
                             </span>
                           </div>
                           <div className="w-[144px]">
-                            <span className="text-sm">{approval.time}</span>
+                            <span className="text-sm md:block hidden">
+                              {approval.time}
+                            </span>
+                            <span className="block md:hidden">01/02/22</span>
                           </div>
                           <div className="w-[161px] flex justify-end">
                             <Button
