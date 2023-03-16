@@ -6,7 +6,6 @@ import { ReactComponent as Refresh } from "../../assets/icons/refresh.svg"
 import { ReactComponent as Retry } from "../../assets/icons/retry.svg"
 import { ReactComponent as Retry2 } from "../../assets/icons/retry-2.svg"
 import ConverterSide from "./ConverterSide"
-import TokenModal from "./TokenModal"
 import { getRandomBoolean } from "../../utils/functions"
 import { useModal } from "../../hooks"
 import { Button, Info } from "../general"
@@ -33,6 +32,9 @@ export default function Converter() {
     setBuyAmount,
     sellAmount,
     independentField,
+    sellBalance,
+    fiatBuyEqv,
+    fiatSellEqv,
   } = useConverterInterface()
 
   useEffect(() => {
@@ -60,7 +62,6 @@ export default function Converter() {
 
   return (
     <div className="w-[418px] rounded-3xl bg-lightGreen">
-      <TokenModal />
       <ApproveTransactionModal />
       <div className="h-[53px] flex items-center justify-between border-b border-border">
         <div className="ml-auto flex space-x-[21.01px] items-center mr-[22px]">
@@ -97,6 +98,8 @@ export default function Converter() {
             logos={sellLogos}
             amount={independentField === "sell" ? typedValue : sellAmount}
             setAmount={setSellAmount}
+            fiatEqv={fiatSellEqv}
+            tokenBalance={sellBalance}
           />
           <ConverterSide
             side="buy"
@@ -105,6 +108,7 @@ export default function Converter() {
             amount={independentField === "buy" ? typedValue : buyAmount}
             setAmount={setBuyAmount}
             onTokenSelect={() => showModal({ modal: Modals.TOKEN_MODAL })}
+            fiatEqv={fiatBuyEqv}
           />
         </div>
         <p className="mb-[30px] text-center text-[#6C7689] text-12 font-bold">

@@ -11,8 +11,6 @@ import { useAtom, useAtomValue } from "jotai"
 import { parseUnits } from "ethers/lib/utils"
 import useTokens from "../../state/tokens/hooks"
 import ngnLogo from "../../assets/icons/ngn.png"
-import busdLogo from "../../assets/icons/busd.png"
-import bnbLogo from "../../assets/icons/bnb.png"
 import Fiat, { NGN } from "../../utils/Fiat"
 import FiatAmount from "../../utils/FiatAmount"
 import validateUserInput from "../../utils/validateConverterInput"
@@ -30,6 +28,8 @@ import {
 import { getTokenLogoURL } from "../../utils"
 import { activeChainId } from "../../utils/config"
 import { wrappedCurrency } from "../../utils/wrappedCurrency"
+import useTokenPrices from "../useTokenPrices"
+import { Balance, useBalances } from "../../state/balances/useBalances"
 
 let independentField: "sell" | "buy"
 
@@ -42,16 +42,18 @@ interface ReturnTypes {
   }) => void
   setSellAmount: (_: string) => void
   sellLogos: string[]
+  fiatSellEqv?: FiatAmount
+  sellBalance?: Balance
 
   buyToken: Fiat
   buyAmount: string
   buyLogos: string[]
   setBuyAmount: (_: string) => void
+  fiatBuyEqv?: FiatAmount
 
   typedValue: string
   independentField: "sell" | "buy"
   tokens: Currency[]
-  logos: string[]
 }
 
 const useConverterInterface = (): ReturnTypes => {
@@ -60,6 +62,7 @@ const useConverterInterface = (): ReturnTypes => {
   const {
     sellToken: { token: sellToken, logo: sellLogo },
     dollarRate,
+    preferredFiat,
   } = useAtomValue(exchangeAtom)
   const [, setSellToken] = useAtom(
     useMemo(
@@ -76,6 +79,10 @@ const useConverterInterface = (): ReturnTypes => {
     ""
   )
 
+  const buyTokenPrice = useTokenPrices(sellAmount ? [sellAmount] : undefined)[0]
+  const useBalancesInput = useMemo(() => [sellToken], [sellToken])
+  const sellBalance = useBalances(useBalancesInput)[0]
+
   const tradeIn = useTradeExactIn(
     sellAmount ||
       CurrencyAmount.fromRawAmount(
@@ -84,12 +91,6 @@ const useConverterInterface = (): ReturnTypes => {
       ),
     stableCoin
   )
-
-  // console.log(
-  //   tradeIn?.outputAmount.toExact(),
-  //   sellToken.symbol,
-  //   tradeIn?.route.path.map((t) => t.symbol)
-  // )
 
   const stableCoinAmount = useMemo(
     () =>
@@ -112,7 +113,6 @@ const useConverterInterface = (): ReturnTypes => {
   )
 
   const [typedValue, setTypedValue] = useState<string>("")
-  const logos = [busdLogo, bnbLogo]
 
   // validate and format inputted buyAmount before updating state
   const setBuyAmount1 = useCallback(
@@ -155,6 +155,35 @@ const useConverterInterface = (): ReturnTypes => {
     },
     [sellToken]
   )
+
+  // get the fiat equivalent of the sellAmount
+  const fiatSellEqv: FiatAmount | undefined = useMemo(() => {
+    let amount
+    if (buyTokenPrice && sellAmount) {
+      const dollarBalance = sellAmount
+        .multiply(buyTokenPrice)
+        .multiply(buyTokenPrice.scalar)
+      amount = stableCoinAmountToFiat(
+        dollarBalance,
+        dollarRate,
+        preferredFiat.token
+      )
+    }
+    return amount
+  }, [buyTokenPrice, dollarRate, preferredFiat.token, sellAmount])
+
+  // get the fiat equivalent of the buyAmount
+  const fiatBuyEqv: FiatAmount | undefined = useMemo(() => {
+    let amount
+    if (buyAmount) {
+      amount = FiatAmount.fromOtherAmount(
+        preferredFiat.token,
+        buyAmount,
+        dollarRate
+      )
+    }
+    return amount
+  }, [buyAmount, dollarRate, preferredFiat.token])
 
   // update sellAmount when sellToken changes
   useEffect(() => {
@@ -235,17 +264,19 @@ const useConverterInterface = (): ReturnTypes => {
       sellLogo,
       getTokenLogoURL(wrappedCurrency(sellToken, activeChainId)) ?? "",
     ],
+    fiatSellEqv,
+    sellBalance,
 
     buyToken,
     buyAmount:
       buyAmount === "" ? buyAmount : removeTrailingZeros(buyAmount.toFixed()),
     buyLogos: [ngnLogo],
     setBuyAmount: setBuyAmount1,
+    fiatBuyEqv,
 
     typedValue,
     independentField: independentField ?? "sell",
     tokens,
-    logos,
   }
 }
 

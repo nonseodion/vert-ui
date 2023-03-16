@@ -8,6 +8,7 @@ import { activeChainId } from "../../utils/config"
 import { useMultipleContractSingleData } from "../../utils/multicall"
 import Erc20Abi from "../../utils/abis/contracts/ERC20Token.json"
 import { NULL_ADDRESS } from "../../utils/constants"
+import useWallet from "../auth/useWallet"
 
 const Erc20Interface = new Interface(Erc20Abi)
 
@@ -16,10 +17,8 @@ export type Balance = {
   loading: boolean
 }
 
-export const useBalances = (
-  tokens: Currency[],
-  userAddress: string | undefined
-): Balance[] => {
+export const useBalances = (tokens: Currency[]): Balance[] => {
+  const { address } = useWallet()
   const addresses: string[] = useMemo(
     () =>
       tokens.map((token) => {
@@ -30,16 +29,16 @@ export const useBalances = (
   )
 
   const { data: nativeBalance } = useBalance({
-    address: userAddress as `0x{string}`,
+    address: address as `0x{string}`,
   })
 
   const balances = useAtomValue(balancesAtom)
   const setBalances = useSetAtom(setBalancesAtom)
   const balancesMap: Balance[] = useMemo(
     () =>
-      addresses.map((address) => ({
-        amount: balances[address] ?? undefined,
-        loading: !balances[address],
+      addresses.map((tokenAddress) => ({
+        amount: balances[tokenAddress] ?? undefined,
+        loading: !balances[tokenAddress],
       })),
     [addresses, balances]
   )
@@ -47,8 +46,8 @@ export const useBalances = (
   const unavailable: string[] = useMemo(
     () =>
       addresses
-        .map((address) => (balances[address] ? false : address))
-        .filter((address) => address) as string[],
+        .map((tokenAddress) => (balances[tokenAddress] ? false : tokenAddress))
+        .filter((tokenAddress) => tokenAddress) as string[],
     [addresses, balances]
   )
 
@@ -62,13 +61,14 @@ export const useBalances = (
     unavailable,
     Erc20Interface,
     "balanceOf",
-    [userAddress]
+    [address]
   )
 
   useEffect(() => {
     if (results.length === 0 || unavailable.length === 0) {
       return
     }
+
     const amountMap: { [key: string]: CurrencyAmount<Currency> } = {}
     if (nativeBalance)
       amountMap[NULL_ADDRESS] = CurrencyAmount.fromRawAmount(
@@ -84,8 +84,11 @@ export const useBalances = (
       )
     })
 
-    if (Object.keys(amountMap).length > 0) setBalances(amountMap)
-  }, [results, tokens, unavailable, setBalances, nativeBalance])
+    if (Object.keys(amountMap).length > 0) {
+      setBalances(amountMap)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [results, setBalances, nativeBalance, tokens])
 
   return balancesMap
 }

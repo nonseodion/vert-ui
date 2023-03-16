@@ -1,8 +1,13 @@
-import React from "react"
+import React, { useCallback, useMemo } from "react"
 import { Currency } from "@pancakeswap/sdk"
 import { ReactComponent as DropdownIcon } from "../../assets/icons/arrow-down.svg"
 import Fiat from "../../utils/Fiat"
 import TokenImage from "./CurrencyLogo"
+import FiatAmount from "../../utils/FiatAmount"
+import removeTrailingZeros from "../../utils/removeTrailingZeros"
+import useWallet from "../../state/auth/useWallet"
+import { Balance } from "../../state/balances/useBalances"
+import { maxAmountSpend } from "../../utils/maxAmountSpend"
 
 export interface ConverterSideProps {
   side: "sell" | "buy"
@@ -11,6 +16,8 @@ export interface ConverterSideProps {
   logos: string[]
   setAmount: (amount: string) => void
   onTokenSelect: (_: any) => void
+  fiatEqv?: FiatAmount
+  tokenBalance?: Balance
 }
 
 export default function ConverterSide({
@@ -20,20 +27,44 @@ export default function ConverterSide({
   amount,
   logos,
   setAmount,
+  fiatEqv,
+  tokenBalance,
 }: ConverterSideProps) {
+  const { connected } = useWallet()
+  const decimals = useMemo(
+    () =>
+      (tokenBalance?.amount?.currency.decimals ?? 0) <= 4
+        ? tokenBalance?.amount?.currency.decimals
+        : 4,
+    [tokenBalance?.amount?.currency.decimals]
+  )
+
+  const max = useCallback(() => {
+    const maxAmount = maxAmountSpend(tokenBalance?.amount)
+    setAmount(maxAmount?.toExact() ?? "")
+  }, [setAmount, tokenBalance?.amount])
+
   return (
     <div className="bg-white min-h-[104px] rounded-xl py-[13.5px] px-4">
       <div className="flex justify-between items-center mb-[25.5px]">
         <p className="uppercase text-12">you {side}</p>
         {side === "sell" && (
           <div className="flex items-center space-x-[3.52px]">
-            <span className="text-purple text-12">Balance:0</span>
-            <button
-              type="button"
-              className="bg-[#1AFF91]/[.13] rounded-[4px] px-[3px] py-[2px] text-[#1AFF91] font-medium text-12"
-            >
-              MAX
-            </button>
+            <span className="text-purple text-12">
+              {connected &&
+                `Balance: ${
+                  tokenBalance?.amount?.toSignificant(decimals) ?? "Loading..."
+                }`}
+            </span>
+            {connected && (
+              <button
+                type="button"
+                className="bg-[#1AFF91]/[.13] rounded-[4px] px-[3px] py-[2px] text-[#1AFF91] font-medium text-12"
+                onClick={max}
+              >
+                MAX
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -47,9 +78,9 @@ export default function ConverterSide({
               onChange={(e) => setAmount(e.target.value)}
             />
           </div>
-          {amount ? (
+          {fiatEqv ? (
             <span className="leading-none text-[9px] text-purple font-medium">
-              ~28,380.16 USD.
+              ~{removeTrailingZeros(fiatEqv.toExact())} {fiatEqv.fiat.symbol}
             </span>
           ) : (
             <div className="h-[9px] w-4" />
@@ -73,4 +104,9 @@ export default function ConverterSide({
       </div>
     </div>
   )
+}
+
+ConverterSide.defaultProps = {
+  fiatEqv: undefined,
+  tokenBalance: undefined,
 }

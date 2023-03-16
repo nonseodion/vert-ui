@@ -15,6 +15,16 @@ import { hideAllHideables } from "./utils/functions"
 import ToastDisplay from "./components/general/ToastDisplay"
 import ModalContext, { ActiveModalsArrayValue } from "./contexts/ModalContext"
 import ConnectWallet from "./components/transactions/ConnectWallet"
+import { TokenModal } from "./components/transactions"
+
+const Modals = function () {
+  return (
+    <>
+      <TokenModal />
+      <ConnectWallet />
+    </>
+  )
+}
 
 function App() {
   const [showBanner] = useState(true)
@@ -51,7 +61,7 @@ function App() {
               baseColor="#262626"
               highlightColor="rgba(229, 231, 235, .4)"
             >
-              <ConnectWallet />
+              <Modals />
               <Router>
                 <div
                   className="bg-black min-h-screen"

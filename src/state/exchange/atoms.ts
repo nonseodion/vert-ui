@@ -26,7 +26,7 @@ export const exchangeAtom = atom<Exchange>({
   buyToken: supportedFiat.ngn,
   buyAmount: "",
   dollarRate: 1,
-  preferredFiat: supportedFiat.ngn,
+  preferredFiat: supportedFiat.usd,
 })
 
 export const sellAmountAtom = atom(

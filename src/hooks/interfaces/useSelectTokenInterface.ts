@@ -1,7 +1,6 @@
 import { Currency, CurrencyAmount } from "@pancakeswap/sdk"
 import { useAtom } from "jotai"
 import { useMemo, useState, useCallback, useEffect } from "react"
-import useWallet from "../../state/auth/useWallet"
 import { Balance, useBalances } from "../../state/balances/useBalances"
 import { handleSetExchangeAtomCreator } from "../../state/exchange/atoms"
 import { Modals } from "../../utils/constants"
@@ -46,8 +45,7 @@ const useSelectTokenInterface = (): UseSelectInterfaceReturnType => {
   )
 
   // calculate fiat and token balances
-  const { address } = useWallet()
-  const balances: Balance[] = useBalances(tokens, address)
+  const balances: Balance[] = useBalances(tokens)
   const currencyAmounts = useMemo(
     () => balances.map((balance) => balance.amount),
     [balances]

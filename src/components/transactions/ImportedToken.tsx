@@ -67,7 +67,9 @@ export default function ImportedToken({
             {tokenBalance.loading ? (
               <Loader className="h-4 w-4" />
             ) : (
-              `$${removeTrailingZeros(fiatBalance?.toExact() ?? "")}`
+              `${removeTrailingZeros(fiatBalance?.toExact() ?? "")} ${
+                fiatBalance?.fiat.symbol
+              }`
             )}
           </div>
         )}
