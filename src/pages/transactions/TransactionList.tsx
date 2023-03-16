@@ -76,6 +76,11 @@ const columns: TableColumn<Transaction>[] = [
       </button>
     ),
   },
+  {
+    name: " ",
+    width: "40px",
+    cell: () => <ArrowRight />,
+  },
 ]
 
 export default function TransactionList() {
