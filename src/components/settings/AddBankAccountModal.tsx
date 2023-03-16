@@ -77,7 +77,7 @@ export default function AddBankAccountModal({
     <Modal
       name={Modals.BANK_ACCOUNT}
       onClose={reset}
-      bodyClassNames="!mt-[22vh] !mb-[10vh] !lg:w-[508px] !rounded-3xl !pb-[30px] !px-[30px]"
+      bodyClassNames="!mt-[22vh] !mb-[10vh] md:!w-[508px] w-[400px] !rounded-3xl !pb-[30px] !px-[30px]"
     >
       <>
         <button
@@ -88,7 +88,9 @@ export default function AddBankAccountModal({
           <Exit className="fill-[#929AA5]" />
         </button>
         <h3 className="text-black text-25 font-semibold mb-[40px]">
-          {modalParams ? "Edit Bank Account" : "Personal Bank Account"}
+          {modalParams?.bank_name
+            ? "Edit Bank Account"
+            : "Personal Bank Account"}
         </h3>
         <form className="flex flex-col space-y-[30px]">
           <div className="flex flex-col space-y-[10px]">
@@ -119,7 +121,7 @@ export default function AddBankAccountModal({
             <div className="pt-[10px]">
               <Button
                 fullWidth
-                text={modalParams ? "Edit" : "Add"}
+                text={modalParams?.bank_name ? "Edit" : "Add"}
                 loading={adding}
                 onClick={() => onConfirm(bankInfo)}
                 showLoadingText={false}
