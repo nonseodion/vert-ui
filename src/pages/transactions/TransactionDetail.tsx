@@ -2,10 +2,9 @@ import React from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { ReactComponent as Right } from "../../assets/icons/right.svg"
-import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
 import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 
-import { Wrapper } from "../../components/general"
+import { Copy, Wrapper } from "../../components/general"
 import { goBackConditionally } from "../../utils/functions"
 import { PageRoutes } from "../../utils/constants"
 
@@ -75,9 +74,10 @@ export default function TransactionDetail() {
               </h3>
               <span className="text-white font-semibold text-sm whitespace-pre-wrap break-all">
                 GW9015183360000
-                <button type="button" className="ml-1">
-                  <Copy className="h-4 w-4 stroke-lightBlue -mb-1" />
-                </button>
+                <Copy
+                  className="h-4 w-4 stroke-lightBlue -mb-1 ml-1"
+                  text="GW9015183360000"
+                />
               </span>
             </li>
             <li className="space-x-[45px] flex">
@@ -86,9 +86,10 @@ export default function TransactionDetail() {
               </h3>
               <span className="text-white font-semibold text-sm whitespace-pre-wrap break-all">
                 0x7f4b995009737ac672d6722B386168eD6A399f6d
-                <button type="button" className="ml-1">
-                  <Copy className="h-4 w-4 stroke-lightBlue -mb-1" />
-                </button>
+                <Copy
+                  className="h-4 w-4 stroke-lightBlue -mb-1 ml-1"
+                  text="0x7f4b995009737ac672d6722B386168eD6A399f6d"
+                />
               </span>
             </li>
             <li className="space-x-[45px] flex">

@@ -1,5 +1,6 @@
 import Banner from "./Banner"
 import Button from "./Button"
+import Copy from "./Copy"
 import Glow from "./Glow"
 import Info from "./Info"
 import Loader from "./Loader"
@@ -11,6 +12,7 @@ import WalletConfirmation from "./WalletConfirmation"
 import Wrapper from "./Wrapper"
 
 export {
+  Copy,
   Info,
   Banner,
   Button,

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
-import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
-import { Button, Wrapper } from "../../components/general"
+import { Button, Copy, Wrapper } from "../../components/general"
 import { Navigator } from "../../components/navigation"
 import { SettingsContent, UnlinkWalletModal } from "../../components/settings"
 import { WalletListSkeleton } from "../../components/skeletons"
@@ -70,9 +69,7 @@ export default function ManageWallets() {
                             <span className="font-medium text-base text-black underline">
                               {wallet.address}
                             </span>
-                            <button type="button">
-                              <Copy />
-                            </button>
+                            <Copy text={wallet.address} />
                           </div>
                           {wallet.is_connected && (
                             <div className="flex space-x-1 items-center">

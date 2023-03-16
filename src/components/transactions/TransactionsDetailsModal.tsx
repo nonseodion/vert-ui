@@ -1,11 +1,10 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
 import { ReactComponent as Right } from "../../assets/icons/right.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 import { useModal } from "../../hooks"
-import { Button, Modal } from "../general"
+import { Button, Copy, Modal } from "../general"
 import { Modals, PageRoutes } from "../../utils/constants"
 
 export default function TransactionDetailsModal() {
@@ -69,7 +68,7 @@ export default function TransactionDetailsModal() {
             <span className="mb-[-3px] font-semibold text-black text-[12.13px]">
               0x6810...9568
             </span>
-            <Copy />
+            <Copy text="0x6810...9568" />
           </div>
         </li>
         <li className="pt-[15px] pb-[18px] flex justify-between border-b border-b-[rgba(220, 220, 224, 0.3)]">

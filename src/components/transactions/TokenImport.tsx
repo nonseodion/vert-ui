@@ -1,8 +1,7 @@
 import React, { useState } from "react"
 import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 import { ReactComponent as CheckBox } from "../../assets/icons/checkbox.svg"
-import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
-import { Button } from "../general"
+import { Button, Copy } from "../general"
 
 export default function TokenImport() {
   const [confirmed, setConfirmed] = useState<boolean>(false)
@@ -25,9 +24,7 @@ export default function TokenImport() {
           <div className="justify-between items-center flex">
             <div className="flex space-x-[8.68px]">
               <span className="text-13">0x534...c3d</span>
-              <button className="border-none outline-none" type="button">
-                <Copy />
-              </button>
+              <Copy text="0x534...c3d" />
             </div>
             <button
               type="button"

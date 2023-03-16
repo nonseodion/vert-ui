@@ -6,9 +6,8 @@ import { ReactComponent as Error } from "../../assets/icons/error.svg"
 import { ReactComponent as Question } from "../../assets/icons/question.svg"
 import { ReactComponent as Pencil } from "../../assets/icons/pencil.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
 import { ReactComponent as PaperAirplane } from "../../assets/images/paper-airplane.svg"
-import { Button, Loader } from "../general"
+import { Button, Copy, Loader } from "../general"
 import { useModal } from "../../hooks"
 import ConfirmExchangeModal from "./ConfirmExchangeModal"
 import { getRandomBoolean } from "../../utils/functions"
@@ -236,10 +235,10 @@ export function WaitingForConfirmation({
         </li>
         <li className="flex justify-between items-center">
           <span className="text-[15px] text-darkPurple">Address</span>
-          <button type="button" className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1">
             <span className="text-[15px] text-darkPurple">0x6810...9568</span>
-            <Copy />
-          </button>
+            <Copy text="0x6810...9568" />
+          </div>
         </li>
         <li className="flex justify-between items-center">
           <span className="text-[15px] text-darkPurple">Network fee</span>
@@ -257,10 +256,10 @@ export function WaitingForConfirmation({
         </li>
         <li className="flex justify-between items-center">
           <span className="text-[15px] text-darkPurple">Trx Hash</span>
-          <button type="button" className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1">
             <span className="text-[15px] text-darkPurple">0x8028934cd..</span>
-            <Copy />
-          </button>
+            <Copy text="0x8028934cd.." />
+          </div>
         </li>
       </ul>
     </div>
