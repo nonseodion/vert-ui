@@ -20,7 +20,7 @@ export default function SettingsContent({
       {outerElement && outerElement}
       <div
         className={clsx(
-          "mt-5 border border-primary/[.4] py-[30px] px-4 rounded-3xl xl:max-w-[660px]",
+          "mt-5 border border-primary/[.4] py-[30px] px-4 rounded-3xl md:max-w-[660px]",
           className
         )}
       >
