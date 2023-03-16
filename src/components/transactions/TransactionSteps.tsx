@@ -24,7 +24,7 @@ interface WaitingForConfirmationProps extends TransactionStepProps {
 
 export function ViewOnBsc() {
   return (
-    <p className="text-base max-w-[229.68px] text-[#0F172A]/[.8]">
+    <div className="text-base max-w-[229.68px] text-[#0F172A]/[.8]">
       Confirmed Transaction.
       <br />
       <a className="flex items-center space-x-1" href="https://www.google.com">
@@ -46,7 +46,7 @@ export function ViewOnBsc() {
           />
         </svg>
       </a>
-    </p>
+    </div>
   )
 }
 

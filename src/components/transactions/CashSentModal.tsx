@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { ReactComponent as SmilingGirl } from "../../assets/images/smiling-girl.svg"
 import { useModal } from "../../hooks"
-import { Modals } from "../../utils/constants"
+import { Modals, PageRoutes } from "../../utils/constants"
 import { handleBodyScroll } from "../../utils/functions"
 import { Button, Modal } from "../general"
 
 export default function CashSentModal() {
+  const navigate = useNavigate()
   const { hideModal, isActive, showModal } = useModal(Modals.CASH_SENT)
   const [showTransactionDetails, setShowTransactionDetails] = useState(false)
+
+  const onClose = () => {
+    hideModal()
+    navigate(PageRoutes.HOME)
+  }
 
   useEffect(() => {
     if (!isActive && showTransactionDetails) {
@@ -50,7 +57,7 @@ export default function CashSentModal() {
           className="!py-0 h-12 flex-1 !text-primary font-medium"
           text="close"
           background="transparent"
-          onClick={() => hideModal(Modals.CASH_SENT)}
+          onClick={onClose}
         />
       </div>
     </Modal>

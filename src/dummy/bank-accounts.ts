@@ -1,12 +1,12 @@
 const bankAccounts = [
   {
     account_number: "0245786573",
-    bank_name: "GT Bank Plc",
+    bank_name: "Guaranty Trust Bank",
     account_name: "ELUJOBA EMMANUEL AYOBAMI",
   },
   {
     account_number: "0245786533",
-    bank_name: "GT Bank Plc",
+    bank_name: "Guaranty Trust Bank",
     account_name: "CHRISTOPHER MAURICE BROWN",
   },
 ]
