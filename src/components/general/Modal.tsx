@@ -39,10 +39,10 @@ export default function Modal({
         )}
       >
         <div className="h-screen">
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center py-10">
             <div
               className={clsx(
-                "transition-all max-w-[calc(100vw_-_30px)] lg:w-[424px] mt-[150px] mb-[176px] duration-200 bg-white rounded-xl px-[30px] pt-[33.5px] pb-9 relative",
+                "transition-all max-w-[calc(100vw_-_30px)] lg:w-[424px] duration-200 bg-white rounded-xl px-[30px] pt-[33.5px] pb-9 relative",
                 { "opacity-0 pointer-events-none": !isActive },
                 bodyClassNames
               )}
