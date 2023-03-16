@@ -75,9 +75,12 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
 
   return (
     <div
-      className={clsx("bg-white w-full max-w-[463px] rounded-3xl py-5 px-6", {
-        "!p-[25px]": isConfirmed,
-      })}
+      className={clsx(
+        "bg-white w-full max-w-[463px] rounded-3xl py-5 !mb-10 px-6",
+        {
+          "!p-[25px]": isConfirmed,
+        }
+      )}
     >
       <ConfirmExchangeModal />
       {!isConfirmed ? (
@@ -153,6 +156,7 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
               <div className="flex justify-between items-center mt-[10px]">
                 <button
                   type="button"
+                  onClick={() => navigate(-1)}
                   className="ml-auto h-8 flex rounded-[4px] border border-primary px-2 justify-center items-center space-x-[10px]"
                 >
                   <Pencil className="fill-primary h-[10.65px] w-[10.65px]" />
