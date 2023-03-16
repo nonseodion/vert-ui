@@ -169,6 +169,7 @@ export default function TransactionList() {
             rowsPerPage={TABLE_ROW_SIZE}
             currentPage={page}
             onChangePage={setPage}
+            dataLength={transactions.length}
           />
         </div>
       </div>

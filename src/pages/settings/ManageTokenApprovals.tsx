@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useMemo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import metamask from "../../assets/icons/metamask.png"
 import wakanda_inu from "../../assets/icons/wakanda-inu.png"
-import { Button, Copy, Loader, Wrapper } from "../../components/general"
+import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
+import { Button, Loader, Paginator, Wrapper } from "../../components/general"
 import {
   SettingsContent,
   RemoveTokenApprovalModal,
@@ -10,7 +11,7 @@ import {
 import { useModal } from "../../hooks"
 import { BackButton } from "../../components/navigation"
 import { goBackConditionally } from "../../utils/functions"
-import { Modals, PageRoutes } from "../../utils/constants"
+import { Modals, PageRoutes, TABLE_ROW_SIZE } from "../../utils/constants"
 import { TokenApprovalsSkeleton } from "../../components/skeletons"
 
 interface TokenApproval {
@@ -51,9 +52,14 @@ export default function ManageTokenApprovals() {
   const { showModal } = useModal()
   const location = useLocation()
   const navigate = useNavigate()
+  const [page, setPage] = useState(1)
   const [loading, setLoading] = useState<boolean>(true)
   const [approvals] = useState<TokenApproval[]>(tokenApprovals)
   const [tokenToRevoke, setTokenToRevoke] = useState<TokenApproval | null>(null)
+  const displayedData = useMemo(
+    () => approvals.slice(TABLE_ROW_SIZE * (page - 1), TABLE_ROW_SIZE * page),
+    [page, approvals]
+  )
 
   useEffect(() => {
     setTimeout(() => {
@@ -63,7 +69,7 @@ export default function ManageTokenApprovals() {
 
   return (
     <Wrapper>
-      <div className="px-4 pt-5 lg:pt-9 lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
+      <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
         <div className="flex flex-col space-y-[30px] lg:fixed flex-shrink-0 lg:max-w-[247px]">
           <h3 className="font-bold text-2xl text-white lg:text-[40px]">
             My Account
@@ -103,11 +109,9 @@ export default function ManageTokenApprovals() {
                       <span className="text-lightBlue underline text-[15px] font-medium">
                         0x6810...9568
                       </span>
-                      <Copy
-                        text="0x6810...9568"
-                        className="h-4 w-4"
-                        color="purple"
-                      />
+                      <button type="button">
+                        <Copy className="h-4 w-4 stroke-lightBlue" />
+                      </button>
                     </div>
                     <div className="flex items-center space-x-1">
                       <div className="h-[9px] w-[9px] rounded-full bg-primary" />
@@ -154,42 +158,50 @@ export default function ManageTokenApprovals() {
             ) : (
               <div>
                 {!loading && (
-                  <ul>
-                    {approvals.map((approval) => (
-                      <li
-                        key={approval.id}
-                        className="h-[71px] border-lightBlue flex w-full px-5 items-center justify-between bg-white border-y-[0.25px]"
-                      >
-                        <div className="w-[161px] flex items-center space-x-1">
-                          <img
-                            src={approval.asset_icon}
-                            alt={approval.asset}
-                            className="h-7 w-7"
-                          />
-                          <span className="text-13 text-black">
-                            {approval.asset}
-                          </span>
-                        </div>
-                        <div className="w-[144px]">
-                          <span className="text-sm">{approval.time}</span>
-                        </div>
-                        <div className="w-[161px] flex justify-end">
-                          <Button
-                            text="Revoke"
-                            className="h-[35px] !py-0 bg-primary/[.15] !text-primary"
-                            bordered
-                            onClick={() => {
-                              setTokenToRevoke(approval)
-                              showModal({
-                                modal: Modals.REMOVE_TOKEN_APPROVAL,
-                                onCloseCallback: () => setTokenToRevoke(null),
-                              })
-                            }}
-                          />
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                  <div>
+                    <ul>
+                      {displayedData.map((approval) => (
+                        <li
+                          key={approval.id}
+                          className="h-[71px] border-lightBlue flex w-full px-5 items-center justify-between bg-white border-y-[0.25px]"
+                        >
+                          <div className="w-[161px] flex items-center space-x-1">
+                            <img
+                              src={approval.asset_icon}
+                              alt={approval.asset}
+                              className="h-7 w-7"
+                            />
+                            <span className="text-13 text-black">
+                              {approval.asset}
+                            </span>
+                          </div>
+                          <div className="w-[144px]">
+                            <span className="text-sm">{approval.time}</span>
+                          </div>
+                          <div className="w-[161px] flex justify-end">
+                            <Button
+                              text="Revoke"
+                              className="h-[35px] !py-0 bg-primary/[.15] !text-primary"
+                              bordered
+                              onClick={() => {
+                                setTokenToRevoke(approval)
+                                showModal({
+                                  modal: Modals.REMOVE_TOKEN_APPROVAL,
+                                  onCloseCallback: () => setTokenToRevoke(null),
+                                })
+                              }}
+                            />
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                    <Paginator
+                      rowsPerPage={4}
+                      currentPage={page}
+                      onChangePage={setPage}
+                      dataLength={approvals.length}
+                    />
+                  </div>
                 )}
                 {loading && <TokenApprovalsSkeleton />}
               </div>
