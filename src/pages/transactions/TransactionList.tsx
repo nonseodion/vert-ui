@@ -45,7 +45,7 @@ const columns: TableColumn<Transaction>[] = [
     cell: ({ reference_no }) => (
       <div className="flex space-x-2 items-center">
         <p className="text-12 text-black/[.7] font-medium">{reference_no}</p>
-        <Copy className="flex-shrink-0 stroke-lightBlue" text={reference_no} />
+        <Copy className="flex-shrink-0" color="purple" text={reference_no} />
       </div>
     ),
   },
@@ -54,10 +54,7 @@ const columns: TableColumn<Transaction>[] = [
     cell: ({ wallet_address }) => (
       <div className="flex space-x-2 items-center">
         <p className="text-12 text-black/[.7] font-medium">{wallet_address}</p>
-        <Copy
-          className="flex-shrink-0 stroke-lightBlue"
-          text={wallet_address}
-        />
+        <Copy className="flex-shrink-0" color="purple" text={wallet_address} />
       </div>
     ),
   },

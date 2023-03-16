@@ -109,7 +109,7 @@ export default function ProfileDropdown() {
               <span className="text-white font-medium text-[15px] leading-4">
                 0x6810...9568
               </span>
-              <Copy text="0x6810...9568" className="stroke-lightBlue" />
+              <Copy text="0x6810...9568" color="purple" />
             </div>
             <div className="flex space-x-1 items-center">
               <div className="h-2 w-2 rounded-full bg-brightGreen" />

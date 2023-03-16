@@ -105,7 +105,8 @@ export default function ManageTokenApprovals() {
                       </span>
                       <Copy
                         text="0x6810...9568"
-                        className="h-4 w-4 stroke-lightBlue"
+                        className="h-4 w-4"
+                        color="purple"
                       />
                     </div>
                     <div className="flex items-center space-x-1">

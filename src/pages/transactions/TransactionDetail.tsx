@@ -7,6 +7,7 @@ import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 import { Copy, Wrapper } from "../../components/general"
 import { goBackConditionally } from "../../utils/functions"
 import { PageRoutes } from "../../utils/constants"
+import { TransactionStatus } from "../../components/transactions"
 
 export default function TransactionDetail() {
   const navigate = useNavigate()
@@ -75,8 +76,9 @@ export default function TransactionDetail() {
               <span className="text-white font-semibold text-sm whitespace-pre-wrap break-all">
                 GW9015183360000
                 <Copy
-                  className="h-4 w-4 stroke-lightBlue -mb-1 ml-1"
+                  className="h-4 w-4 -mb-1 ml-1"
                   text="GW9015183360000"
+                  color="purple"
                 />
               </span>
             </li>
@@ -87,8 +89,9 @@ export default function TransactionDetail() {
               <span className="text-white font-semibold text-sm whitespace-pre-wrap break-all">
                 0x7f4b995009737ac672d6722B386168eD6A399f6d
                 <Copy
-                  className="h-4 w-4 stroke-lightBlue -mb-1 ml-1"
+                  className="h-4 w-4 -mb-1 ml-1"
                   text="0x7f4b995009737ac672d6722B386168eD6A399f6d"
+                  color="purple"
                 />
               </span>
             </li>
@@ -96,7 +99,7 @@ export default function TransactionDetail() {
               <h3 className="flex-shrink-0 w-[143px] text-primary text-base font-semibold">
                 STATUS:
               </h3>
-              <span className="text-white font-semibold text-sm">SUCCESS</span>
+              <TransactionStatus status="success" />
             </li>
           </ul>
           <div className="flex flex-col mt-12 justify-center items-center space-y-[30px]">
