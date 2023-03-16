@@ -5,9 +5,8 @@ import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { ReactComponent as Calendar } from "../../assets/icons/calendar.svg"
 import { ReactComponent as Filter } from "../../assets/icons/filter.svg"
 import { ReactComponent as Cash } from "../../assets/icons/cash.svg"
-import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 import { ReactComponent as ArrowRight } from "../../assets/icons/arrow-right.svg"
-import { Wrapper, Table, Copy } from "../../components/general"
+import { Wrapper, Table } from "../../components/general"
 import transactions, { Transaction } from "../../dummy/transactions"
 import { PageRoutes, TABLE_ROW_SIZE } from "../../utils/constants"
 import Paginator from "../../components/general/Paginator"
@@ -40,41 +39,8 @@ const columns: TableColumn<Transaction>[] = [
     wrap: true,
   },
   {
-    name: "REFERENCE NO",
-    selector: (row) => row.reference_no,
-    cell: ({ reference_no }) => (
-      <div className="flex space-x-2 items-center">
-        <p className="text-12 text-black/[.7] font-medium">{reference_no}</p>
-        <Copy className="flex-shrink-0" color="purple" text={reference_no} />
-      </div>
-    ),
-  },
-  {
-    name: "Wallet Address",
-    cell: ({ wallet_address }) => (
-      <div className="flex space-x-2 items-center">
-        <p className="text-12 text-black/[.7] font-medium">{wallet_address}</p>
-        <Copy className="flex-shrink-0" color="purple" text={wallet_address} />
-      </div>
-    ),
-  },
-  {
     name: "STATUS",
     cell: ({ status }) => <TransactionStatus status={status} />,
-  },
-  {
-    name: "BLOCKCHAIN TRX",
-    minWidth: "200px",
-    selector: (row) => row.blockchain_txn,
-    wrap: false,
-    cell: (row) => (
-      <button type="button" className="flex items-center space-x-1 w-full">
-        <span className="whitespace-nowrap underline text-13 font-medium text-primary">
-          {row.blockchain_txn}
-        </span>
-        <LinkIcon className="path-primary" />
-      </button>
-    ),
   },
   {
     name: " ",

@@ -27,11 +27,14 @@ export default function TransactionStatus({ status }: TransactionStatusProps) {
       {isSuccessful && <Success />}
       {isFailed && <Failed />}
       <span
-        className={clsx("text-[10.87px] font-medium capitalize", {
-          "text-[#F8C505]": isPending,
-          "text-[#00A186]": isSuccessful,
-          "text-[#DF3B30]": isFailed,
-        })}
+        className={clsx(
+          "text-[10.87px] font-medium capitalize whitespace-nowrap",
+          {
+            "text-[#F8C505]": isPending,
+            "text-[#00A186]": isSuccessful,
+            "text-[#DF3B30]": isFailed,
+          }
+        )}
       >
         {status}
       </span>
