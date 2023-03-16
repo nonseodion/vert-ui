@@ -10,7 +10,7 @@ export default function SetPassword() {
   const navigate = useNavigate()
   return (
     <Wrapper>
-      <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
+      <div className="px-4 pt-5 lg:pt-9 lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
         <div className="flex flex-col space-y-[30px] lg:fixed flex-shrink-0 lg:max-w-[247px]">
           <h3 className="font-bold text-2xl text-white lg:text-[40px]">
             My Account

@@ -10,6 +10,7 @@ import { ReactComponent as Security } from "../../assets/icons/security.svg"
 import { PageRoutes } from "../../utils/constants"
 import { handleMobileNavDropdown } from "../../utils/functions"
 import ActiveCurrency from "./ActiveCurrency"
+import BackButton from "./BackButton"
 
 const navigatorLinks = [
   { route: PageRoutes.PROFILE_SETTINGS, text: "Profile", icon: <Profile /> },
@@ -38,9 +39,15 @@ export default function MobileNavigator() {
 
   return (
     <div className="flex flex-col space-y-[30px] lg:fixed flex-shrink-0 lg:min-w-[247px]">
-      <h3 className="font-bold text-2xl text-white lg:text-[40px]">
-        My Account
-      </h3>
+      <div className="flex flex-col lg:space-y-[27.5px] space-y-[24.5px]">
+        <BackButton
+          className="!px-0 !bg-transparent"
+          onClick={() => navigate(PageRoutes.HOME)}
+        />
+        <h3 className="font-bold text-2xl text-white lg:text-[40px]">
+          My Account
+        </h3>
+      </div>
       <div className="relative lg:hidden">
         <button
           onClick={(e) => {

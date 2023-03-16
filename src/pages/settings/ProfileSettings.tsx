@@ -7,7 +7,7 @@ import { SettingsContent } from "../../components/settings"
 export default function ProfileSettings() {
   return (
     <Wrapper>
-      <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
+      <div className="px-4 pt-5 lg:pt-9 lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
         <Navigator />
         <SettingsContent title="Profile settings">
           <div className="flex flex-col space-y-[30px]">

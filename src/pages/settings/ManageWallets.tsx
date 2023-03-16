@@ -36,7 +36,7 @@ export default function ManageWallets() {
   return (
     <Wrapper>
       <UnlinkWalletModal unlinking={unlinkingWallet} />
-      <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
+      <div className="px-4 pt-5 lg:pt-9 lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
         <Navigator />
         <SettingsContent title="Manage Wallets">
           <div className="mb-[85px]">
