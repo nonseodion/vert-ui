@@ -113,7 +113,7 @@ export default function ProfileDropdown() {
               <Copy className="stroke-lightBlue" />
             </div>
             <div className="flex space-x-1 items-center">
-              <div className="h-2 w-2 rounded-full bg-[#48D38A]" />
+              <div className="h-2 w-2 rounded-full bg-brightGreen" />
               <span className="text-[11.13px] text-white leading-4">
                 connected
               </span>

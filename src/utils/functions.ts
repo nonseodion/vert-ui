@@ -9,7 +9,10 @@ export const doNothing = (): void => {}
 
 type ActionType = "show" | "hide" | "toggle"
 
-export const handleDropdown = (elementSelector: string, action: ActionType) => {
+export const handleHideAbleElement = (
+  elementSelector: string,
+  action: ActionType
+) => {
   const el = document.querySelector(elementSelector)
   if (!el) return
   if (action === "toggle") {
@@ -28,10 +31,19 @@ export const handleDropdown = (elementSelector: string, action: ActionType) => {
 }
 
 export const handleProfileDropdown = (action: ActionType) =>
-  handleDropdown(".profile-dropdown", action)
+  handleHideAbleElement(".profile-dropdown", action)
 
 export const handleMobileNavDropdown = (action: ActionType) =>
-  handleDropdown(".mobile-navigator-dropdown", action)
+  handleHideAbleElement(".mobile-navigator-dropdown", action)
+
+export const handleConverterDropdown = (action: ActionType) =>
+  handleHideAbleElement(".converter-currency-select", action)
+
+export const hideAllHideables = () => {
+  handleProfileDropdown("hide")
+  handleMobileNavDropdown("hide")
+  handleConverterDropdown("hide")
+}
 
 export const handleBodyScroll = (action: "enable" | "disable" = "enable") => {
   const el = document.querySelector("html")
@@ -107,3 +119,4 @@ export const getTokenLogoURLByAddress = memoize(
   },
   (address, chainId) => `${chainId}#${address}`
 )
+export const getRandomBoolean = () => Math.random() < 0.5

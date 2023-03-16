@@ -45,7 +45,7 @@ export default function Input({
       >
         <input
           {...rest}
-          {...(value && { value })}
+          {...(value && { value: value ?? "" })}
           type={
             rest?.type === "password" && isVisiblePassword ? "text" : rest?.type
           }

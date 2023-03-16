@@ -1,9 +1,9 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import { Button, Wrapper } from "../../components/general"
-import Input from "../../components/inputs/Input"
+import { Input } from "../../components/inputs"
 import { BackButton } from "../../components/navigation"
-import SettingsContent from "../../components/settings/SettingsContent"
+import { SettingsContent } from "../../components/settings"
 import { PageRoutes } from "../../utils/constants"
 
 export default function ChangePassword() {

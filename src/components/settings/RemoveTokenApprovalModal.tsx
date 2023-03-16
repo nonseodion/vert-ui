@@ -1,8 +1,8 @@
 import React from "react"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
+import { Modals } from "../../utils/constants"
 import { WalletConfirmation } from "../general"
 import Modal from "../general/Modal"
-import { Modals } from "../../utils/constants"
 
 export default function RemoveTokenApprovalModal() {
   const { hideModal } = useModal(Modals.REMOVE_TOKEN_APPROVAL)

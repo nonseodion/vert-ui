@@ -1,15 +1,18 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import metamask from "../../assets/icons/metamask.png"
 import wakanda_inu from "../../assets/icons/wakanda-inu.png"
 import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
 import { Button, Loader, Wrapper } from "../../components/general"
-import SettingsContent from "../../components/settings/SettingsContent"
-import { RemoveTokenApprovalModal } from "../../components/settings"
-import useModal from "../../hooks/useModal"
+import {
+  SettingsContent,
+  RemoveTokenApprovalModal,
+} from "../../components/settings"
+import { useModal } from "../../hooks"
 import { BackButton } from "../../components/navigation"
 import { goBackConditionally } from "../../utils/functions"
 import { Modals, PageRoutes } from "../../utils/constants"
+import { TokenApprovalsSkeleton } from "../../components/skeletons"
 
 interface TokenApproval {
   asset: string
@@ -49,8 +52,16 @@ export default function ManageTokenApprovals() {
   const { showModal } = useModal()
   const location = useLocation()
   const navigate = useNavigate()
+  const [loading, setLoading] = useState<boolean>(true)
   const [approvals] = useState<TokenApproval[]>(tokenApprovals)
   const [tokenToRevoke, setTokenToRevoke] = useState<TokenApproval | null>(null)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 3000)
+  }, [])
+
   return (
     <Wrapper>
       <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
@@ -130,7 +141,7 @@ export default function ManageTokenApprovals() {
                 Action
               </h3>
             </div>
-            {approvals.length === 0 ? (
+            {approvals.length === 0 && !loading ? (
               <div className="h-[348px] bg-white flex flex-col pt-[85px] space-y-[39px]">
                 <p className="text-lightBlue text-center text-[21px] font-medium">
                   Manage & revoke your token approvals.
@@ -140,42 +151,47 @@ export default function ManageTokenApprovals() {
                 </div>
               </div>
             ) : (
-              <ul>
-                {approvals.map((approval) => (
-                  <li
-                    key={approval.id}
-                    className="h-[71px] flex w-full px-5 items-center justify-between bg-white border-y-[0.25px]"
-                  >
-                    <div className="w-[161px] flex items-center space-x-1">
-                      <img
-                        src={approval.asset_icon}
-                        alt={approval.asset}
-                        className="h-7 w-7"
-                      />
-                      <span className="text-13 text-black">
-                        {approval.asset}
-                      </span>
-                    </div>
-                    <div className="w-[144px]">
-                      <span className="text-sm">{approval.time}</span>
-                    </div>
-                    <div className="w-[161px] flex justify-end">
-                      <Button
-                        text="Revoke"
-                        className="h-[35px] !py-0 bg-primary/[.15] !text-primary"
-                        bordered
-                        onClick={() => {
-                          setTokenToRevoke(approval)
-                          showModal({
-                            modal: Modals.REMOVE_TOKEN_APPROVAL,
-                            onCloseCallback: () => setTokenToRevoke(null),
-                          })
-                        }}
-                      />
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              <div>
+                {!loading && (
+                  <ul>
+                    {approvals.map((approval) => (
+                      <li
+                        key={approval.id}
+                        className="h-[71px] border-lightBlue flex w-full px-5 items-center justify-between bg-white border-y-[0.25px]"
+                      >
+                        <div className="w-[161px] flex items-center space-x-1">
+                          <img
+                            src={approval.asset_icon}
+                            alt={approval.asset}
+                            className="h-7 w-7"
+                          />
+                          <span className="text-13 text-black">
+                            {approval.asset}
+                          </span>
+                        </div>
+                        <div className="w-[144px]">
+                          <span className="text-sm">{approval.time}</span>
+                        </div>
+                        <div className="w-[161px] flex justify-end">
+                          <Button
+                            text="Revoke"
+                            className="h-[35px] !py-0 bg-primary/[.15] !text-primary"
+                            bordered
+                            onClick={() => {
+                              setTokenToRevoke(approval)
+                              showModal({
+                                modal: Modals.REMOVE_TOKEN_APPROVAL,
+                                onCloseCallback: () => setTokenToRevoke(null),
+                              })
+                            }}
+                          />
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {loading && <TokenApprovalsSkeleton />}
+              </div>
             )}
           </div>
         </SettingsContent>

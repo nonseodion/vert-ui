@@ -4,16 +4,14 @@ import { WagmiConfig } from "wagmi"
 import { fetchBlockNumber } from "@wagmi/core"
 import { Provider as ReduxProvider } from "react-redux"
 import { BrowserRouter as Router } from "react-router-dom"
+import { SkeletonTheme } from "react-loading-skeleton"
 import { Banner } from "./components/general"
 import AuthContext, { AuthStateValues } from "./contexts/AuthContext"
 import Routes from "./Routes"
 import { store } from "./state/redux"
 import { Updater as MulticallUpdater } from "./utils/multicall"
 import { activeChainId, client } from "./utils/config"
-import {
-  handleMobileNavDropdown,
-  handleProfileDropdown,
-} from "./utils/functions"
+import { hideAllHideables } from "./utils/functions"
 import ToastDisplay from "./components/general/ToastDisplay"
 import ModalContext, { ActiveModalsArrayValue } from "./contexts/ModalContext"
 import ConnectWallet from "./components/transactions/ConnectWallet"
@@ -49,26 +47,30 @@ function App() {
               blocksPerFetch={6}
             />
             <ToastDisplay />
-            <ConnectWallet />
-            <Router>
-              <div
-                className="bg-black min-h-screen"
-                onClick={() => {
-                  handleProfileDropdown("hide")
-                  handleMobileNavDropdown("hide")
-                }}
-                role="presentation"
-              >
-                {showBanner && <Banner />}
+            <SkeletonTheme
+              baseColor="#262626"
+              highlightColor="rgba(229, 231, 235, .4)"
+            >
+              <ConnectWallet />
+              <Router>
                 <div
-                  className={clsx("max-w-[1500px] mx-auto", {
-                    "pt-7 md:pt-10": showBanner,
-                  })}
+                  className="bg-black min-h-screen"
+                  onClick={() => {
+                    hideAllHideables()
+                  }}
+                  role="presentation"
                 >
-                  <Routes />
+                  {showBanner && <Banner />}
+                  <div
+                    className={clsx("max-w-[1500px] mx-auto", {
+                      "pt-7 md:pt-10": showBanner,
+                    })}
+                  >
+                    <Routes />
+                  </div>
                 </div>
-              </div>
-            </Router>
+              </Router>
+            </SkeletonTheme>
           </WagmiConfig>
         </ModalContext.Provider>
       </AuthContext.Provider>

@@ -16,6 +16,7 @@ interface ButtonProps {
   disabled?: boolean
   showLoadingText?: boolean
   loadingText?: string
+  icon?: React.ReactNode
 }
 
 export default function Button({
@@ -31,6 +32,7 @@ export default function Button({
   disabled,
   loadingText,
   showLoadingText,
+  icon,
 }: ButtonProps) {
   return (
     <button
@@ -38,7 +40,7 @@ export default function Button({
       type={type === "submit" ? "submit" : "button"}
       onClick={onClick}
       className={clsx(
-        "text-white disabled:cursor-pointer bg-primary py-[14px] px-4 rounded-xl",
+        "text-white disabled:cursor-not-allowed bg-primary py-[14px] px-4 rounded-xl",
         { "bg-transparent": background === "transparent" },
         { "!text-black": textColor === "dark" },
         { "border border-primary": bordered },
@@ -57,7 +59,10 @@ export default function Button({
             <Loader className="h-4 w-4" />
           </div>
         ) : (
-          <span>{text}</span>
+          <div className="flex items-center justify-center space-x-[10px]">
+            <span>{text}</span>
+            {icon && icon}
+          </div>
         )}
       </div>
     </button>
@@ -76,4 +81,5 @@ Button.defaultProps = {
   disabled: false,
   showLoadingText: true,
   loadingText: "",
+  icon: null,
 }

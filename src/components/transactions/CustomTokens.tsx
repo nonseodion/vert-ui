@@ -48,7 +48,7 @@ export default function CustomTokens() {
                       <Trash />
                     </button>
                     <button type="button">
-                      <LinkIcon className="stroke-primary" />
+                      <LinkIcon className="path-primary" />
                     </button>
                   </div>
                 </div>

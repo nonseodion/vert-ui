@@ -12,7 +12,7 @@ import { Modals, PageRoutes } from "../../utils/constants"
 import { handleProfileDropdown } from "../../utils/functions"
 import Button from "../general/Button"
 import ProfileDropdown from "./ProfileDropdown"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
 
 export default function TopNav() {
   const navigate = useNavigate()
@@ -50,10 +50,11 @@ export default function TopNav() {
                   className="h-[30px] lg:h-[52px] rounded-xl bg-[#D7FFD0]/[.25] flex items-center px-2 cursor-pointer"
                 >
                   <User className="mr-0 lg:mr-[7px]" />
-                  <Button
-                    text={user ? user.username : ""}
-                    className="lg:block hidden h-9 text-[15px] rounded-[10px] px-[10px] !py-0 max-w-[121px]"
-                  />
+                  <div className="lg:flex bg-primary h-9 rounded-10 px-[10px] max-w-[121px] overflow-hidden hidden items-center justify-center">
+                    <span className="text-[15px] text-white">
+                      {user ? user.username : ""}
+                    </span>
+                  </div>
                   <Dropdown className="ml-[13.41px] h-3 w-3" />
                 </div>
               </div>
@@ -92,7 +93,7 @@ export default function TopNav() {
                 className="absolute top-[48.1px] right-[25.1px]"
                 onClick={() => setShowSlider(false)}
               >
-                <Exit />
+                <Exit className="fill-[#929AA5]" />
               </button>
               <Button
                 text="Sign in"

@@ -34,7 +34,7 @@ export default function ConnectWallet() {
             type="button"
             onClick={() => hideModal()}
           >
-            <Exit />
+            <Exit className="fill-[#929AA5]" />
           </button>
           <h3 className="text-black text-[22px] font-bold mb-[10.5px]">
             Connect Wallet

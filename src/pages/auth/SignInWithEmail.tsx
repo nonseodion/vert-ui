@@ -4,10 +4,10 @@ import isEmail from "validator/lib/isEmail"
 import { Link, useNavigate } from "react-router-dom"
 import { ReactComponent as LoneLogo } from "../../assets/icons/logo-lone.svg"
 import { Button, Glow, Wrapper } from "../../components/general"
-import Input from "../../components/inputs/Input"
+import { Input } from "../../components/inputs"
 import useAuth from "../../state/auth/useAuth"
-import useModal from "../../hooks/useModal"
-import { PageRoutes, Modals } from "../../utils/constants"
+import { useModal } from "../../hooks"
+import { Modals, PageRoutes } from "../../utils/constants"
 
 interface SignInWithEmailValues {
   email: string
@@ -35,7 +35,9 @@ export default function SignInWithEmail() {
       <Glow />
       <div className="flex justify-center pt-[58px]">
         <div className="flex flex-col justify-center items-center space-y-[50.75px] mb-[276px]">
-          <LoneLogo />
+          <button type="button" onClick={() => navigate(PageRoutes.HOME)}>
+            <LoneLogo />
+          </button>
           <div className="flex flex-col space-y-8">
             <p className="text-white text-center text-lg">
               Sign in to Vert finance
@@ -57,6 +59,7 @@ export default function SignInWithEmail() {
                       type="email"
                       hasError={!!errors.email}
                       {...field}
+                      ref={null}
                     />
                   )}
                 />
@@ -70,6 +73,7 @@ export default function SignInWithEmail() {
                       type="password"
                       hasError={!!errors.password}
                       {...field}
+                      ref={null}
                     />
                   )}
                 />

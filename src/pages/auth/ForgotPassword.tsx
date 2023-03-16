@@ -6,8 +6,8 @@ import { ResetPasswordModal } from "../../components/auth"
 import { Button, Wrapper } from "../../components/general"
 import { Input } from "../../components/inputs"
 import { BackButton } from "../../components/navigation"
-import useModal from "../../hooks/useModal"
-import { PageRoutes, Modals } from "../../utils/constants"
+import { useModal } from "../../hooks"
+import { Modals, PageRoutes } from "../../utils/constants"
 import { goBackConditionally } from "../../utils/functions"
 
 interface ForgotPasswordValues {
@@ -18,7 +18,7 @@ export default function ForgotPassword() {
   const { showModal, hideModal } = useModal()
   const navigate = useNavigate()
   const location = useLocation()
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const {
     control,
     formState: { errors },
@@ -74,6 +74,7 @@ export default function ForgotPassword() {
                   hasError={!!errors.email}
                   autoFocus
                   {...field}
+                  ref={null}
                 />
               )}
             />

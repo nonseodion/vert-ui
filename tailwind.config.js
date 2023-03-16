@@ -3,8 +3,12 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        inter: "'Inter', sans-serif"
+      },
       screens: {
-        mobile: "400px",
+        "mobile": "400px",
+        "large": "1200px"
       },
       colors: {
         nav: "#2D2B28",
@@ -12,6 +16,7 @@ module.exports = {
         primary: "#72BF65",
         grey: "#A5A5A5",
         placeholder: "#828F9C",
+        brightGreen: "#48D38A",
         lightGreen: "#DEE7DD",
         faintGreen: "#CFFFC7",
         border: "#BBBBBB",
@@ -26,15 +31,20 @@ module.exports = {
         dark2: "#333333",
         red: "#FF0000",
         background: "#494949",
-        tokenGrey: "#D9D9D9"
+        tokenGrey: "#D9D9D9",
+        greenBg: "#F3FFF1",
+        darkPurple: "#707A8A",
+        extraGrey: "#979797",
+        tooltip: "#1D2641"
       },
       borderRadius: {
         10: "10px",
       },
       fontSize: {
         12: "12px",
-        13: "13px",
-      },
+        13: '13px',
+        25: "25px"
+      }
     },
   },
   plugins: [],

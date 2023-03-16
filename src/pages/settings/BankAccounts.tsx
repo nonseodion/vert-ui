@@ -1,16 +1,18 @@
-import React, { useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
 import { ReactComponent as Plus } from "../../assets/icons/plus.svg"
 import { Wrapper } from "../../components/general"
 import { Navigator } from "../../components/navigation"
 import { AddBankAccountModal, SettingsContent } from "../../components/settings"
-import BankAccount from "../../components/transactions/BankAccount"
+import { BanksSkeleton } from "../../components/skeletons"
+import { BankAccount } from "../../components/transactions"
 import { BankAccountDetails } from "../../dummy/currencies"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
 import { Modals } from "../../utils/constants"
 
 export default function BankAccounts() {
   const [accounts, setAccounts] = useState<BankAccountDetails[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
   const [adding, setAdding] = useState<boolean>(false)
   const { showModal, hideModal } = useModal()
 
@@ -19,17 +21,28 @@ export default function BankAccounts() {
     setTimeout(() => {
       setAdding(false)
       hideModal(Modals.BANK_ACCOUNT)
-      setAccounts([...accounts, bank_info])
+      setAccounts([...accounts, { ...bank_info, account_name: "Emmanuel" }])
       toast("Bank account information added successfully.")
     }, 3000)
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 3000)
+  }, [])
+
+  const onBankAccountModalClose = useCallback(
+    () => hideModal(Modals.BANK_ACCOUNT),
+    [hideModal]
+  )
 
   return (
     <Wrapper>
       <AddBankAccountModal
         onConfirm={onConfirm}
         adding={adding}
-        onClose={() => hideModal(Modals.BANK_ACCOUNT)}
+        onClose={onBankAccountModalClose}
       />
       <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
         <Navigator />
@@ -40,16 +53,21 @@ export default function BankAccounts() {
               type="button"
               onClick={() => showModal({ modal: Modals.BANK_ACCOUNT })}
             >
-              <Plus />
+              <Plus className="fill-white" />
               <span className="text-sm text-white">Add new bank details</span>
             </button>
           </div>
+          {loading && (
+            <div className="mt-11">
+              <BanksSkeleton />
+            </div>
+          )}
           {accounts.length > 0 && (
             <ul className="mt-[44px] flex flex-col space-y-4">
               {accounts.map((account) => (
                 <li key={account.account_number}>
                   <BankAccount
-                    bank_name={account.bank_name}
+                    bank_name={account.selected_bank.value}
                     account_name={account.account_name}
                     account_number={account.account_number}
                   />

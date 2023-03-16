@@ -59,7 +59,7 @@ export default function TokenModal() {
             onClick={() => setCurrentStep(Steps.DEFAULT)}
             className="border-none outline-none"
           >
-            <Exit className="h-3 w-3 path-primary" />
+            <Exit className="h-3 w-3 path-primary fill-[#929AA5]" />
           </button>
         )}
       </div>

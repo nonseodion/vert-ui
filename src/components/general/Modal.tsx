@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import clsx from "classnames"
-import useModal from "../../hooks/useModal"
+import { useModal } from "../../hooks"
 import { doNothing } from "../../utils/functions"
 import { Modals } from "../../utils/constants"
 

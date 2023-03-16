@@ -24,7 +24,7 @@ export const userWallets = [
 export interface BankAccountDetails {
   account_number: string
   account_name: string
-  bank_name: string
+  selected_bank: { value: string; label: string }
 }
 
 export const banks: OptionType[] = [

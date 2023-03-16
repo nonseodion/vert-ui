@@ -4,9 +4,9 @@ import isEmail from "validator/lib/isEmail"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { ReactComponent as LoneLogo } from "../../assets/icons/logo-lone.svg"
 import { Button, Glow, Wrapper } from "../../components/general"
-import Input from "../../components/inputs/Input"
-import useModal from "../../hooks/useModal"
+import { Input } from "../../components/inputs"
 import { BackButton } from "../../components/navigation"
+import { useModal } from "../../hooks"
 import { goBackConditionally } from "../../utils/functions"
 import { Modals, PageRoutes } from "../../utils/constants"
 
@@ -33,7 +33,9 @@ export default function SignUpWithWallet() {
       <Glow />
       <div className="flex justify-center pt-[58px]">
         <div className="flex flex-col justify-center items-center space-y-[50.75px] mb-[276px]">
-          <LoneLogo />
+          <button type="button" onClick={() => navigate(PageRoutes.HOME)}>
+            <LoneLogo />
+          </button>
           <div className="flex flex-col space-y-8">
             <p className="text-white text-center text-lg">Sign up</p>
             <div className="bg-lightGreen rounded-xl w-[349px] p-7">
@@ -53,6 +55,7 @@ export default function SignUpWithWallet() {
                       type="email"
                       hasError={!!errors.email}
                       {...field}
+                      ref={null}
                     />
                   )}
                 />
@@ -68,6 +71,7 @@ export default function SignUpWithWallet() {
                       autoFocus
                       hasError={!!errors.username}
                       {...field}
+                      ref={null}
                     />
                   )}
                 />

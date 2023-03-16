@@ -5,6 +5,11 @@ import {
   TableStyles,
 } from "react-data-table-component/dist/src/DataTable/types"
 import { ReactComponent as Empty } from "../../assets/images/empty.svg"
+import { TableRowItemSkeleton } from "../skeletons"
+
+interface CustomTableProps {
+  loading?: boolean
+}
 
 const customStyles: TableStyles = {
   table: {
@@ -62,14 +67,34 @@ function NoRecords() {
   )
 }
 
-export default function Table<T>({ columns, data, ...rest }: TableProps<T>) {
+function LoadingCell() {
+  return <TableRowItemSkeleton />
+}
+
+export default function Table<T>({
+  data,
+  columns,
+  loading,
+  ...rest
+}: TableProps<T> & CustomTableProps) {
+  const getColumns = () => {
+    if (loading) {
+      return columns.map((col) => ({ ...col, cell: LoadingCell }))
+    }
+    return columns
+  }
+
   return (
     <DataTable
-      columns={columns}
-      data={data}
+      columns={getColumns()}
+      data={loading ? Array(5).fill(0) : data}
       customStyles={customStyles}
       noDataComponent={<NoRecords />}
       {...rest}
     />
   )
+}
+
+Table.defaultProps = {
+  loading: false,
 }

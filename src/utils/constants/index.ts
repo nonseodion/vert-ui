@@ -19,6 +19,8 @@ export enum PageRoutes {
   TRANSACTION_DETAIL = "/transactions/:transactionId",
   FORGOT_PASSWORD = "/forgot-password",
   RESET_PASSWORD = "/reset-password",
+  SELECT_BANK_ACCOUNT = "/select-bank-account",
+  PROCESS_TRANSACTION = "/process-transaction",
   ERROR = "/error",
 }
 
@@ -31,6 +33,11 @@ export enum Modals {
   SUCCESSFUL_SIGN_UP = "successful_sign_up",
   RESET_PASSWORD_MODAL = "reset_password_modal",
   RESET_PASSWORD_SUCCESSFUL_MODAL = "reset_password_successful_modal",
+  APPROVE_TRANSACTION = "approve_transaction",
+  CONFIRM_EXCHANGE = "confirm_exchange",
+  CASH_SENT = "cash_sent",
+  TRANSACTION_DETAILS = "transaction_details",
+  TRANSACTION_CANCELLED = "transaction_cancelled",
 }
 
 export enum LocalStorage {

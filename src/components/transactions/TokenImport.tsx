@@ -52,7 +52,7 @@ export default function TokenImport({
               target="blank"
               className="border-none outline-none flex items-center space-x-[5.45px]"
             >
-              <span className="text-13 text-lightBlue">
+              <span className="text-13 text-purple">
                 {blockExplorer.default.name}
               </span>
               <LinkIcon />
