@@ -28,6 +28,7 @@ export default function ProfileSettings() {
                 placeholder="sketchydesigns50@gmail.com"
                 outerClassName="border border-white/[.5] rounded-lg"
                 className="placeholder:text-lightBlue !text-13 !text-white"
+                disabled
               />
               <p className="text-13 text-lightBlue">
                 Your email addresss cannot be changed once your account has been
