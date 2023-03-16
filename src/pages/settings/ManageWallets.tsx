@@ -43,55 +43,62 @@ export default function ManageWallets() {
             {loading ? (
               <WalletListSkeleton />
             ) : (
-              <div className="flex flex-col space-y-[14px]">
-                {wallets.map((wallet) => (
-                  <div
-                    key={wallet.address}
-                    className="bg-white rounded-xl h-[83px] flex items-center justify-between px-[20.85px]"
-                  >
-                    <div className="flex space-x-3 items-center">
-                      {wallet.icon && (
-                        <div className="flex items-center justify-center h-7 w-7 bg-[#FFD3A2] rounded-full">
-                          <img
-                            src={wallet.icon}
-                            alt={wallet.address}
-                            className="h-4 w-4"
-                          />
-                        </div>
-                      )}
-                      <div className="flex flex-col space-y-[9.5px]">
-                        <div className="flex items-center space-x-[3.68px]">
-                          <span className="font-medium text-base text-black underline">
-                            {wallet.address}
-                          </span>
-                          <button type="button">
-                            <Copy />
-                          </button>
-                        </div>
-                        {wallet.is_connected && (
-                          <div className="flex space-x-1 items-center">
-                            <div className="h-[9px] w-[9px] rounded-full bg-primary" />
-                            <span className="text-black text-[11.13px]">
-                              connected
-                            </span>
+              <div className="w-full flex flex-col space-y-[30px]">
+                {wallets.length > 0 && (
+                  <h3 className="font-semibold text-white text-base leading-[29px] md:text-xl md:leading-[27px]">
+                    Linked Wallets: {wallets.length}
+                  </h3>
+                )}
+                <div className="flex flex-col space-y-[14px]">
+                  {wallets.map((wallet) => (
+                    <div
+                      key={wallet.address}
+                      className="bg-white rounded-xl h-[83px] flex items-center justify-between px-[20.85px]"
+                    >
+                      <div className="flex space-x-3 items-center">
+                        {wallet.icon && (
+                          <div className="flex items-center justify-center h-7 w-7 bg-[#FFD3A2] rounded-full">
+                            <img
+                              src={wallet.icon}
+                              alt={wallet.address}
+                              className="h-4 w-4"
+                            />
                           </div>
                         )}
+                        <div className="flex flex-col space-y-[9.5px]">
+                          <div className="flex items-center space-x-[3.68px]">
+                            <span className="font-medium text-base text-black underline">
+                              {wallet.address}
+                            </span>
+                            <button type="button">
+                              <Copy />
+                            </button>
+                          </div>
+                          {wallet.is_connected && (
+                            <div className="flex space-x-1 items-center">
+                              <div className="h-[9px] w-[9px] rounded-full bg-primary" />
+                              <span className="text-black text-[11.13px]">
+                                connected
+                              </span>
+                            </div>
+                          )}
+                        </div>
                       </div>
+                      <Button
+                        text="Unlink"
+                        onClick={() =>
+                          showModal({
+                            modal: Modals.UNLINK_WALLET,
+                            onConfirm: unlinkWallet,
+                          })
+                        }
+                        bordered
+                        background="transparent"
+                        className="border-dark h-10 !py-0 text-[#010304] font-semibold text-sm"
+                      />
                     </div>
-                    <Button
-                      text="Unlink"
-                      onClick={() =>
-                        showModal({
-                          modal: Modals.UNLINK_WALLET,
-                          onConfirm: unlinkWallet,
-                        })
-                      }
-                      bordered
-                      background="transparent"
-                      className="border-dark h-10 !py-0 text-[#010304] font-semibold text-sm"
-                    />
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
           </div>
