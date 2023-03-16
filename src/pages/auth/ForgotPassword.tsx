@@ -73,6 +73,7 @@ export default function ForgotPassword() {
                   className="text-13"
                   hasError={!!errors.email}
                   autoFocus
+                  errorMessage="Please enter a valid email"
                   {...field}
                   ref={null}
                 />

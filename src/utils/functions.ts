@@ -35,10 +35,14 @@ export const handleMobileNavDropdown = (action: ActionType) =>
 export const handleConverterDropdown = (action: ActionType) =>
   handleHideAbleElement(".converter-currency-select", action)
 
+export const handleCurrencySelectDropdown = (action: ActionType) =>
+  handleHideAbleElement(".currency-select", action)
+
 export const hideAllHideables = () => {
   handleProfileDropdown("hide")
   handleMobileNavDropdown("hide")
   handleConverterDropdown("hide")
+  handleCurrencySelectDropdown("hide")
 }
 
 export const handleBodyScroll = (action: "enable" | "disable" = "enable") => {

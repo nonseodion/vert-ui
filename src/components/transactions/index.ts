@@ -3,6 +3,7 @@ import BankAccount from "./BankAccount"
 import CashSentModal from "./CashSentModal"
 import ConnectWallet from "./ConnectWallet"
 import Converter from "./Converter"
+import CurrencySelect from "./CurrencySelect"
 import TokenModal from "./TokenModal"
 import TransactionCancelledModal from "./TransactionCancelledModal"
 import TransactionProgress from "./TransactionProgress"
@@ -16,6 +17,7 @@ import {
 } from "./TransactionSteps"
 
 export {
+  CurrencySelect,
   TransactionDetailsModal,
   CashSentModal,
   TransactionProgress,

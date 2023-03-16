@@ -52,15 +52,15 @@ export default function SignInWithEmail() {
                     required: true,
                     validate: (v) => isEmail(v?.trim()),
                   }}
-                  render={({ field }) => (
+                  render={({ field: { onChange, value } }) => (
                     <Input
                       placeholder="Enter your email"
                       autoFocus
                       errorMessage="The email you entered is not in the correct format. Please check."
                       type="email"
                       hasError={!!errors.email}
-                      {...field}
-                      ref={null}
+                      onChange={onChange}
+                      value={value}
                     />
                   )}
                 />
@@ -68,13 +68,13 @@ export default function SignInWithEmail() {
                   control={control}
                   name="password"
                   rules={{ required: true }}
-                  render={({ field }) => (
+                  render={({ field: { onChange, value } }) => (
                     <Input
                       placeholder="Enter password"
                       type="password"
                       hasError={!!errors.password}
-                      {...field}
-                      ref={null}
+                      onChange={onChange}
+                      value={value}
                     />
                   )}
                 />
