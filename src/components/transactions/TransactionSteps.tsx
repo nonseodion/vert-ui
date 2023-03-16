@@ -12,7 +12,7 @@ import { Button, Loader } from "../general"
 import { useModal } from "../../hooks"
 import ConfirmExchangeModal from "./ConfirmExchangeModal"
 import { getRandomBoolean } from "../../utils/functions"
-import { Modals } from "../../utils/constants"
+import { Modals, PageRoutes } from "../../utils/constants"
 
 interface TransactionStepProps {
   proceed: () => void
@@ -89,7 +89,7 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
             <h3 className="text-25 leading-[37.5px] text-black">
               Confirm transaction
             </h3>
-            <button type="button" onClick={() => navigate(-1)}>
+            <button type="button" onClick={() => navigate(PageRoutes.HOME)}>
               <Exit className="fill-[#929AA5]" />
             </button>
           </div>
@@ -180,8 +180,8 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
               background="transparent"
               bordered
               text="Cancel"
-              onClick={() => showModal({ modal: Modals.TRANSACTION_CANCELLED })}
               fullWidth
+              onClick={() => navigate(PageRoutes.HOME)}
             />
             <Button
               className="h-[52px] !py-0 !rounded-lg disabled:bg-primary/[.4] disabled:border-0"
