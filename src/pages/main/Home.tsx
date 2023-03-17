@@ -1,11 +1,12 @@
 import React from "react"
-import { SuccessfulSignup } from "../../components/auth"
+import { CreateAccountModal, SuccessfulSignup } from "../../components/auth"
 import { Wrapper } from "../../components/general"
 import { Converter } from "../../components/transactions"
 
 export default function Home() {
   return (
     <Wrapper hideFooter={false}>
+      <CreateAccountModal />
       <SuccessfulSignup />
       <div className="flex flex-col large:flex-row pt-[50px] large:pt-[114px] pb-[242px] px-6 large:px-[80px] large:justify-between">
         <div className="large:max-w-[60%]">
