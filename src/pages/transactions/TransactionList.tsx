@@ -163,26 +163,21 @@ export default function TransactionList() {
                     key={row.id}
                     role="presentation"
                     onClick={() => onTransactionClick(row)}
-                    className="flex justify-between items-center min-h-[95px] py-1 px-[10px] rounded-lg bg-[#F3FFF1]"
+                    className="flex justify-between items-center min-h-[95px] py-[26px] pl-[10px] pr-[18px] rounded-lg bg-[#F3FFF1]"
                   >
                     <div className="flex items-center space-x-[14px]">
                       <Cash />
                       <div className="flex flex-col space-y-[11px]">
-                        <h3 className="text-13 md:text-[15px] uppercase font-semibold text-black">
+                        <h3 className="text-[15px] leading-[17.5px] uppercase font-semibold text-black">
                           {`sold ${row.amount_sold} for ${row.amount_received}`}
                         </h3>
-                        <p className="text13 md:text-[15px] text-[#707A8A]">
+                        <p className="text-[15px] text-[#707A8A] leading-5">
                           {row.bank_details.account_number}{" "}
                           {row.bank_details.bank}
-                          <br className="md:hidden" />
-                          <span className="text-black text-[10px] md:text-13">
-                            {" "}
-                            {row.date}
-                          </span>
                         </p>
                       </div>
                     </div>
-                    <ArrowRight />
+                    <ArrowRight className="flex-shrink-0 ml-2" />
                   </li>
                 ))}
               </ul>
