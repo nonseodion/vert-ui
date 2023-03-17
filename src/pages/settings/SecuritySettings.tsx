@@ -34,7 +34,7 @@ export default function SecuritySettings() {
               </div>
               <Button
                 text={isWalletUser ? "Set" : "Change"}
-                className="h-[37px] !py-0 min-w-[89px]"
+                className="h-[37px] !py-0 min-w-[89px] !rounded-lg"
                 onClick={() =>
                   navigate(
                     isWalletUser
@@ -60,7 +60,7 @@ export default function SecuritySettings() {
               </div>
               <Button
                 text="Manage"
-                className="h-[37px] !py-0"
+                className="h-[37px] !py-0 !rounded-lg"
                 onClick={() => navigate(PageRoutes.MANAGE_TOKEN_APPROVALS)}
               />
             </div>
