@@ -27,7 +27,7 @@ export default function TopNav() {
         {location.pathname !== PageRoutes.ERROR && (
           <>
             {isAuthenticated ? (
-              <div className="flex items-center space-x-[41px]">
+              <div className="flex items-center space-x-5 md:space-x-[41px]">
                 <CurrencySelect />
                 <button
                   onClick={(e) => {
