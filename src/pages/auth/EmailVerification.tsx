@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react"
 import OtpInput from "react-otp-input"
 import { useLocation, useNavigate } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
-import { Button, Loader, Wrapper } from "../../components/general"
+import { Button, Glow, Loader, Wrapper } from "../../components/general"
 import { useModal } from "../../hooks"
 import { Modals, PageRoutes } from "../../utils/constants"
 import { doNothing, goBackConditionally } from "../../utils/functions"
@@ -53,6 +53,7 @@ export default function EmailVerification() {
 
   return (
     <Wrapper hideTopNav>
+      <Glow />
       <div className="pt-[158px] flex items-center justify-center">
         <div className="mx-auto max-w-[calc(100vw_-_40px)] lg:w-[432px] bg-lightGreen rounded-3xl px-[19px] py-6">
           <div className="flex items-center justify-between">
