@@ -107,18 +107,18 @@ export default function TransactionList() {
           </h3>
         </div>
         <div className="lg:mt-[40px] mt-6 py-[19px] lg:py-[25px] px-[15px] lg:px-[30px] bg-[#494949] rounded-[12px] shadowed">
-          <h4 className="text-white font-bold text-base mb-[15px] lg:hidden">
+          <h4 className="text-white font-bold text-base lg:hidden">
             All transactions
           </h4>
           <div className="flex justify-between items-center">
             <h3 className="hidden lg:block font-bold text-xl text-white">
               All transactions
             </h3>
-            <div className="ml-auto flex space-x-3">
+            <div className="ml-auto flex flex-wrap">
               <button
                 type="button"
                 onClick={() => setVisibleCalendar("start_date")}
-                className="px-[10px] border border-lightBlue rounded-lg flex items-center space-x-4 h-10"
+                className="px-[10px] mt-[15px] mr-3 border border-lightBlue rounded-lg flex items-center space-x-4 h-10"
               >
                 <span className="text-[10px] md:text-13 font-medium text-lightBlue">
                   {startDate?.toLocaleDateString() || "Start Date"}
@@ -128,7 +128,7 @@ export default function TransactionList() {
               <button
                 type="button"
                 onClick={() => setVisibleCalendar("end_date")}
-                className="px-[10px] border border-lightBlue rounded-lg flex items-center space-x-4 h-10"
+                className="px-[10px] border mr-3 mt-[15px] border-lightBlue rounded-lg flex items-center space-x-4 h-10"
               >
                 <span className="text-[10px] md:text-13 font-medium text-lightBlue">
                   {endDate?.toLocaleDateString() || "End Date"}
@@ -137,7 +137,7 @@ export default function TransactionList() {
               </button>
               <button
                 type="button"
-                className="px-[14.4px] h-10 rounded-lg flex items-center space-x-4 bg-primary"
+                className="px-[14.4px] mt-[15px] h-10 rounded-lg flex items-center space-x-4 bg-primary"
               >
                 <Filter />
                 <span className="text-[16.8px] font-medium text-white">
