@@ -81,6 +81,7 @@ export default function ManageTokenApprovals() {
           </h3>
           <div className="flex flex-col space-y-[26.5px]">
             <BackButton
+              className="!bg-transparent !px-0"
               onClick={() =>
                 goBackConditionally(
                   navigate,

@@ -35,6 +35,7 @@ export default function ChangePassword() {
           <div className="flex flex-col space-y-[26.5px]">
             <BackButton
               onClick={() => navigate(PageRoutes.SECURITY_SETTINGS)}
+              className="!bg-transparent !px-0"
             />
             <div className="flex flex-col space-y-[10px]">
               <h3 className="text-base font-semibold text-white">
