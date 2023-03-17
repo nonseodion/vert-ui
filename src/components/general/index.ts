@@ -8,10 +8,12 @@ import Modal from "./Modal"
 import Paginator from "./Paginator"
 import Table from "./Table"
 import ToastDisplay from "./ToastDisplay"
+import VertCalendar from "./VertCalendar"
 import WalletConfirmation from "./WalletConfirmation"
 import Wrapper from "./Wrapper"
 
 export {
+  VertCalendar,
   Copy,
   Info,
   Banner,

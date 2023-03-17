@@ -108,3 +108,9 @@ html.hide-overflow {
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(36px);
 }
+
+/* calendary styles */
+.react-calendar__tile--active {
+  background-color: #72bf65 !important;
+}
+/* end calendary styles */

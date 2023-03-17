@@ -2,11 +2,11 @@ import React, { useEffect, useMemo, useState } from "react"
 import { TableColumn } from "react-data-table-component/dist/src/DataTable/types"
 import { useLocation, useNavigate } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
-import { ReactComponent as Calendar } from "../../assets/icons/calendar.svg"
+import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg"
 import { ReactComponent as Filter } from "../../assets/icons/filter.svg"
 import { ReactComponent as Cash } from "../../assets/icons/cash.svg"
 import { ReactComponent as ArrowRight } from "../../assets/icons/arrow-right.svg"
-import { Wrapper, Table } from "../../components/general"
+import { Wrapper, Table, VertCalendar } from "../../components/general"
 import transactions, { Transaction } from "../../dummy/transactions"
 import { PageRoutes, TABLE_ROW_SIZE } from "../../utils/constants"
 import Paginator from "../../components/general/Paginator"
@@ -54,6 +54,12 @@ export default function TransactionList() {
   const location = useLocation()
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
+  const [visibleCalendar, setVisibleCalendar] = useState<
+    "start_date" | "end_date" | null
+  >(null)
+  const [startDate, onStartDateChange] = useState<Date | null>(null)
+  const [endDate, onEndDateChange] = useState<Date | null>(null)
+
   const displayedData = useMemo(
     () =>
       transactions.slice(TABLE_ROW_SIZE * (page - 1), TABLE_ROW_SIZE * page),
@@ -70,8 +76,22 @@ export default function TransactionList() {
     }, 3000)
   }, [])
 
+  const hideCalendar = () => setVisibleCalendar(null)
+
   return (
     <Wrapper>
+      <VertCalendar
+        visible={visibleCalendar === "start_date"}
+        value={startDate}
+        onChange={onStartDateChange}
+        onClose={hideCalendar}
+      />
+      <VertCalendar
+        visible={visibleCalendar === "end_date"}
+        value={endDate}
+        onChange={onEndDateChange}
+        onClose={hideCalendar}
+      />
       <div className="py-[23px] px-4 lg:py-[56px] lg:px-[87px]">
         <div className="flex items-center space-x-[27px]">
           <button
@@ -97,21 +117,23 @@ export default function TransactionList() {
             <div className="ml-auto flex space-x-3">
               <button
                 type="button"
+                onClick={() => setVisibleCalendar("start_date")}
                 className="px-[10px] border border-lightBlue rounded-lg flex items-center space-x-4 h-10"
               >
-                <span className="text-13 font-medium text-lightBlue">
-                  Start date
+                <span className="text-[10px] md:text-13 font-medium text-lightBlue">
+                  {startDate?.toLocaleDateString() || "Start Date"}
                 </span>
-                <Calendar />
+                <CalendarIcon />
               </button>
               <button
                 type="button"
+                onClick={() => setVisibleCalendar("end_date")}
                 className="px-[10px] border border-lightBlue rounded-lg flex items-center space-x-4 h-10"
               >
-                <span className="text-13 font-medium text-lightBlue">
-                  End date
+                <span className="text-[10px] md:text-13 font-medium text-lightBlue">
+                  {endDate?.toLocaleDateString() || "End Date"}
                 </span>
-                <Calendar />
+                <CalendarIcon />
               </button>
               <button
                 type="button"
@@ -141,7 +163,7 @@ export default function TransactionList() {
                     key={row.id}
                     role="presentation"
                     onClick={() => onTransactionClick(row)}
-                    className="flex justify-between items-center h-[95px] px-[10px] rounded-lg bg-[#F3FFF1]"
+                    className="flex justify-between items-center min-h-[95px] py-1 px-[10px] rounded-lg bg-[#F3FFF1]"
                   >
                     <div className="flex items-center space-x-[14px]">
                       <Cash />
@@ -152,6 +174,7 @@ export default function TransactionList() {
                         <p className="text13 md:text-[15px] text-[#707A8A]">
                           {row.bank_details.account_number}{" "}
                           {row.bank_details.bank}
+                          <br className="md:hidden" />
                           <span className="text-black text-[10px] md:text-13">
                             {" "}
                             {row.date}
