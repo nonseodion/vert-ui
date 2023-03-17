@@ -43,7 +43,7 @@ export default function ProfileSettings() {
                   render={({ field: { onChange, value } }) => (
                     <Input
                       placeholder="@    enter your username"
-                      outerClassName="border border-white/[.5] rounded-lg"
+                      outerClassName="border border-white/[.5] rounded-lg !h-[52px] !rounded-lg"
                       className="placeholder:text-lightBlue !text-13 !text-white"
                       onChange={onChange}
                       value={value}
@@ -59,7 +59,7 @@ export default function ProfileSettings() {
                 <p className="text-white font-medium">Email</p>
                 <Input
                   placeholder="sketchydesigns50@gmail.com"
-                  outerClassName="border border-white/[.5] rounded-lg"
+                  outerClassName="border border-white/[.5] rounded-lg !h-[52px] !rounded-[12px] bg-[#2D2B28]"
                   className="placeholder:text-lightBlue !text-13 !text-white"
                   disabled
                 />
