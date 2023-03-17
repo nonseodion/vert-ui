@@ -30,7 +30,13 @@ export default function VertCalendar({
         onClick={onClose}
       />
       <div className="z-[2]">
-        <Calendar onChange={onChange} value={value || new Date()} />
+        <Calendar
+          onChange={(date: Date) => {
+            onChange(date)
+            onClose()
+          }}
+          value={value || new Date()}
+        />
       </div>
     </div>
   )

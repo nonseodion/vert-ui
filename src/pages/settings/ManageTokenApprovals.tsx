@@ -2,8 +2,13 @@ import React, { useEffect, useState, useMemo } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import metamask from "../../assets/icons/metamask.png"
 import wakanda_inu from "../../assets/icons/wakanda-inu.png"
-import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
-import { Button, Loader, Paginator, Wrapper } from "../../components/general"
+import {
+  Button,
+  Copy,
+  Loader,
+  Paginator,
+  Wrapper,
+} from "../../components/general"
 import {
   SettingsContent,
   RemoveTokenApprovalModal,
@@ -109,9 +114,11 @@ export default function ManageTokenApprovals() {
                       <span className="text-lightBlue underline text-[15px] font-medium">
                         0x6810...9568
                       </span>
-                      <button type="button">
-                        <Copy className="h-4 w-4 stroke-lightBlue" />
-                      </button>
+                      <Copy
+                        text="0x6810...9568"
+                        color="purple"
+                        className="h-4 w-4"
+                      />
                     </div>
                     <div className="flex items-center space-x-1">
                       <div className="h-[9px] w-[9px] rounded-full bg-primary" />

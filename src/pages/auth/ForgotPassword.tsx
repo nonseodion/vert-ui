@@ -44,8 +44,8 @@ export default function ForgotPassword() {
   return (
     <Wrapper hideTopNav>
       <ResetPasswordModal />
-      <div className="px-4">
-        <div className="max-w-[375px] mt-[98px] mx-auto bg-lightGreen px-7 pt-[23px] pb-[34px] rounded-3xl">
+      <div className="px-4 pt-[98px]">
+        <div className="max-w-[375px] mx-auto bg-lightGreen px-7 pt-[23px] pb-[34px] rounded-3xl">
           <h3 className="text-dark2 font-bold text-[19px] leading-[21px] mb-[18px]">
             Forgot Password?
           </h3>

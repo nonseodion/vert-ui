@@ -34,8 +34,8 @@ export default function SignInWithEmail() {
     <Wrapper hideTopNav>
       <ConnectWallet />
       <Glow />
-      <div className="flex justify-center pt-[58px]">
-        <div className="flex flex-col justify-center items-center space-y-[50.75px] mb-[276px]">
+      <div className="flex justify-center pt-[50px] pb-[30px]">
+        <div className="flex flex-col justify-center items-center space-y-[50.75px]">
           <button type="button" onClick={() => navigate(PageRoutes.HOME)}>
             <LoneLogo />
           </button>
