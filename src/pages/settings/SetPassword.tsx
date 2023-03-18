@@ -6,6 +6,7 @@ import { Input } from "../../components/inputs"
 import { BackButton } from "../../components/navigation"
 import { SettingsContent } from "../../components/settings"
 import { PageRoutes } from "../../utils/constants"
+import { comparePasswords } from "../../utils/functions"
 
 interface PasswordValues {
   password: string
@@ -16,9 +17,12 @@ export default function SetPassword() {
   const {
     handleSubmit,
     control,
+    watch,
     formState: { errors },
   } = useForm<PasswordValues>()
   const navigate = useNavigate()
+
+  const password = watch("password")
 
   const onSubmit = handleSubmit((data) => {
     localStorage.setItem("data", JSON.stringify(data))
@@ -77,7 +81,7 @@ export default function SetPassword() {
                 name="confirm_password"
                 rules={{
                   required: true,
-                  validate: (v) => v?.trim()?.length > 0,
+                  validate: (v) => comparePasswords(v, password),
                 }}
                 render={({ field: { onChange, value } }) => (
                   <Input
@@ -85,9 +89,13 @@ export default function SetPassword() {
                     type="password"
                     outerClassName="border border-white/[.5] rounded-lg"
                     className="placeholder:text-lightBlue !text-13 !text-white"
-                    hasError={!!errors.confirm_password}
+                    hasError={
+                      !!errors.confirm_password ||
+                      !comparePasswords(value, password)
+                    }
                     onChange={onChange}
                     value={value}
+                    errorMessage={value ? "Passwords do not match!" : ""}
                   />
                 )}
               />

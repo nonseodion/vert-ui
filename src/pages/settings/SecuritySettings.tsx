@@ -6,10 +6,11 @@ import { Button, Wrapper } from "../../components/general"
 import { Navigator } from "../../components/navigation"
 import { SettingsContent } from "../../components/settings"
 import { PageRoutes } from "../../utils/constants"
+import { getRandomBoolean } from "../../utils/functions"
 
 export default function SecuritySettings() {
   const navigate = useNavigate()
-  const isWalletUser = false
+  const isWalletUser = getRandomBoolean()
   return (
     <Wrapper>
       <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">

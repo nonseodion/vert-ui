@@ -71,3 +71,8 @@ export const goBackConditionally = (
 }
 
 export const getRandomBoolean = () => Math.random() < 0.5
+
+export const comparePasswords = (password1: string, password2: string) =>
+  password1?.length > 0
+    ? password1?.length > 0 && password2?.length > 0 && password1 === password2
+    : true
