@@ -23,7 +23,7 @@ export default function Info({
     <div className="flex space-x-[3px] items-center">
       <span className="text-[8px] text-purple font-medium">{text}</span>
       <Question
-        className="mt-[-3px]"
+        className="mt-[-3px] outline-none border-none"
         {...(tooltip_id && { id: `question-${tooltip_id}` })}
       />
       {tooltip_id && (

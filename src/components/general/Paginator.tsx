@@ -1,22 +1,22 @@
 import React, { useMemo } from "react"
 import clsx from "classnames"
-import transactions from "../../dummy/transactions"
 
 interface PaginatorProps {
   rowsPerPage: number
   currentPage: number
+  dataLength: number
   onChangePage: (page: number) => void
 }
 
 export default function Paginator({
   rowsPerPage,
   currentPage,
+  dataLength,
   onChangePage,
 }: PaginatorProps) {
   const rowCountItems = useMemo(
-    () =>
-      Array.from(Array(Math.ceil(transactions.length / rowsPerPage)).keys()),
-    [rowsPerPage]
+    () => Array.from(Array(Math.ceil(dataLength / rowsPerPage)).keys()),
+    [rowsPerPage, dataLength]
   )
 
   return (

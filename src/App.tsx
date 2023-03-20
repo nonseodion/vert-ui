@@ -17,7 +17,7 @@ import ModalContext, { ActiveModalsArrayValue } from "./contexts/ModalContext"
 import ConnectWallet from "./components/transactions/ConnectWallet"
 import { TokenModal } from "./components/transactions"
 
-const Modals = function () {
+function Modals() {
   return (
     <>
       <TokenModal />
@@ -72,7 +72,7 @@ function App() {
                 >
                   {showBanner && <Banner />}
                   <div
-                    className={clsx("max-w-[1500px] mx-auto", {
+                    className={clsx({
                       "pt-7 md:pt-10": showBanner,
                     })}
                   >

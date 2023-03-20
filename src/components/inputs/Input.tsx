@@ -22,7 +22,6 @@ export default function Input({
   label,
   hasError,
   errorMessage,
-  value,
   ...rest
 }: InputProps) {
   const [isVisiblePassword, setIsVisiblePassword] = useState(false)
@@ -45,7 +44,6 @@ export default function Input({
       >
         <input
           {...rest}
-          {...(value && { value: value ?? "" })}
           type={
             rest?.type === "password" && isVisiblePassword ? "text" : rest?.type
           }

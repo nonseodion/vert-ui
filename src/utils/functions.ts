@@ -39,10 +39,14 @@ export const handleMobileNavDropdown = (action: ActionType) =>
 export const handleConverterDropdown = (action: ActionType) =>
   handleHideAbleElement(".converter-currency-select", action)
 
+export const handleCurrencySelectDropdown = (action: ActionType) =>
+  handleHideAbleElement(".currency-select", action)
+
 export const hideAllHideables = () => {
   handleProfileDropdown("hide")
   handleMobileNavDropdown("hide")
   handleConverterDropdown("hide")
+  handleCurrencySelectDropdown("hide")
 }
 
 export const handleBodyScroll = (action: "enable" | "disable" = "enable") => {
@@ -120,3 +124,8 @@ export const getTokenLogoURLByAddress = memoize(
   (address, chainId) => `${chainId}#${address}`
 )
 export const getRandomBoolean = () => Math.random() < 0.5
+
+export const comparePasswords = (password1: string, password2: string) =>
+  password1?.length > 0
+    ? password1?.length > 0 && password2?.length > 0 && password1 === password2
+    : true

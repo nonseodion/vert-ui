@@ -6,13 +6,12 @@ import { ReactComponent as Error } from "../../assets/icons/error.svg"
 import { ReactComponent as Question } from "../../assets/icons/question.svg"
 import { ReactComponent as Pencil } from "../../assets/icons/pencil.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
 import { ReactComponent as PaperAirplane } from "../../assets/images/paper-airplane.svg"
-import { Button, Loader } from "../general"
+import { Button, Copy, Loader } from "../general"
 import { useModal } from "../../hooks"
 import ConfirmExchangeModal from "./ConfirmExchangeModal"
 import { getRandomBoolean } from "../../utils/functions"
-import { Modals } from "../../utils/constants"
+import { Modals, PageRoutes } from "../../utils/constants"
 
 interface TransactionStepProps {
   proceed: () => void
@@ -24,7 +23,7 @@ interface WaitingForConfirmationProps extends TransactionStepProps {
 
 export function ViewOnBsc() {
   return (
-    <p className="text-base max-w-[229.68px] text-[#0F172A]/[.8]">
+    <div className="text-base max-w-[229.68px] text-[#0F172A]/[.8]">
       Confirmed Transaction.
       <br />
       <a className="flex items-center space-x-1" href="https://www.google.com">
@@ -46,7 +45,7 @@ export function ViewOnBsc() {
           />
         </svg>
       </a>
-    </p>
+    </div>
   )
 }
 
@@ -75,9 +74,12 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
 
   return (
     <div
-      className={clsx("bg-white w-full max-w-[463px] rounded-3xl py-5 px-6", {
-        "!p-[25px]": isConfirmed,
-      })}
+      className={clsx(
+        "bg-white w-full max-w-[463px] rounded-3xl py-5 !mb-10 px-6",
+        {
+          "!p-[25px]": isConfirmed,
+        }
+      )}
     >
       <ConfirmExchangeModal />
       {!isConfirmed ? (
@@ -86,7 +88,7 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
             <h3 className="text-25 leading-[37.5px] text-black">
               Confirm transaction
             </h3>
-            <button type="button" onClick={() => navigate(-1)}>
+            <button type="button" onClick={() => navigate(PageRoutes.HOME)}>
               <Exit className="fill-[#929AA5]" />
             </button>
           </div>
@@ -153,6 +155,7 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
               <div className="flex justify-between items-center mt-[10px]">
                 <button
                   type="button"
+                  onClick={() => navigate(-1)}
                   className="ml-auto h-8 flex rounded-[4px] border border-primary px-2 justify-center items-center space-x-[10px]"
                 >
                   <Pencil className="fill-primary h-[10.65px] w-[10.65px]" />
@@ -176,8 +179,8 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
               background="transparent"
               bordered
               text="Cancel"
-              onClick={() => showModal({ modal: Modals.TRANSACTION_CANCELLED })}
               fullWidth
+              onClick={() => navigate(PageRoutes.HOME)}
             />
             <Button
               className="h-[52px] !py-0 !rounded-lg disabled:bg-primary/[.4] disabled:border-0"
@@ -232,10 +235,10 @@ export function WaitingForConfirmation({
         </li>
         <li className="flex justify-between items-center">
           <span className="text-[15px] text-darkPurple">Address</span>
-          <button type="button" className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1">
             <span className="text-[15px] text-darkPurple">0x6810...9568</span>
-            <Copy />
-          </button>
+            <Copy text="0x6810...9568" />
+          </div>
         </li>
         <li className="flex justify-between items-center">
           <span className="text-[15px] text-darkPurple">Network fee</span>
@@ -253,10 +256,10 @@ export function WaitingForConfirmation({
         </li>
         <li className="flex justify-between items-center">
           <span className="text-[15px] text-darkPurple">Trx Hash</span>
-          <button type="button" className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1">
             <span className="text-[15px] text-darkPurple">0x8028934cd..</span>
-            <Copy />
-          </button>
+            <Copy text="0x8028934cd.." />
+          </div>
         </li>
       </ul>
     </div>

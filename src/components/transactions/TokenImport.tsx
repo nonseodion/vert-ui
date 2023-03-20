@@ -2,8 +2,7 @@ import React, { useState } from "react"
 import { ERC20Token } from "@pancakeswap/sdk"
 import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 import { ReactComponent as CheckBox } from "../../assets/icons/checkbox.svg"
-import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
-import { Button } from "../general"
+import { Button, Copy } from "../general"
 import { chain } from "../../utils/config"
 import { shortenAddress } from "../../utils"
 
@@ -26,7 +25,7 @@ export default function TokenImport({
         {logo !== "" ? (
           <img src={logo} alt={name} className="h-10 w-10 rounded-[20px]" />
         ) : (
-          <div className="h-[40px] w-[40px] rounded-full bg-[#CADAF4] overflow-hidden flex items-center justify-center">
+          <div className="h-[40px] w-[40px] flex-shrink-0 rounded-full bg-[#CADAF4] flex items-center justify-center">
             <span className="text-lightBlue text-base">
               {symbol.slice(0, 4)}
             </span>
@@ -34,18 +33,18 @@ export default function TokenImport({
         )}
 
         <div className="flex flex-col space-y-1 w-full">
-          <div className="flex space-x-[6.75px] items-center">
-            <h3 className="text-black font-medium text-base">{name}</h3>
-            <div className="bg-lightGrey rounded-[4px] p-1">
-              <span className=" text-dark">{symbol}</span>
-            </div>
+          <div className="flex items-center">
+            <h3 className="text-black font-medium text-base">
+              {name}
+              <span className="text-[13px] bg-lightGrey rounded-[4px] p-1 ml-[6.75px] text-dark">
+                {symbol}
+              </span>
+            </h3>
           </div>
           <div className="justify-between items-center flex">
             <div className="flex space-x-[8.68px]">
               <span className="text-13">{shortenAddress(address)}</span>
-              <button className="border-none outline-none" type="button">
-                <Copy />
-              </button>
+              <Copy text="0x534...c3d" />
             </div>
             <a
               href={`${blockExplorer.default.url}/token/${address}`}

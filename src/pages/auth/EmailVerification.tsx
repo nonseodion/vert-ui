@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react"
 import OtpInput from "react-otp-input"
 import { useLocation, useNavigate } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
-import { Button, Loader, Wrapper } from "../../components/general"
+import { Button, Glow, Loader, Wrapper } from "../../components/general"
 import { useModal } from "../../hooks"
 import { Modals, PageRoutes } from "../../utils/constants"
 import { doNothing, goBackConditionally } from "../../utils/functions"
@@ -53,6 +53,7 @@ export default function EmailVerification() {
 
   return (
     <Wrapper hideTopNav>
+      <Glow />
       <div className="pt-[158px] flex items-center justify-center">
         <div className="mx-auto max-w-[calc(100vw_-_40px)] lg:w-[432px] bg-lightGreen rounded-3xl px-[19px] py-6">
           <div className="flex items-center justify-between">
@@ -64,7 +65,7 @@ export default function EmailVerification() {
             >
               <ArrowLeft />
             </button>
-            <h3 className="text-[#333333] text-[19px] font-bold">
+            <h3 className="text-[#333333] text-center text-[19px] font-bold">
               Verify your email address
             </h3>
             <button
@@ -75,13 +76,13 @@ export default function EmailVerification() {
               <ArrowLeft />
             </button>
           </div>
-          <p className="mt-[34px] mb-[50px] text-sm text-[#27303D] max-w-[339px] mx-auto text-center">
+          <p className="mt-[34px] mb-[30px] md:mb-[50px] text-sm text-[#27303D] max-w-[339px] mx-auto text-center">
             Please enter the OTP sent to the email address you provided
           </p>
           <div className="otp-input-container flex items-center justify-center">
             <OtpInput
               value={otp}
-              inputStyle="!w-[49px] h-[62px] outline-none mr-[10px] rounded-[10px] border border-lightGreen focus:border-primary"
+              inputStyle="md:!w-[49px] !w-[40px] h-[40px] md:h-[62px] outline-none mr-[2px] md:mr-[10px] rounded-[10px] border border-lightGreen focus:border-primary"
               onChange={setOtp}
               numInputs={6}
               isInputNum

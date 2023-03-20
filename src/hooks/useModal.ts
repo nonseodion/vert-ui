@@ -27,7 +27,7 @@ const emptyModalActions = {
   modalParams: null,
 }
 
-type ShowModalFunction = <M extends Modals>(
+export type ShowModalFunction = <M extends Modals>(
   attrs: ShowModalAttributes<M>
 ) => any
 

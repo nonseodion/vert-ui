@@ -19,7 +19,7 @@ export default function ConnectWallet() {
   return (
     <Modal
       name={Modals.CONNECT_WALLET}
-      bodyClassNames={connecting ? "pt-[23px] pb-[30px]" : ""}
+      bodyClassNames={connecting ? "pt-[23px] pb-[30px] !m-0" : "!m-0"}
     >
       {connecting ? (
         <WalletConfirmation

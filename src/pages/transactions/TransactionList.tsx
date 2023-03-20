@@ -2,13 +2,11 @@ import React, { useEffect, useMemo, useState } from "react"
 import { TableColumn } from "react-data-table-component/dist/src/DataTable/types"
 import { useLocation, useNavigate } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
-import { ReactComponent as Calendar } from "../../assets/icons/calendar.svg"
+import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg"
 import { ReactComponent as Filter } from "../../assets/icons/filter.svg"
-import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
 import { ReactComponent as Cash } from "../../assets/icons/cash.svg"
-import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 import { ReactComponent as ArrowRight } from "../../assets/icons/arrow-right.svg"
-import { Wrapper, Table } from "../../components/general"
+import { Wrapper, Table, VertCalendar } from "../../components/general"
 import transactions, { Transaction } from "../../dummy/transactions"
 import { PageRoutes, TABLE_ROW_SIZE } from "../../utils/constants"
 import Paginator from "../../components/general/Paginator"
@@ -41,41 +39,13 @@ const columns: TableColumn<Transaction>[] = [
     wrap: true,
   },
   {
-    name: "REFERENCE NO",
-    selector: (row) => row.reference_no,
-    cell: ({ reference_no }) => (
-      <div className="flex space-x-2 items-center">
-        <p className="text-12 text-black/[.7] font-medium">{reference_no}</p>
-        <Copy className="flex-shrink-0 stroke-lightBlue" />
-      </div>
-    ),
-  },
-  {
-    name: "Wallet Address",
-    cell: ({ wallet_address }) => (
-      <div className="flex space-x-2 items-center">
-        <p className="text-12 text-black/[.7] font-medium">{wallet_address}</p>
-        <Copy className="flex-shrink-0 stroke-lightBlue" />
-      </div>
-    ),
-  },
-  {
     name: "STATUS",
     cell: ({ status }) => <TransactionStatus status={status} />,
   },
   {
-    name: "BLOCKCHAIN TRX",
-    minWidth: "200px",
-    selector: (row) => row.blockchain_txn,
-    wrap: false,
-    cell: (row) => (
-      <button type="button" className="flex items-center space-x-1 w-full">
-        <span className="whitespace-nowrap underline text-13 font-medium text-primary">
-          {row.blockchain_txn}
-        </span>
-        <LinkIcon className="path-primary" />
-      </button>
-    ),
+    name: " ",
+    width: "40px",
+    cell: () => <ArrowRight />,
   },
 ]
 
@@ -84,6 +54,12 @@ export default function TransactionList() {
   const location = useLocation()
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
+  const [visibleCalendar, setVisibleCalendar] = useState<
+    "start_date" | "end_date" | null
+  >(null)
+  const [startDate, onStartDateChange] = useState<Date | null>(null)
+  const [endDate, onEndDateChange] = useState<Date | null>(null)
+
   const displayedData = useMemo(
     () =>
       transactions.slice(TABLE_ROW_SIZE * (page - 1), TABLE_ROW_SIZE * page),
@@ -100,8 +76,22 @@ export default function TransactionList() {
     }, 3000)
   }, [])
 
+  const hideCalendar = () => setVisibleCalendar(null)
+
   return (
     <Wrapper>
+      <VertCalendar
+        visible={visibleCalendar === "start_date"}
+        value={startDate}
+        onChange={onStartDateChange}
+        onClose={hideCalendar}
+      />
+      <VertCalendar
+        visible={visibleCalendar === "end_date"}
+        value={endDate}
+        onChange={onEndDateChange}
+        onClose={hideCalendar}
+      />
       <div className="py-[23px] px-4 lg:py-[56px] lg:px-[87px]">
         <div className="flex items-center space-x-[27px]">
           <button
@@ -117,35 +107,37 @@ export default function TransactionList() {
           </h3>
         </div>
         <div className="lg:mt-[40px] mt-6 py-[19px] lg:py-[25px] px-[15px] lg:px-[30px] bg-[#494949] rounded-[12px] shadowed">
-          <h4 className="text-white font-bold text-base mb-[15px] lg:hidden">
+          <h4 className="text-white font-bold text-base lg:hidden">
             All transactions
           </h4>
           <div className="flex justify-between items-center">
             <h3 className="hidden lg:block font-bold text-xl text-white">
               All transactions
             </h3>
-            <div className="ml-auto flex space-x-3">
+            <div className="ml-auto flex flex-wrap">
               <button
                 type="button"
-                className="px-[10px] border border-lightBlue rounded-lg flex items-center space-x-4 h-10"
+                onClick={() => setVisibleCalendar("start_date")}
+                className="px-[10px] mt-[15px] mr-3 border border-lightBlue rounded-lg flex items-center space-x-4 h-10"
               >
-                <span className="text-13 font-medium text-lightBlue">
-                  Start date
+                <span className="text-[10px] md:text-13 font-medium text-lightBlue">
+                  {startDate?.toLocaleDateString() || "Start Date"}
                 </span>
-                <Calendar />
+                <CalendarIcon />
               </button>
               <button
                 type="button"
-                className="px-[10px] border border-lightBlue rounded-lg flex items-center space-x-4 h-10"
+                onClick={() => setVisibleCalendar("end_date")}
+                className="px-[10px] border mr-3 mt-[15px] border-lightBlue rounded-lg flex items-center space-x-4 h-10"
               >
-                <span className="text-13 font-medium text-lightBlue">
-                  End date
+                <span className="text-[10px] md:text-13 font-medium text-lightBlue">
+                  {endDate?.toLocaleDateString() || "End Date"}
                 </span>
-                <Calendar />
+                <CalendarIcon />
               </button>
               <button
                 type="button"
-                className="px-[14.4px] h-10 rounded-lg flex items-center space-x-4 bg-primary"
+                className="px-[14.4px] mt-[15px] h-10 rounded-lg flex items-center space-x-4 bg-primary"
               >
                 <Filter />
                 <span className="text-[16.8px] font-medium text-white">
@@ -171,25 +163,21 @@ export default function TransactionList() {
                     key={row.id}
                     role="presentation"
                     onClick={() => onTransactionClick(row)}
-                    className="flex justify-between items-center h-[95px] px-[10px] rounded-lg bg-[#F3FFF1]"
+                    className="flex justify-between items-center min-h-[95px] py-[26px] pl-[10px] pr-[18px] rounded-lg bg-[#F3FFF1]"
                   >
                     <div className="flex items-center space-x-[14px]">
                       <Cash />
                       <div className="flex flex-col space-y-[11px]">
-                        <h3 className="text-13 md:text-[15px] uppercase font-semibold text-black">
+                        <h3 className="text-[15px] leading-[17.5px] uppercase font-semibold text-black">
                           {`sold ${row.amount_sold} for ${row.amount_received}`}
                         </h3>
-                        <p className="text13 md:text-[15px] text-[#707A8A]">
+                        <p className="text-[15px] text-[#707A8A] leading-5">
                           {row.bank_details.account_number}{" "}
                           {row.bank_details.bank}
-                          <span className="text-black text-[10px] md:text-13">
-                            {" "}
-                            {row.date}
-                          </span>
                         </p>
                       </div>
                     </div>
-                    <ArrowRight />
+                    <ArrowRight className="flex-shrink-0 ml-2" />
                   </li>
                 ))}
               </ul>
@@ -199,6 +187,7 @@ export default function TransactionList() {
             rowsPerPage={TABLE_ROW_SIZE}
             currentPage={page}
             onChangePage={setPage}
+            dataLength={transactions.length}
           />
         </div>
       </div>

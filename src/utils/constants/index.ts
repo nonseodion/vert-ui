@@ -38,6 +38,7 @@ export enum Modals {
   CASH_SENT = "cash_sent",
   TRANSACTION_DETAILS = "transaction_details",
   TRANSACTION_CANCELLED = "transaction_cancelled",
+  CREATE_ACCOUNT = "create_account",
 }
 
 export enum LocalStorage {

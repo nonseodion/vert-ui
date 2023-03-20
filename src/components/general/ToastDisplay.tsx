@@ -56,9 +56,9 @@ export default function ToastDisplay() {
                     />
                   </svg>
                 )}
-                <p className="text-base max-w-[229.68px] text-[#0F172A]/[.8]">
+                <div className="text-base max-w-[229.68px] text-[#0F172A]/[.8]">
                   {message}
-                </p>
+                </div>
               </div>
             </div>
           )}

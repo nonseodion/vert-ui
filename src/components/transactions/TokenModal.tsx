@@ -27,7 +27,7 @@ export default function TokenModal() {
   return (
     <Modal
       name={Modals.TOKEN_MODAL}
-      bodyClassNames="mt-[68px] lg:mt-[80px] mb-6 rounded-3xl !lg:w-[434px] pt-[30px] !px-0 !pb-0"
+      bodyClassNames="rounded-3xl !lg:w-[434px] pt-[30px] !px-0 !pb-0"
     >
       <div className="flex items-center justify-between mb-[21px] px-6">
         <button
@@ -59,7 +59,7 @@ export default function TokenModal() {
             onClick={() => setCurrentStep(Steps.DEFAULT)}
             className="border-none outline-none"
           >
-            <Exit className="h-3 w-3 path-primary fill-[#929AA5]" />
+            <Exit className="h-5 w-5 path-primary fill-[#929AA5]" />
           </button>
         )}
       </div>

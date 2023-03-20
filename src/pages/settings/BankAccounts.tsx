@@ -44,7 +44,7 @@ export default function BankAccounts() {
         adding={adding}
         onClose={onBankAccountModalClose}
       />
-      <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
+      <div className="px-4 pt-5 lg:pt-9 lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
         <Navigator />
         <SettingsContent title="Saved Bank details">
           <div className="flex justify-between">

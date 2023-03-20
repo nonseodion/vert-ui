@@ -3,7 +3,6 @@ import clsx from "classnames"
 import { useNavigate, Link, useLocation } from "react-router-dom"
 import { ReactComponent as Logo } from "../../assets/icons/logo.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import { ReactComponent as USD } from "../../assets/icons/usd.svg"
 import { ReactComponent as Dropdown } from "../../assets/icons/dropdown.svg"
 import { ReactComponent as Hamburger } from "../../assets/icons/hamburger.svg"
 import { ReactComponent as User } from "../../assets/icons/user.svg"
@@ -13,6 +12,7 @@ import { handleProfileDropdown } from "../../utils/functions"
 import Button from "../general/Button"
 import ProfileDropdown from "./ProfileDropdown"
 import { useModal } from "../../hooks"
+import CurrencySelect from "../transactions/CurrencySelect"
 
 export default function TopNav() {
   const navigate = useNavigate()
@@ -30,23 +30,14 @@ export default function TopNav() {
         {location.pathname !== PageRoutes.ERROR && (
           <>
             {isAuthenticated ? (
-              <div className="flex items-center space-x-[41px]">
+              <div className="flex items-center space-x-5 md:space-x-[41px]">
+                <CurrencySelect />
                 <button
-                  type="button"
-                  className="rounded-lg h-6 border border-primary bg-primary/[.15] flex items-center px-[6px]"
-                >
-                  <USD className="h-4 w-4" />
-                  <span className="mx-[2px] mb-[-2px] text-primary font-semibold uppercase text-[10px]">
-                    usd
-                  </span>
-                  <Dropdown className="h-[10px] w-[10px] mb-[1px]" />
-                </button>
-                <div
                   onClick={(e) => {
                     e.stopPropagation()
                     handleProfileDropdown("toggle")
                   }}
-                  role="presentation"
+                  type="button"
                   className="h-[30px] lg:h-[52px] rounded-xl bg-[#D7FFD0]/[.25] flex items-center px-2 cursor-pointer"
                 >
                   <User className="mr-0 lg:mr-[7px]" />
@@ -56,7 +47,7 @@ export default function TopNav() {
                     </span>
                   </div>
                   <Dropdown className="ml-[13.41px] h-3 w-3" />
-                </div>
+                </button>
               </div>
             ) : (
               <div>

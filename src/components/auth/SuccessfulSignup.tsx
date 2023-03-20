@@ -20,7 +20,7 @@ export default function SuccessfulSignup() {
         <Exit className="fill-[#929AA5]" />
       </button>
       <p className="text-center mt-[30px] text-primary font-bold text-[23px] lg:text-[26px]">
-        You successfully signed up!
+        Yah!!! You successfully signed up!
       </p>
       <div className="flex justify-center pb-[30px]">
         <Girl className="lg:h-[315.68px] h-[200px]" />
