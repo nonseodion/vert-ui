@@ -12,11 +12,13 @@ interface Exchange {
   sellToken: { token: Currency; logo: string }
   sellAmount: CurrencyAmount<Currency> | ""
 
-  buyToken: { token: Fiat; logo: string }
+  buyToken: { fiat: Fiat; logo: string }
   buyAmount: FiatAmount | ""
 
   dollarRate: number
-  preferredFiat: { token: Fiat; logo: string }
+  preferredFiat: { fiat: Fiat; logo: string }
+
+  dollarRates: { [key in keyof typeof supportedFiat]: number }
 }
 
 export const exchangeAtom = atom<Exchange>({
@@ -27,6 +29,8 @@ export const exchangeAtom = atom<Exchange>({
   buyAmount: "",
   dollarRate: 1,
   preferredFiat: supportedFiat.usd,
+
+  dollarRates: { usd: 1, ngn: 745 },
 })
 
 export const sellAmountAtom = atom(
@@ -35,11 +39,6 @@ export const sellAmountAtom = atom(
     set(exchangeAtom, { ...get(exchangeAtom), sellAmount })
   }
 )
-
-export const exchangeSettingsAtom = atom((get) => {
-  const { preferredFiat, dollarRate } = get(exchangeAtom)
-  return { preferredFiat, dollarRate }
-})
 
 export const handleSetExchangeAtomCreator = <
   T extends keyof Exchange,

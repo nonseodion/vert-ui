@@ -1,10 +1,18 @@
 import { useAtomValue, useSetAtom } from "jotai"
 import { useCallback, useMemo } from "react"
-import { exchangeSettingsAtom, handleSetExchangeAtomCreator } from "./atoms"
+import { exchangeAtom, handleSetExchangeAtomCreator } from "./atoms"
 import { SupportedFiat, supportedFiat } from "../../utils/constants/exchange"
 
-export default function useExchangeSettings() {
-  const { preferredFiat, dollarRate } = useAtomValue(exchangeSettingsAtom)
+export default function useExchange() {
+  const {
+    preferredFiat,
+    dollarRate,
+    dollarRates,
+    sellToken,
+    sellAmount,
+    buyToken,
+    buyAmount,
+  } = useAtomValue(exchangeAtom)
   const set = useSetAtom(handleSetExchangeAtomCreator())
 
   const setPreferredFiat = useCallback(
@@ -15,13 +23,18 @@ export default function useExchangeSettings() {
   )
 
   const fiatDollarRate = useMemo(
-    () => (preferredFiat.token.symbol === "NGN" ? dollarRate : 1),
-    [dollarRate, preferredFiat.token.symbol]
+    () => (preferredFiat.fiat.symbol === "NGN" ? dollarRate : 1),
+    [dollarRate, preferredFiat.fiat.symbol]
   )
 
   return {
     preferredFiat,
     setPreferredFiat,
     dollarRate: fiatDollarRate,
+    dollarRates,
+    sellToken,
+    sellAmount,
+    buyAmount,
+    buyToken,
   }
 }

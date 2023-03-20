@@ -17,7 +17,7 @@ const Big = toFormat(_Big)
 class FiatAmount extends Fraction {
   public readonly fiat: Fiat
 
-  private readonly decimalScale
+  public readonly decimalScale
 
   protected constructor(
     fiat: Fiat,

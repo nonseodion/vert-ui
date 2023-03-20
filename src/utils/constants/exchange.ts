@@ -32,11 +32,11 @@ export const defaultSellLogo =
 
 export const supportedFiat = {
   usd: {
-    token: USD,
+    fiat: USD,
     logo: usdLogo,
   },
   ngn: {
-    token: NGN,
+    fiat: NGN,
     logo: ngnLogo,
   },
 }

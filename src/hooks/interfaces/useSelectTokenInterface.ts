@@ -8,7 +8,7 @@ import useModal from "../useModal"
 import useTokenPrices from "../useTokenPrices"
 import FiatAmount from "../../utils/FiatAmount"
 import useTokens from "../../state/tokens/hooks"
-import useExchangeSettings from "../../state/exchange/useExchangeSettings"
+import useExchangeSettings from "../../state/exchange/useExchange"
 import { stableCoinAmountToFiat } from "../../utils/swap"
 
 interface UseSelectInterfaceReturnType {
@@ -64,14 +64,14 @@ const useSelectTokenInterface = (): UseSelectInterfaceReturnType => {
         const amount = stableCoinAmountToFiat(
           dollarBalance,
           dollarRate,
-          preferredFiat.token
+          preferredFiat.fiat
         )
         return amount
       }
       return undefined
     })
     return prices
-  }, [balances, dollarRate, preferredFiat.token, pricesInStable])
+  }, [balances, dollarRate, preferredFiat.fiat, pricesInStable])
 
   const { hideModal, isActive } = useModal(Modals.TOKEN_MODAL)
   const [searchQuery, setSearchQuery] = useState("")

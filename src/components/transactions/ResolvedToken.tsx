@@ -58,27 +58,29 @@ export default function ResolvedToken({
     [results]
   )
 
-  return (
-    token && (
-      <div className="pt-6 h-[320px] px-6" key={token.address}>
-        <div className="justify-between flex items-center">
-          <div className="flex space-x-4 items-center">
-            <CurrencyLogo
-              currency={token}
-              srcs={[getTokenLogoURL(token) ?? ""]}
-            />
-            <div className="flex flex-col space-y-[3.5px]">
-              <h4 className="font-medium text-base text-black">{token.name}</h4>
-              <span className="text-[13px] text-lightBlue">{token.symbol}</span>
-            </div>
-          </div>
-          <Button
-            text="Import"
-            onClick={() => handleClick(token, logo)}
-            className="h-8 p-0 w-[72px] flex items-center justify-center text-[13px]"
+  return token ? (
+    <div className="pt-6 h-[320px] px-6" key={token.address}>
+      <div className="justify-between flex items-center">
+        <div className="flex space-x-4 items-center">
+          <CurrencyLogo
+            currency={token}
+            srcs={[getTokenLogoURL(token) ?? ""]}
           />
+          <div className="flex flex-col space-y-[3.5px]">
+            <h4 className="font-medium text-base text-black">{token.name}</h4>
+            <span className="text-[13px] text-lightBlue">{token.symbol}</span>
+          </div>
         </div>
+        <Button
+          text="Import"
+          onClick={() => handleClick(token, logo)}
+          className="h-8 p-0 w-[72px] flex items-center justify-center text-[13px]"
+        />
       </div>
-    )
+    </div>
+  ) : (
+    <div className="flex justify-center mt-[10px] mb-[40px] italic text-lightBlue">
+      No token found
+    </div>
   )
 }

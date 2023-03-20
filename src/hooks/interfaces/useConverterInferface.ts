@@ -2,11 +2,12 @@ import {
   Currency,
   CurrencyAmount,
   ERC20Token,
+  Fraction,
   JSBI,
   TEN,
 } from "@pancakeswap/sdk"
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { useAtom, useAtomValue } from "jotai"
+import { useAtom } from "jotai"
 
 import { parseUnits } from "ethers/lib/utils"
 import useTokens from "../../state/tokens/hooks"
@@ -20,18 +21,17 @@ import {
   fiatToStableCoinAmount,
   stableCoinAmountToFiat,
 } from "../../utils/swap"
-import { stableCoin } from "../../utils/constants/exchange"
-import {
-  exchangeAtom,
-  handleSetExchangeAtomCreator,
-} from "../../state/exchange/atoms"
+import { stableCoin, supportedFiat } from "../../utils/constants/exchange"
+import { handleSetExchangeAtomCreator } from "../../state/exchange/atoms"
 import { getTokenLogoURL } from "../../utils"
 import { activeChainId } from "../../utils/config"
 import { wrappedCurrency } from "../../utils/wrappedCurrency"
 import useTokenPrices from "../useTokenPrices"
 import { Balance, useBalances } from "../../state/balances/useBalances"
+import useExchange from "../../state/exchange/useExchange"
 
 let independentField: "sell" | "buy"
+let exchangeRate: Fraction | undefined
 
 interface ReturnTypes {
   sellAmount: string
@@ -54,6 +54,10 @@ interface ReturnTypes {
   typedValue: string
   independentField: "sell" | "buy"
   tokens: Currency[]
+
+  dollarRates: { [key in keyof typeof supportedFiat]: number }
+  preferredFiat: { fiat: Fiat; logo: string }
+  exchangeRate: Fraction | undefined
 }
 
 const useConverterInterface = (): ReturnTypes => {
@@ -63,7 +67,8 @@ const useConverterInterface = (): ReturnTypes => {
     sellToken: { token: sellToken, logo: sellLogo },
     dollarRate,
     preferredFiat,
-  } = useAtomValue(exchangeAtom)
+    dollarRates,
+  } = useExchange()
   const [, setSellToken] = useAtom(
     useMemo(
       () =>
@@ -166,24 +171,41 @@ const useConverterInterface = (): ReturnTypes => {
       amount = stableCoinAmountToFiat(
         dollarBalance,
         dollarRate,
-        preferredFiat.token
+        preferredFiat.fiat
       )
     }
     return amount
-  }, [buyTokenPrice, dollarRate, preferredFiat.token, sellAmount])
+  }, [buyTokenPrice, dollarRate, preferredFiat.fiat, sellAmount])
 
   // get the fiat equivalent of the buyAmount
   const fiatBuyEqv: FiatAmount | undefined = useMemo(() => {
     let amount
     if (buyAmount) {
       amount = FiatAmount.fromOtherAmount(
-        preferredFiat.token,
+        preferredFiat.fiat,
         buyAmount,
         dollarRate
       )
     }
     return amount
-  }, [buyAmount, dollarRate, preferredFiat.token])
+  }, [buyAmount, dollarRate, preferredFiat.fiat])
+
+  exchangeRate = useMemo(() => {
+    if (buyAmount && sellAmount) {
+      return new Fraction(
+        buyAmount
+          .divide(buyAmount.decimalScale)
+          .multiply(sellAmount.decimalScale)
+          .toFixed(0),
+        sellAmount
+          .multiply(sellAmount.decimalScale)
+          .divide(buyAmount.decimalScale)
+          .toFixed(0)
+      )
+    }
+
+    return undefined
+  }, [buyAmount, sellAmount])
 
   // update sellAmount when sellToken changes
   useEffect(() => {
@@ -277,6 +299,10 @@ const useConverterInterface = (): ReturnTypes => {
     typedValue,
     independentField: independentField ?? "sell",
     tokens,
+
+    dollarRates,
+    preferredFiat,
+    exchangeRate,
   }
 }
 
