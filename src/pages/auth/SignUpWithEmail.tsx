@@ -35,7 +35,7 @@ export default function SignUpWithEmail() {
           </button>
           <div className="flex flex-col space-y-8">
             <p className="text-white text-center text-lg">Sign up</p>
-            <div className="bg-lightGreen rounded-xl w-[349px] p-7">
+            <div className="bg-lightGreen rounded-xl max-w-[349px] p-7">
               <form
                 className="flex flex-col space-y-4"
                 onSubmit={onSubmit}

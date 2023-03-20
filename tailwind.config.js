@@ -10,7 +10,8 @@ module.exports = {
       },
       screens: {
         "mobile": "400px",
-        "large": "1200px"
+        "large": "1200px",
+        'trans-date-limit': '470px'
       },
       colors: {
         nav: '#2D2B28',
@@ -45,7 +46,7 @@ module.exports = {
         12: "12px",
         13: '13px',
         25: "25px"
-      }
+      },
     },
   },
   plugins: [],

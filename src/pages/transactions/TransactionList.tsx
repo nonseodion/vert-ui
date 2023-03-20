@@ -1,3 +1,4 @@
+import moment from "moment"
 import React, { useEffect, useMemo, useState } from "react"
 import { TableColumn } from "react-data-table-component/dist/src/DataTable/types"
 import { useLocation, useNavigate } from "react-router-dom"
@@ -16,7 +17,11 @@ import { TransactionStatus } from "../../components/transactions"
 const columns: TableColumn<Transaction>[] = [
   {
     name: "TIME",
-    selector: (row) => row.date,
+    cell: ({ date }) => (
+      <span className="uppercase text-black/[.7] font-medium text-[12px]">
+        {moment(date).format("DD-MMM-YYYY hh:mm:ss")}
+      </span>
+    ),
     wrap: true,
   },
   {
@@ -173,7 +178,11 @@ export default function TransactionList() {
                         </h3>
                         <p className="text-[15px] text-[#707A8A] leading-5">
                           {row.bank_details.account_number}{" "}
-                          {row.bank_details.bank}
+                          {row.bank_details.bank}{" "}
+                          <br className="trans-date-limit:hidden" />
+                          <span className="text-[13.13px] leading-[10px] text-black">
+                            {moment(row.date).format("MMM DD, YYYY")}
+                          </span>
                         </p>
                       </div>
                     </div>
