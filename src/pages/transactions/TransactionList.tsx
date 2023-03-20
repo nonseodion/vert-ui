@@ -18,7 +18,7 @@ const columns: TableColumn<Transaction>[] = [
   {
     name: "TIME",
     cell: ({ date }) => (
-      <span className="uppercase text-black/[.7] font-medium text-[12px]">
+      <span className="uppercase text-black font-medium text-[12px]">
         {moment(date).format("DD-MMM-YYYY hh:mm:ss")}
       </span>
     ),
