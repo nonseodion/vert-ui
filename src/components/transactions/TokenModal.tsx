@@ -24,7 +24,7 @@ export default function TokenModal() {
     <Modal
       name={Modals.TOKEN_MODAL}
       onClose={() => setAddress("")}
-      bodyClassNames="mt-[68px] lg:mt-[80px] mb-6 rounded-3xl !lg:w-[434px] pt-[30px] !px-0 !pb-0"
+      bodyClassNames="rounded-3xl !lg:w-[434px] pt-[30px] !px-0 !pb-0"
     >
       <div className="flex items-center justify-between mb-[21px] px-6">
         <button
@@ -37,7 +37,7 @@ export default function TokenModal() {
         >
           <ArrowLeft />
         </button>
-        <h3 className="text-xl text-black font-medium">
+        <h3 className="text-xl text-black font-medium text-center">
           {currentStep === steps.DEFAULT && "Select a token"}
           {currentStep === steps.IMPORT_TOKEN && "Import Tokens"}
           {currentStep === steps.CUSTOM_TOKENS && "Custom Tokens"}
@@ -56,7 +56,7 @@ export default function TokenModal() {
             onClick={() => setCurrentStep(steps.DEFAULT)}
             className="border-none outline-none"
           >
-            <Exit className="h-3 w-3 path-primary fill-[#929AA5]" />
+            <Exit className="h-5 w-5 path-primary fill-[#929AA5]" />
           </button>
         )}
       </div>

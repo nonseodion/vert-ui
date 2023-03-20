@@ -6,10 +6,11 @@ import { Button, Wrapper } from "../../components/general"
 import { Navigator } from "../../components/navigation"
 import { SettingsContent } from "../../components/settings"
 import { PageRoutes } from "../../utils/constants"
+import { getRandomBoolean } from "../../utils/functions"
 
 export default function SecuritySettings() {
   const navigate = useNavigate()
-  const isWalletUser = true
+  const isWalletUser = getRandomBoolean()
   return (
     <Wrapper>
       <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
@@ -34,7 +35,7 @@ export default function SecuritySettings() {
               </div>
               <Button
                 text={isWalletUser ? "Set" : "Change"}
-                className="h-[37px] !py-0 min-w-[89px]"
+                className="h-[37px] !py-0 min-w-[89px] !rounded-lg"
                 onClick={() =>
                   navigate(
                     isWalletUser
@@ -60,7 +61,7 @@ export default function SecuritySettings() {
               </div>
               <Button
                 text="Manage"
-                className="h-[37px] !py-0"
+                className="h-[37px] !py-0 !rounded-lg"
                 onClick={() => navigate(PageRoutes.MANAGE_TOKEN_APPROVALS)}
               />
             </div>

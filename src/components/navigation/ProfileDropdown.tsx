@@ -5,11 +5,11 @@ import { ReactComponent as History } from "../../assets/icons/history.svg"
 import { ReactComponent as Settings } from "../../assets/icons/settings-white.svg"
 import { ReactComponent as SignOut } from "../../assets/icons/sign-out.svg"
 import { ReactComponent as PowerSwitch } from "../../assets/icons/power-switch.svg"
-import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
 import metamask from "../../assets/icons/metamask.png"
 import { useAuth } from "../../hooks"
 import { PageRoutes } from "../../utils/constants"
 import { handleProfileDropdown } from "../../utils/functions"
+import Copy from "../general/Copy"
 
 interface ProfileDropdownLink {
   icon: JSX.Element
@@ -109,7 +109,7 @@ export default function ProfileDropdown() {
               <span className="text-white font-medium text-[15px] leading-4">
                 0x6810...9568
               </span>
-              <Copy className="stroke-lightBlue" />
+              <Copy text="0x6810...9568" color="purple" />
             </div>
             <div className="flex space-x-1 items-center">
               <div className="h-2 w-2 rounded-full bg-brightGreen" />

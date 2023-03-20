@@ -3,7 +3,6 @@ import clsx from "classnames"
 import { useNavigate, Link, useLocation } from "react-router-dom"
 import { ReactComponent as Logo } from "../../assets/icons/logo.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import { ReactComponent as USD } from "../../assets/icons/usd.svg"
 import { ReactComponent as Dropdown } from "../../assets/icons/dropdown.svg"
 import { ReactComponent as Hamburger } from "../../assets/icons/hamburger.svg"
 import { ReactComponent as User } from "../../assets/icons/user.svg"
@@ -12,6 +11,7 @@ import { PageRoutes } from "../../utils/constants"
 import { handleProfileDropdown } from "../../utils/functions"
 import Button from "../general/Button"
 import ProfileDropdown from "./ProfileDropdown"
+import CurrencySelect from "../transactions/CurrencySelect"
 
 export default function TopNav() {
   const navigate = useNavigate()
@@ -27,17 +27,8 @@ export default function TopNav() {
         {location.pathname !== PageRoutes.ERROR && (
           <>
             {isAuthenticated ? (
-              <div className="flex items-center space-x-[41px]">
-                <button
-                  type="button"
-                  className="rounded-lg h-6 border border-primary bg-primary/[.15] flex items-center px-[6px]"
-                >
-                  <USD className="h-4 w-4" />
-                  <span className="mx-[2px] mb-[-2px] text-primary font-semibold uppercase text-[10px]">
-                    usd
-                  </span>
-                  <Dropdown className="h-[10px] w-[10px] mb-[1px]" />
-                </button>
+              <div className="flex items-center space-x-5 md:space-x-[41px]">
+                <CurrencySelect />
                 <button
                   onClick={(e) => {
                     e.stopPropagation()

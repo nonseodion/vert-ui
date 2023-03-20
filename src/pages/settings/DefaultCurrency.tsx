@@ -18,7 +18,7 @@ export default function DefaultCurrency() {
       : userFiatCurrencies
   return (
     <Wrapper>
-      <div className="px-4 pt-5 lg:pt-[60px] lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
+      <div className="px-4 pt-5 lg:pt-9 lg:px-[80px] flex flex-col space-y-[50px] lg:flex-row lg:space-y-20 lg:space-x-[77px]">
         <Navigator />
         <SettingsContent title="Choose preferred currency">
           <div className="bg-[#E9FFE5] mb-[30px] flex items-center shadowed px-[18.8px] space-x-[17.12px] h-12 rounded-lg">

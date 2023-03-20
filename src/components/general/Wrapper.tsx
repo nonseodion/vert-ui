@@ -18,18 +18,26 @@ export default function Wrapper({
   }, [])
 
   return (
-    <div
-      className={clsx(
-        {
-          "min-h-[calc(100vh_-_160px)] md:min-h-[calc(_100vh_-_200px)]":
-            !hideTopNav,
-        },
-        { "min-h-[calc(100vh_-_100px)]": hideTopNav },
-        { "!min-h-screen": hideTopNav && hideFooter }
-      )}
-    >
+    <div>
       {!hideTopNav && <TopNav />}
-      <div className={clsx({ "pt-[60px] lg:pt-[100px]": !hideTopNav })}>
+      <div
+        className={clsx(
+          "max-w-[1500px] mx-auto",
+          { "pt-[60px] md:pt-[100px]": !hideTopNav },
+          {
+            "min-h-[calc(100vh_-_150px)]": !hideTopNav && !hideFooter,
+          },
+          {
+            "h-full": !hideTopNav && hideFooter,
+          },
+          {
+            "min-h-[calc(100vh_-_150px)]": hideTopNav && !hideFooter,
+          },
+          {
+            "h-full": hideTopNav && hideFooter,
+          }
+        )}
+      >
         {children}
       </div>
       {!hideFooter && <Footer />}

@@ -1,14 +1,15 @@
 import React from "react"
-import { ReactComponent as Copy } from "../../assets/icons/copy.svg"
+import { useNavigate } from "react-router-dom"
 import { ReactComponent as Right } from "../../assets/icons/right.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 import { useModal } from "../../hooks"
-import { Button, Modal } from "../general"
-import { Modals } from "../../utils/constants"
+import { Button, Copy, Modal } from "../general"
+import { Modals, PageRoutes } from "../../utils/constants"
 
 export default function TransactionDetailsModal() {
   const { hideModal } = useModal(Modals.TRANSACTION_DETAILS)
+  const navigate = useNavigate()
   return (
     <Modal
       name={Modals.TRANSACTION_DETAILS}
@@ -16,7 +17,10 @@ export default function TransactionDetailsModal() {
     >
       <button
         type="button"
-        onClick={() => hideModal()}
+        onClick={() => {
+          hideModal()
+          navigate(PageRoutes.HOME)
+        }}
         className="absolute top-[24.04px] right-[19.84px]"
       >
         <Exit className="h-[14px] w-[14px] fill-[#929AA5]" />
@@ -64,7 +68,7 @@ export default function TransactionDetailsModal() {
             <span className="mb-[-3px] font-semibold text-black text-[12.13px]">
               0x6810...9568
             </span>
-            <Copy />
+            <Copy text="0x6810...9568" />
           </div>
         </li>
         <li className="pt-[15px] pb-[18px] flex justify-between border-b border-b-[rgba(220, 220, 224, 0.3)]">
