@@ -50,7 +50,7 @@ export default function ResetPassword() {
     <Wrapper hideTopNav>
       <ResetPasswordSuccessfulModal />
       <div className="px-4">
-        <div className="max-w-[375px] mt-[98px] mx-auto bg-lightGreen px-7 pt-[30px] pb-[36px] rounded-3xl">
+        <div className="max-w-[375px] md:w-[375px] mt-[98px] mx-auto bg-lightGreen px-7 pt-[30px] pb-[36px] rounded-3xl">
           <h3 className="text-dark2 font-bold text-[19px] leading-[21px] mb-[18px]">
             Reset Password
           </h3>
