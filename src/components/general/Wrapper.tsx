@@ -22,7 +22,7 @@ export default function Wrapper({
       {!hideTopNav && <TopNav />}
       <div
         className={clsx(
-          "max-w-[1500px] mx-auto px-2",
+          "max-w-[1500px] mx-auto px-6",
           { "pt-[60px] md:pt-[100px]": !hideTopNav },
           {
             "min-h-[calc(100vh_-_150px)]": !hideTopNav && !hideFooter,
