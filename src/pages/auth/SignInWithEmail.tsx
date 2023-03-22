@@ -43,7 +43,7 @@ export default function SignInWithEmail() {
             <p className="text-white text-center text-lg">
               Sign in to Vert finance
             </p>
-            <div className="bg-lightGreen rounded-xl max-w-[349px] mx-2 md:w-[349px] p-7">
+            <div className="bg-lightGreen rounded-xl max-w-[349px] mx-6 md:w-[349px] p-7">
               <form className="flex flex-col space-y-4" onSubmit={onSubmit}>
                 <Controller
                   control={control}
