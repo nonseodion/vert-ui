@@ -3,7 +3,7 @@ import Button from "./Button"
 import Copy from "./Copy"
 import Glow from "./Glow"
 import Info from "./Info"
-import Loader from "./Loader"
+import Loader, { ButtonLoader } from "./Loader"
 import Modal from "./Modal"
 import Paginator from "./Paginator"
 import Table from "./Table"
@@ -26,4 +26,5 @@ export {
   Paginator,
   Table,
   ToastDisplay,
+  ButtonLoader,
 }

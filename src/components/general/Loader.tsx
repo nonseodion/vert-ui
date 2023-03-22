@@ -25,3 +25,24 @@ export default function Loader({ className }: LoaderProps) {
     </svg>
   )
 }
+
+export function ButtonLoader({ className }: LoaderProps) {
+  return (
+    <svg
+      className={clsx(className, "animate-spin")}
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M7 1C5.81331 1 4.65328 1.35189 3.66658 2.01118C2.67989 2.67047 1.91085 3.60754 1.45673 4.7039C1.0026 5.80026 0.88378 7.00666 1.11529 8.17054C1.3468 9.33443 1.91825 10.4035 2.75736 11.2426C3.59648 12.0818 4.66558 12.6532 5.82946 12.8847C6.99335 13.1162 8.19975 12.9974 9.2961 12.5433C10.3925 12.0892 11.3295 11.3201 11.9888 10.3334C12.6481 9.34673 13 8.18669 13 7"
+        stroke="#72BF65"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
