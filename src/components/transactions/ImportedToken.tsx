@@ -7,8 +7,7 @@ import CurrencyLogo from "./CurrencyLogo"
 import { wrappedCurrency } from "../../utils/wrappedCurrency"
 import { activeChainId } from "../../utils/config"
 import FiatAmount from "../../utils/FiatAmount"
-import { Loader } from "../general"
-import useWallet from "../../state/auth/useWallet"
+import BalanceSkeleton from "../skeletons/BalanceSkeleton"
 
 interface ImportedTokenProps {
   token: Currency
@@ -16,6 +15,7 @@ interface ImportedTokenProps {
   handleClick: (token: Currency, logo: string) => void
   tokenBalance?: Balance
   fiatBalance?: FiatAmount
+  connected: boolean
 }
 
 export default function ImportedToken({
@@ -24,9 +24,9 @@ export default function ImportedToken({
   handleClick,
   tokenBalance = { amount: undefined, loading: true },
   fiatBalance,
+  connected,
 }: ImportedTokenProps) {
   const { name, symbol } = token
-  const { connected } = useWallet()
 
   return (
     <li className="w-full">
@@ -65,7 +65,7 @@ export default function ImportedToken({
         {connected && (
           <div className="grow-0 text-right font-normal text text-13">
             {tokenBalance.loading ? (
-              <Loader className="h-4 w-4" />
+              <BalanceSkeleton className="h-4 w-8 " />
             ) : (
               `${removeTrailingZeros(fiatBalance?.toExact() ?? "")} ${
                 fiatBalance?.fiat.symbol

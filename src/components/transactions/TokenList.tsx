@@ -10,6 +10,7 @@ import ResolvedToken from "./ResolvedToken"
 import { isAddress } from "../../utils"
 import UnImportedToken from "./UnImportedToken"
 import { USD } from "../../utils/Fiat"
+import useWallet from "../../state/auth/useWallet"
 
 interface TokenRowsProps {
   tokens: Currency[]
@@ -35,6 +36,7 @@ export default function TokenList(props: TokenRowsProps) {
     tokenBalances,
     startImportingToken,
   } = props
+  const { connected } = useWallet()
 
   const query: string = useMemo(
     () => searchQuery.trim().toLowerCase(),
@@ -90,6 +92,7 @@ export default function TokenList(props: TokenRowsProps) {
                 fiatBalance,
                 tokenBalance,
                 handleClick: handleSelectToken,
+                connected,
               }}
               key={uuidv4()}
             />
@@ -113,6 +116,7 @@ export default function TokenList(props: TokenRowsProps) {
       query,
       startImportingToken,
       tokenBalances,
+      connected,
     ]
   )
 

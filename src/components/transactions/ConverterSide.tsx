@@ -8,6 +8,7 @@ import removeTrailingZeros from "../../utils/removeTrailingZeros"
 import useWallet from "../../state/auth/useWallet"
 import { Balance } from "../../state/balances/useBalances"
 import { maxAmountSpend } from "../../utils/maxAmountSpend"
+import BalanceSkeleton from "../skeletons/BalanceSkeleton"
 
 export interface ConverterSideProps {
   side: "sell" | "buy"
@@ -50,13 +51,18 @@ export default function ConverterSide({
         <p className="uppercase text-12">you {side}</p>
         {side === "sell" && (
           <div className="flex items-center space-x-[3.52px]">
-            <span className="text-purple text-12">
-              {connected &&
-                `Balance: ${
-                  tokenBalance?.amount?.toSignificant(decimals) ?? "Loading..."
-                }`}
-            </span>
-            {connected && (
+            <div className="text-purple text-12 flex items-center">
+              {connected && "Balance: "}
+              {tokenBalance?.amount ? (
+                `${tokenBalance?.amount?.toSignificant(decimals)}`
+              ) : (
+                <>
+                  <span>&nbsp;</span>{" "}
+                  <BalanceSkeleton className="h-[14px] w-8" />
+                </>
+              )}
+            </div>
+            {connected && tokenBalance?.amount?.greaterThan(0) && (
               <button
                 type="button"
                 className="bg-[#1AFF91]/[.13] rounded-[4px] px-[3px] py-[2px] text-[#1AFF91] font-medium text-12"
@@ -80,7 +86,8 @@ export default function ConverterSide({
           </div>
           {fiatEqv ? (
             <span className="leading-none text-[9px] text-purple font-medium">
-              ~{removeTrailingZeros(fiatEqv.toExact())} {fiatEqv.fiat.symbol}
+              ~{removeTrailingZeros(fiatEqv.toExact({ groupSeparator: "," }))}{" "}
+              {fiatEqv.fiat.symbol}
             </span>
           ) : (
             <div className="h-[9px] w-4" />
