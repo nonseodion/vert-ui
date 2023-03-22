@@ -19,7 +19,7 @@ class Fiat {
   }
 }
 
-export const USD = new Fiat("United States Dollars", "USD")
+export const USD = new Fiat("US Dollars", "USD")
 export const NGN = new Fiat("Nigerian Naira", "NGN")
 
 export default Fiat

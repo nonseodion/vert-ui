@@ -3,8 +3,8 @@ import { ChainId, activeChainId } from "../config"
 import { ChainTokenList } from "."
 import { bscTokens, bscTestnetTokens } from "./tokens"
 import ngnLogo from "../../assets/icons/ngn.png"
-import usdLogo from "../../assets/icons/usd.png"
-import { NGN, USD } from "../Fiat"
+import usdLogo from "../../assets/icons/usd.svg"
+import Fiat, { NGN, USD } from "../Fiat"
 
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.BSC]: [
@@ -30,7 +30,11 @@ export const defaultSellToken =
 export const defaultSellLogo =
   "https://tokens.pancakeswap.finance/images/symbol/bnb.png"
 
-export const supportedFiat = {
+export type SupportedFiat = "ngn" | "usd"
+
+export const supportedFiat: {
+  [key in SupportedFiat]: { fiat: Fiat; logo: string }
+} = {
   usd: {
     fiat: USD,
     logo: usdLogo,
@@ -40,8 +44,6 @@ export const supportedFiat = {
     logo: ngnLogo,
   },
 }
-
-export type SupportedFiat = keyof typeof supportedFiat
 
 export const pinnedTokens: { [key in ChainId]: [ERC20Token, string][] } = {
   [ChainId.BSC]: [

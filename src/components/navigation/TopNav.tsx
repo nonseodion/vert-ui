@@ -28,10 +28,10 @@ export default function TopNav() {
           <Logo className="h-10 w-[52px] lg:h-[74.44px] lg:w-[96.98px]" />
         </Link>
         {location.pathname !== PageRoutes.ERROR && (
-          <>
+          <div className="flex items-center space-x-5 md:space-x-[41px]">
+            <CurrencySelect />
             {isAuthenticated ? (
-              <div className="flex items-center space-x-5 md:space-x-[41px]">
-                <CurrencySelect />
+              <div className="flex items-center">
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
@@ -102,7 +102,7 @@ export default function TopNav() {
                 onClick={() => showModal({ modal: Modals.CONNECT_WALLET })}
               />
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>
