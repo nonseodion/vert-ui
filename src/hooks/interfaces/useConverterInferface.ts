@@ -102,9 +102,9 @@ const useConverterInterface = (): ReturnTypes => {
       fiatToStableCoinAmount(
         buyAmount || FiatAmount.fromRawAmount(NGN, "1"),
         stableCoin,
-        dollarRate
+        dollarRates.ngn
       ),
-    [buyAmount, dollarRate]
+    [buyAmount, dollarRates]
   )
 
   const tradeOut = useTradeExactOut(
@@ -180,20 +180,31 @@ const useConverterInterface = (): ReturnTypes => {
   // get the fiat equivalent of the buyAmount
   const fiatBuyEqv: FiatAmount | undefined = useMemo(() => {
     let amount
+
     if (buyAmount) {
       amount = FiatAmount.fromOtherAmount(
         preferredFiat.fiat,
         buyAmount,
-        dollarRate
+        preferredFiat.fiat.symbol.toLowerCase() === "usd"
+          ? new Fraction(1, dollarRates.ngn)
+          : 1
       )
     }
     return amount
-  }, [buyAmount, dollarRate, preferredFiat.fiat])
+  }, [buyAmount, dollarRates, preferredFiat.fiat])
 
+  // exchange rate of buyToken and sellToken, updates with amount change
   exchangeRate = useMemo(() => {
     if (buyAmount && sellAmount) {
+      if (sellAmount.equalTo(0)) return undefined
+
       return new Fraction(
         buyAmount
+          .toDollarAmount(
+            dollarRates[
+              preferredFiat.fiat.symbol.toLowerCase() === "usd" ? "ngn" : "usd"
+            ]
+          )
           .divide(buyAmount.decimalScale)
           .multiply(sellAmount.decimalScale)
           .toFixed(0),
@@ -205,7 +216,7 @@ const useConverterInterface = (): ReturnTypes => {
     }
 
     return undefined
-  }, [buyAmount, sellAmount])
+  }, [buyAmount, sellAmount, dollarRates, preferredFiat.fiat.symbol])
 
   // update sellAmount when sellToken changes
   useEffect(() => {
@@ -230,10 +241,14 @@ const useConverterInterface = (): ReturnTypes => {
       independentField === "sell"
     ) {
       ;(async (): Promise<void> => {
-        const amountOut = tradeIn?.outputAmount ?? ""
+        const amountOut =
+          sellToken.symbol === stableCoin.symbol
+            ? sellAmount
+            : tradeIn?.outputAmount ?? ""
+
         const NGNAmount =
           amountOut !== ""
-            ? stableCoinAmountToFiat(amountOut, dollarRate, NGN)
+            ? stableCoinAmountToFiat(amountOut, dollarRates.ngn, NGN)
             : amountOut
         setBuyAmount(NGNAmount)
       })()
@@ -247,7 +262,7 @@ const useConverterInterface = (): ReturnTypes => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sellAmount, tradeIn?.outputAmount])
+  }, [sellAmount, tradeIn?.outputAmount, dollarRates.ngn])
 
   // update sellAmount when buyAmount changes
   useEffect(() => {
@@ -259,7 +274,10 @@ const useConverterInterface = (): ReturnTypes => {
       independentField === "buy"
     ) {
       ;(async (): Promise<void> => {
-        const amountIn = tradeOut?.inputAmount ?? ""
+        const amountIn =
+          sellToken.symbol === stableCoin.symbol
+            ? fiatToStableCoinAmount(buyAmount, stableCoin, dollarRates.ngn)
+            : tradeOut?.inputAmount ?? ""
         setSellAmount(amountIn)
       })()
     } else if (

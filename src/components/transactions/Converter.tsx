@@ -3,12 +3,11 @@ import { toast } from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
 import { ReactComponent as Proceed } from "../../assets/icons/proceed.svg"
 import { ReactComponent as History } from "../../assets/icons/retry.svg"
-import { ReactComponent as Retry } from "../../assets/icons/retry-2.svg"
+import { ReactComponent as Reload } from "../../assets/icons/retry-2.svg"
 import ConverterSide from "./ConverterSide"
 import { getRandomBoolean } from "../../utils/functions"
 import { useModal } from "../../hooks"
 import { Button, Info } from "../general"
-import ApproveTransactionModal from "./ApproveTransactionModal"
 import { Modals, PageRoutes } from "../../utils/constants"
 import useConverterInterface from "../../hooks/interfaces/useConverterInferface"
 import { TradePrice } from "./TradePrice"
@@ -63,19 +62,23 @@ export default function Converter() {
 
   return (
     <div className="w-[418px] rounded-3xl bg-lightGreen">
-      <ApproveTransactionModal />
       <div className="h-[53px] flex items-center justify-between border-b border-border">
         <div className="ml-auto flex space-x-[21.01px] items-center mr-[22px]">
-          <button type="button">
+          <button
+            type="button"
+            onClick={() => navigate(PageRoutes.TRANSACTIONS)}
+          >
             <History />
           </button>
           <button type="button">
-            <Retry />
+            <Reload />
           </button>
         </div>
       </div>
       <div className="px-[18px] pt-4 pb-6">
-        {exchangeRate && <TradePrice exchangeRate={exchangeRate} />}
+        {exchangeRate?.greaterThan(0) && (
+          <TradePrice exchangeRate={exchangeRate} />
+        )}
         <div className="flex flex-col space-y-4 mb-[15px]">
           <ConverterSide
             side="sell"

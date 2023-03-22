@@ -15,11 +15,12 @@ import { hideAllHideables } from "./utils/functions"
 import ToastDisplay from "./components/general/ToastDisplay"
 import ModalContext, { ActiveModalsArrayValue } from "./contexts/ModalContext"
 import ConnectWallet from "./components/transactions/ConnectWallet"
-import { TokenModal } from "./components/transactions"
+import { ApproveTransactionModal, TokenModal } from "./components/transactions"
 
 function Modals() {
   return (
     <>
+      <ApproveTransactionModal />
       <TokenModal />
       <ConnectWallet />
     </>

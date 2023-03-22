@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react"
-import { Fraction } from "@pancakeswap/sdk"
+import { Fraction, Rounding } from "@pancakeswap/sdk"
 import { ReactComponent as InvertIcon } from "../../assets/icons/refresh.svg"
 import useExchange from "../../state/exchange/useExchange"
 import removeTrailingZeros from "../../utils/removeTrailingZeros"
@@ -17,7 +17,9 @@ export function TradePrice({ exchangeRate }: TradePriceProps) {
       ? [preferredFiat.fiat.symbol, sellToken.token.symbol]
       : [sellToken.token.symbol, preferredFiat.fiat.symbol]
     const A = `1`
-    const B = `${removeTrailingZeros(rate.toSignificant(4))}`
+    const B = `${removeTrailingZeros(
+      rate.toSignificant(4, { groupSeparator: "," }, Rounding.ROUND_UP)
+    )}`
     return [`${A} ${baseSymbol}`, `${B} ${quoteSymbol}`]
   }, [sellToken.token.symbol, exchangeRate, preferredFiat.fiat.symbol, invert])
 
@@ -26,7 +28,7 @@ export function TradePrice({ exchangeRate }: TradePriceProps) {
       <div className="flex items-center">
         <p className="text-center text-black font-medium text-13">
           <span>{base}</span>
-          <span> = </span>
+          <span> ≈ </span>
           <span>{quote}</span>
         </p>
       </div>
