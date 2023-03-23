@@ -111,6 +111,7 @@ export default function ChangePassword() {
                     <Input
                       placeholder="Please enter the new password again"
                       type="password"
+                      showErrorOnlyOnBlur
                       outerClassName="border border-white/[.5] rounded-lg"
                       className="placeholder:text-lightBlue !text-13 !text-white"
                       hasError={
