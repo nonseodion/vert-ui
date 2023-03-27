@@ -13,7 +13,7 @@ import { Updater as MulticallUpdater } from "./utils/multicall"
 import { activeChainId, client } from "./utils/config"
 import { hideAllHideables } from "./utils/functions"
 import ToastDisplay from "./components/general/ToastDisplay"
-import ModalContext, { ActiveModalsArrayValue } from "./contexts/ModalContext"
+import ModalContext, { ActiveModals } from "./contexts/ModalContext"
 import ConnectWallet from "./components/transactions/ConnectWallet"
 import { ApproveTransactionModal, TokenModal } from "./components/transactions"
 
@@ -34,8 +34,7 @@ function App() {
     isAuthenticated: false,
     user: null,
   })
-
-  const [modals, setModals] = useState<ActiveModalsArrayValue[]>([])
+  const [modals, setModals] = useState<ActiveModals>({})
   const value = useMemo(() => ({ authState, setAuthState }), [authState])
   const modalStateValue = useMemo(() => ({ modals, setModals }), [modals])
 

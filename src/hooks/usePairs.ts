@@ -54,7 +54,7 @@ export function usePairs(
 
   const { data: blockNumber } = useBlockNumber({
     scopeKey: "pairReserves",
-    cacheTime: 300000,
+    staleTime: 2_000,
   })
 
   const results = useMultipleContractSingleData(

@@ -1,21 +1,17 @@
-import React, { useState, useRef, useEffect } from "react"
-import { toast } from "react-hot-toast"
+import React, { useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { ReactComponent as Proceed } from "../../assets/icons/proceed.svg"
 import { ReactComponent as History } from "../../assets/icons/retry.svg"
 import { ReactComponent as Reload } from "../../assets/icons/retry-2.svg"
 import ConverterSide from "./ConverterSide"
-import { getRandomBoolean } from "../../utils/functions"
 import { useModal } from "../../hooks"
-import { Button, Info } from "../general"
 import { Modals, PageRoutes } from "../../utils/constants"
 import useConverterInterface from "../../hooks/interfaces/useConverterInferface"
 import { TradePrice } from "./TradePrice"
+import ConverterButton from "./ConverterButton"
 
 export default function Converter() {
   const navigate = useNavigate()
-  const { showModal, modalIsOpen, hideModal } = useModal()
-  const [transactionApproved, setTransactionApproved] = useState<boolean>(false)
+  const { showModal, modalIsOpen } = useModal()
 
   const approveModalVisibility = modalIsOpen(Modals.APPROVE_TRANSACTION)
   const approveModalVisibilityRef = useRef(approveModalVisibility)
@@ -35,30 +31,12 @@ export default function Converter() {
     fiatSellEqv,
     dollarRates,
     exchangeRate,
+    trade,
   } = useConverterInterface()
 
   useEffect(() => {
     approveModalVisibilityRef.current = approveModalVisibility
   }, [approveModalVisibility])
-
-  const startApprovalProcess = () => {
-    showModal({ modal: Modals.APPROVE_TRANSACTION })
-    const approvalSuccessful = getRandomBoolean()
-    if (approvalSuccessful) {
-      setTimeout(() => {
-        if (approveModalVisibilityRef.current) {
-          setTransactionApproved(true)
-          toast.success("Transaction approved successfully.")
-          hideModal(Modals.APPROVE_TRANSACTION)
-        }
-      }, 3000)
-    } else {
-      hideModal(Modals.APPROVE_TRANSACTION)
-      toast.error("Transaction failed")
-    }
-  }
-
-  const isDisabled = !sellAmount || !buyAmount
 
   return (
     <div className="w-[418px] rounded-3xl bg-lightGreen">
@@ -104,36 +82,7 @@ export default function Converter() {
           <span className="text-primary">Rate:</span>{" "}
           {`1 USD ≈ ${dollarRates.ngn} NGN`}
         </p>
-        <div className="flex flex-col space-y-[3px]">
-          <Info text="Why Approve?" tooltip_id="why-approve">
-            <div className="flex flex-col space-y-1 max-w-[273px]">
-              <h3 className="!text-tooltip text-sm font-inter font-semibold leading-5">
-                Give permission to exchange BNB
-              </h3>
-              <p className="!text-tooltip font-inter text-12 leading-5">
-                To continue, you need to allow Vert finance contracts to use
-                your BNB. This has to be done only once for each token.{" "}
-                <span className="text-primary">Learn more</span>
-              </p>
-            </div>
-          </Info>
-          {transactionApproved ? (
-            <Button
-              className="rounded-lg !py-0 h-[48px] w-full"
-              text="Proceed"
-              icon={<Proceed />}
-              onClick={() => navigate(PageRoutes.SELECT_BANK_ACCOUNT)}
-            />
-          ) : (
-            <Button
-              className="disabled:bg-disabled rounded-lg py-[17px] h-[48px] w-full text-white disabled:!text-[black]/[.3] text-sm font-semibold leading-[2px]"
-              text={isDisabled ? "Enter amount to change" : "Approve BNB"}
-              fullWidth
-              disabled={isDisabled}
-              onClick={() => startApprovalProcess()}
-            />
-          )}
-        </div>
+        <ConverterButton {...{ trade, sellAmount, buyAmount, sellBalance }} />
       </div>
     </div>
   )

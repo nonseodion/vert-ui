@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from "react"
-import { Currency } from "@pancakeswap/sdk"
+import { Currency, CurrencyAmount } from "@pancakeswap/sdk"
 import { ReactComponent as DropdownIcon } from "../../assets/icons/arrow-down.svg"
 import Fiat from "../../utils/Fiat"
 import TokenImage from "./CurrencyLogo"
@@ -13,7 +13,7 @@ import BalanceSkeleton from "../skeletons/BalanceSkeleton"
 export interface ConverterSideProps {
   side: "sell" | "buy"
   token: Fiat | Currency
-  amount: string
+  amount: undefined | FiatAmount | CurrencyAmount<Currency> | string
   logos: string[]
   setAmount: (amount: string) => void
   onTokenSelect: (_: any) => void
@@ -51,17 +51,19 @@ export default function ConverterSide({
         <p className="uppercase text-12">you {side}</p>
         {side === "sell" && (
           <div className="flex items-center space-x-[3.52px]">
-            <div className="text-purple text-12 flex items-center">
-              {connected && "Balance: "}
-              {tokenBalance?.amount ? (
-                `${tokenBalance?.amount?.toSignificant(decimals)}`
-              ) : (
-                <>
-                  <span>&nbsp;</span>{" "}
-                  <BalanceSkeleton className="h-[14px] w-8" />
-                </>
-              )}
-            </div>
+            {connected && (
+              <div className="text-purple text-12 flex items-center">
+                {"Balance: "}
+                {tokenBalance?.amount ? (
+                  `${tokenBalance?.amount?.toSignificant(decimals)}`
+                ) : (
+                  <>
+                    <span>&nbsp;</span>{" "}
+                    <BalanceSkeleton className="h-[14px] w-8" />
+                  </>
+                )}
+              </div>
+            )}
             {connected && tokenBalance?.amount?.greaterThan(0) && (
               <button
                 type="button"
@@ -80,7 +82,11 @@ export default function ConverterSide({
             <input
               className="w-full border-none outline-none focus:outline-none placeholder:text-placeholder text-xl"
               placeholder="0.0"
-              value={amount}
+              value={
+                typeof amount === "string"
+                  ? amount
+                  : removeTrailingZeros(amount?.toFixed() ?? "")
+              }
               onChange={(e) => setAmount(e.target.value)}
             />
           </div>

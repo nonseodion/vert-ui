@@ -111,7 +111,7 @@ export function useAllCommonPairs(
 export function useTradeExactIn(
   currencyAmountIn?: CurrencyAmount<Currency>,
   currencyOut?: Currency
-): Trade<Currency, Currency, TradeType> | null {
+): Trade<Currency, Currency, TradeType> | undefined {
   const allowedPairs: Pair[] = useAllCommonPairs(
     currencyAmountIn?.currency,
     currencyOut
@@ -119,22 +119,22 @@ export function useTradeExactIn(
 
   return useMemo(() => {
     if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
-      const bestTrade: Trade<Currency, Currency, TradeType> | null =
+      const bestTrade: Trade<Currency, Currency, TradeType> | undefined =
         Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, {
           maxHops: 3,
           maxNumResults: 1,
-        })[0] ?? null
+        })[0] ?? undefined
       return bestTrade
     }
 
-    return null
+    return undefined
   }, [currencyAmountIn, currencyOut, allowedPairs])
 }
 
 export function useTradeExactOut(
   currencyIn?: Currency,
   currencyAmountOut?: CurrencyAmount<Currency>
-): Trade<Currency, Currency, TradeType> | null {
+): Trade<Currency, Currency, TradeType> | undefined {
   const allowedPairs = useAllCommonPairs(
     currencyIn,
     currencyAmountOut?.currency
@@ -146,9 +146,9 @@ export function useTradeExactOut(
         Trade.bestTradeExactOut(allowedPairs, currencyIn, currencyAmountOut, {
           maxHops: 3,
           maxNumResults: 1,
-        })[0] ?? null
+        })[0] ?? undefined
       return bestTrade
     }
-    return null
+    return undefined
   }, [currencyIn, currencyAmountOut, allowedPairs])
 }

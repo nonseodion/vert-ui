@@ -5,17 +5,18 @@ import {
   Fraction,
   JSBI,
   TEN,
+  Trade,
+  TradeType,
 } from "@pancakeswap/sdk"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useAtom } from "jotai"
-
+// import { useBlockNumber } from "wagmi"
 import { parseUnits } from "ethers/lib/utils"
 import useTokens from "../../state/tokens/hooks"
 import ngnLogo from "../../assets/icons/ngn.png"
 import Fiat, { NGN } from "../../utils/Fiat"
 import FiatAmount from "../../utils/FiatAmount"
 import validateUserInput from "../../utils/validateConverterInput"
-import removeTrailingZeros from "../../utils/removeTrailingZeros"
 import { useTradeExactIn, useTradeExactOut } from "../useTrades"
 import {
   fiatToStableCoinAmount,
@@ -34,7 +35,7 @@ let independentField: "sell" | "buy"
 let exchangeRate: Fraction | undefined
 
 interface ReturnTypes {
-  sellAmount: string
+  sellAmount?: CurrencyAmount<Currency>
   sellToken: Currency
   setSellToken: (arg: {
     key: "sellToken"
@@ -43,10 +44,10 @@ interface ReturnTypes {
   setSellAmount: (_: string) => void
   sellLogos: string[]
   fiatSellEqv?: FiatAmount
-  sellBalance?: Balance
+  sellBalance: Balance
 
   buyToken: Fiat
-  buyAmount: string
+  buyAmount?: FiatAmount
   buyLogos: string[]
   setBuyAmount: (_: string) => void
   fiatBuyEqv?: FiatAmount
@@ -58,6 +59,11 @@ interface ReturnTypes {
   dollarRates: { [key in keyof typeof supportedFiat]: number }
   preferredFiat: { fiat: Fiat; logo: string }
   exchangeRate: Fraction | undefined
+  trade?: Trade<
+    Currency,
+    Currency,
+    TradeType.EXACT_INPUT | TradeType.EXACT_OUTPUT
+  >
 }
 
 const useConverterInterface = (): ReturnTypes => {
@@ -79,10 +85,10 @@ const useConverterInterface = (): ReturnTypes => {
       []
     )
   )
-  const [buyAmount, setBuyAmount] = useState<FiatAmount | "">("")
-  const [sellAmount, setSellAmount] = useState<CurrencyAmount<Currency> | "">(
-    ""
-  )
+  const [buyAmount, setBuyAmount] = useState<FiatAmount | undefined>()
+  const [sellAmount, setSellAmount] = useState<
+    CurrencyAmount<Currency> | undefined
+  >()
 
   const buyTokenPrice = useTokenPrices(sellAmount ? [sellAmount] : undefined)[0]
   const useBalancesInput = useMemo(() => [sellToken], [sellToken])
@@ -117,6 +123,11 @@ const useConverterInterface = (): ReturnTypes => {
         )
   )
 
+  const trade = useMemo(
+    () => (independentField === "sell" ? tradeIn : tradeOut),
+    [tradeIn, tradeOut]
+  )
+
   const [typedValue, setTypedValue] = useState<string>("")
 
   // validate and format inputted buyAmount before updating state
@@ -128,7 +139,7 @@ const useConverterInterface = (): ReturnTypes => {
         setTypedValue(amount)
         const newAmount =
           amount === ""
-            ? amount
+            ? undefined
             : FiatAmount.fromRawAmount(
                 buyToken,
                 parseUnits(amount, buyToken.decimals).toString()
@@ -149,7 +160,7 @@ const useConverterInterface = (): ReturnTypes => {
         setTypedValue(amount)
         const newAmount =
           amount === ""
-            ? amount
+            ? undefined
             : CurrencyAmount.fromRawAmount<Currency>(
                 sellToken,
                 parseUnits(amount, sellToken.decimals).toString()
@@ -221,19 +232,35 @@ const useConverterInterface = (): ReturnTypes => {
   // update sellAmount when sellToken changes
   useEffect(() => {
     setSellAmount((oldAmount) =>
-      oldAmount === ""
-        ? ""
-        : CurrencyAmount.fromFractionalAmount(
+      oldAmount
+        ? CurrencyAmount.fromFractionalAmount(
             sellToken,
             oldAmount.numerator,
             oldAmount.denominator
           )
+        : undefined
     )
   }, [sellToken])
 
+  // const { refetch } = useBlockNumber({
+  //   scopeKey: "pairReserves"
+  // })
+
+  // //
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     console.log("refetching")
+  //     refetch().then(res => console.log(res))
+  //   }, 6000)
+
+  //   return () => {
+  //     clearInterval(interval);
+  //   }
+  // }, [refetch])
+
   // update buyAmount when sellAmount or sellToken changes
   useEffect(() => {
-    if (sellAmount === "" && buyAmount === "") return
+    if (!sellAmount && !buyAmount) return
 
     if (
       sellAmount &&
@@ -246,19 +273,18 @@ const useConverterInterface = (): ReturnTypes => {
             ? sellAmount
             : tradeIn?.outputAmount ?? ""
 
-        const NGNAmount =
-          amountOut !== ""
-            ? stableCoinAmountToFiat(amountOut, dollarRates.ngn, NGN)
-            : amountOut
+        const NGNAmount = amountOut
+          ? stableCoinAmountToFiat(amountOut, dollarRates.ngn, NGN)
+          : undefined
         setBuyAmount(NGNAmount)
       })()
     } else if (
-      (sellAmount === "" || sellAmount.toExact() === "0") &&
+      (!sellAmount || sellAmount.toExact() === "0") &&
       independentField === "sell"
     ) {
-      setBuyAmount("")
+      setBuyAmount(undefined)
     } else if (independentField !== "sell" && typedValue === "") {
-      setSellAmount("")
+      setSellAmount(undefined)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -266,7 +292,7 @@ const useConverterInterface = (): ReturnTypes => {
 
   // update sellAmount when buyAmount changes
   useEffect(() => {
-    if (buyAmount === "" && sellAmount === "") return
+    if (!buyAmount && !sellAmount) return
 
     if (
       buyAmount &&
@@ -277,26 +303,23 @@ const useConverterInterface = (): ReturnTypes => {
         const amountIn =
           sellToken.symbol === stableCoin.symbol
             ? fiatToStableCoinAmount(buyAmount, stableCoin, dollarRates.ngn)
-            : tradeOut?.inputAmount ?? ""
+            : tradeOut?.inputAmount ?? undefined
         setSellAmount(amountIn)
       })()
     } else if (
-      (buyAmount === "" || buyAmount.toExact() === "0") &&
+      (!buyAmount || buyAmount.toExact() === "0") &&
       independentField === "buy"
     ) {
-      setSellAmount("")
+      setSellAmount(undefined)
     } else if (independentField !== "buy" && typedValue === "") {
-      setBuyAmount("")
+      setBuyAmount(undefined)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [buyAmount, tradeOut?.inputAmount])
 
   return {
-    sellAmount:
-      sellAmount === ""
-        ? sellAmount
-        : removeTrailingZeros(sellAmount.toFixed()),
+    sellAmount,
     sellToken,
     setSellToken,
     setSellAmount: setSellAmount1,
@@ -308,8 +331,7 @@ const useConverterInterface = (): ReturnTypes => {
     sellBalance,
 
     buyToken,
-    buyAmount:
-      buyAmount === "" ? buyAmount : removeTrailingZeros(buyAmount.toFixed()),
+    buyAmount,
     buyLogos: [ngnLogo],
     setBuyAmount: setBuyAmount1,
     fiatBuyEqv,
@@ -321,6 +343,7 @@ const useConverterInterface = (): ReturnTypes => {
     dollarRates,
     preferredFiat,
     exchangeRate,
+    trade,
   }
 }
 
