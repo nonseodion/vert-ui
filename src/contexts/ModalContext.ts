@@ -8,17 +8,17 @@ export interface ActiveModalValues {
   modalParams?: { [key: string]: any }
 }
 
-export type ActiveModalsArrayValue = {
+export type ActiveModals = {
   [key in Modals]?: ActiveModalValues
 }
 
 export interface ModalContextValues {
-  modals: ActiveModalsArrayValue[]
-  setModals: React.Dispatch<React.SetStateAction<ActiveModalsArrayValue[]>>
+  modals: ActiveModals
+  setModals: React.Dispatch<React.SetStateAction<ActiveModals>>
 }
 
 const ModalContext = createContext<ModalContextValues>({
-  modals: [],
+  modals: {},
   setModals: doNothing,
 })
 

@@ -38,14 +38,12 @@ const useModal = (name?: Modals) => {
     (attrs) => {
       const { onCloseCallback, onConfirm, modal, modalParams } = attrs
       const newModal = {
-        [modal]: {
-          onCloseCallback: onCloseCallback ?? doNothing,
-          onConfirm: onConfirm ?? doNothing,
-          modal,
-          modalParams: modalParams ?? {},
-        },
+        onCloseCallback: onCloseCallback ?? doNothing,
+        onConfirm: onConfirm ?? doNothing,
+        modal,
+        modalParams: modalParams ?? {},
       }
-      setModals([...modals, newModal])
+      setModals({ ...modals, [modal]: newModal })
       handleBodyScroll("disable")
     },
     [modals, setModals]
@@ -53,15 +51,14 @@ const useModal = (name?: Modals) => {
 
   const hideModal = useCallback(
     (m?: Modals) => {
-      if (m) {
-        setModals(
-          modals.filter((activeModal) => Object.keys(activeModal)[0] !== m)
-        )
-      } else {
-        setModals(
-          modals.filter((activeModal) => Object.keys(activeModal)[0] !== name)
-        )
+      const modal = m ?? name
+      if (modal) {
+        modals[modal]?.onCloseCallback()
+        delete modals[modal]
+        const newModals = { ...modals }
+        setModals(newModals)
       }
+
       setTimeout(() => {
         handleBodyScroll("enable")
       }, 500)
@@ -70,23 +67,14 @@ const useModal = (name?: Modals) => {
   )
 
   const isActive = useMemo(
-    () =>
-      !name
-        ? false
-        : !!modals.find((activeModal) => Object.keys(activeModal)[0] === name),
+    () => (!name ? false : !!modals[name]),
     [name, modals]
   )
 
-  const modalIsOpen = (modalName: Modals) =>
-    !!modals.find((activeModal) => Object.keys(activeModal)[0] === modalName)
+  const modalIsOpen = (modalName: Modals) => !!modals[modalName]
 
   const modalValues = useMemo(
-    () =>
-      name
-        ? modals.find((activeModal) => Object.keys(activeModal)[0] === name)?.[
-            name
-          ] || emptyModalActions
-        : emptyModalActions,
+    () => (name ? modals[name] || emptyModalActions : emptyModalActions),
     [modals, name]
   )
 
