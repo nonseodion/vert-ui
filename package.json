@@ -21,6 +21,7 @@
     "jotai": "^2.0.2",
     "jsbi": "3.2.5",
     "lodash": "^4.17.21",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-calendar": "^4.0.0",
     "react-data-table-component": "^7.5.3",

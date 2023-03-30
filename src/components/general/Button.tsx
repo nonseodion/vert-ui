@@ -1,6 +1,6 @@
 import React from "react"
 import clsx from "classnames"
-import Loader from "./Loader"
+import { ButtonLoader } from "./Loader"
 import { doNothing } from "../../utils/functions"
 
 interface ButtonProps {
@@ -40,7 +40,7 @@ export default function Button({
       type={type === "submit" ? "submit" : "button"}
       onClick={onClick}
       className={clsx(
-        "text-white disabled:cursor-not-allowed bg-primary py-[14px] px-4 rounded-xl",
+        "text-white disabled:cursor-not-allowed relative bg-primary py-[14px] px-4 rounded-xl",
         { "bg-transparent": background === "transparent" },
         { "!text-black": textColor === "dark" },
         { "border border-primary": bordered },
@@ -48,22 +48,23 @@ export default function Button({
         className
       )}
     >
-      <div>
-        {loading ? (
-          <div className="flex items-center space-x-[5px] justify-center">
-            {showLoadingText && (
-              <span className="text-black/[.4]">
-                {loadingText ?? "Loading.."}.
-              </span>
-            )}
-            <Loader className="h-4 w-4" />
-          </div>
-        ) : (
-          <div className="flex items-center justify-center space-x-[10px]">
-            <span>{text}</span>
-            {icon && icon}
-          </div>
-        )}
+      {loading && (
+        <div className="relative top-0 left-0 w-full h-full flex items-center space-x-[5px] justify-center">
+          <ButtonLoader className="h-4 w-4" />
+          {showLoadingText && (
+            <span className="text-black/[.4]">
+              {loadingText ?? "Loading.."}.
+            </span>
+          )}
+        </div>
+      )}
+      <div
+        className={clsx("flex items-center justify-center space-x-[10px]", {
+          "opacity-0": loading,
+        })}
+      >
+        <span>{text}</span>
+        {icon && icon}
       </div>
     </button>
   )

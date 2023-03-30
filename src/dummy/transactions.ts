@@ -1,5 +1,5 @@
 export interface Transaction {
-  date: string
+  date: Date
   amount_sold: string
   amount_received: string
   id: number
@@ -16,7 +16,7 @@ export interface Transaction {
 
 const transactions: Transaction[] = [
   {
-    date: "22-JAN-2023 10:51:43",
+    date: new Date(),
     amount_sold: "0.68 BNB",
     amount_received: "189,899.90 NGN",
     id: 1,
@@ -31,7 +31,7 @@ const transactions: Transaction[] = [
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
-    date: "22-JAN-2023 10:51:43",
+    date: new Date(),
     amount_sold: "0.68 BNB",
     amount_received: "189,899.90 NGN",
     id: 2,
@@ -46,7 +46,7 @@ const transactions: Transaction[] = [
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
-    date: "22-JAN-2023 10:51:43",
+    date: new Date(),
     amount_sold: "0.68 BNB",
     amount_received: "189,899.90 NGN",
     id: 3,
@@ -61,7 +61,7 @@ const transactions: Transaction[] = [
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
-    date: "22-JAN-2023 10:51:43",
+    date: new Date(),
     amount_sold: "0.68 BNB",
     amount_received: "189,899.90 NGN",
     id: 4,
@@ -76,7 +76,7 @@ const transactions: Transaction[] = [
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
-    date: "22-JAN-2023 10:51:43",
+    date: new Date(),
     amount_sold: "0.68 BNB",
     amount_received: "189,899.90 NGN",
     id: 5,
@@ -91,7 +91,7 @@ const transactions: Transaction[] = [
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
-    date: "22-JAN-2023 10:51:43",
+    date: new Date(),
     amount_sold: "0.68 BNB",
     amount_received: "189,899.90 NGN",
     id: 6,
@@ -106,7 +106,7 @@ const transactions: Transaction[] = [
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
-    date: "22-JAN-2023 10:51:43",
+    date: new Date(),
     amount_sold: "0.68 BNB",
     amount_received: "189,899.90 NGN",
     id: 7,
@@ -121,7 +121,7 @@ const transactions: Transaction[] = [
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
-    date: "22-JAN-2023 10:51:43",
+    date: new Date(),
     amount_sold: "0.68 BNB",
     amount_received: "189,899.90 NGN",
     id: 8,
@@ -136,7 +136,7 @@ const transactions: Transaction[] = [
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
-    date: "22-JAN-2023 10:51:43",
+    date: new Date(),
     amount_sold: "0.68 BNB",
     amount_received: "189,899.90 NGN",
     id: 9,
@@ -151,7 +151,7 @@ const transactions: Transaction[] = [
     blockchain_txn: "0x450ae5a49aa6861...",
   },
   {
-    date: "22-JAN-2023 10:51:43",
+    date: new Date(),
     amount_sold: "0.68 BNB",
     amount_received: "189,899.90 NGN",
     id: 10,

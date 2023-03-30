@@ -85,6 +85,7 @@ export default function SetPassword() {
                 }}
                 render={({ field: { onChange, value } }) => (
                   <Input
+                    showErrorOnlyOnBlur
                     placeholder="Please confirm password"
                     type="password"
                     outerClassName="border border-white/[.5] rounded-lg"
