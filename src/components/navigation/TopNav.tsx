@@ -73,37 +73,37 @@ export default function TopNav() {
               </div>
             )}
             {isAuthenticated && <ProfileDropdown />}
-            <div
-              className={clsx(
-                "fixed lg:hidden top-0 left-[-100vw] px-[61px] flex flex-col space-y-[22px] bg-[#1E1E1E] h-screen w-screen pt-[14vh] transition-all duration-150",
-                { "!left-0": showSlider }
-              )}
-            >
-              <button
-                type="button"
-                className="absolute top-[48.1px] right-[25.1px]"
-                onClick={() => setShowSlider(false)}
-              >
-                <Exit className="fill-[#929AA5]" />
-              </button>
-              <Button
-                text="Sign in"
-                fullWidth
-                background="transparent"
-                bordered
-                className="text-primary"
-                onClick={() => navigate(PageRoutes.SIGN_IN_WITH_EMAIL)}
-              />
-              <Button
-                text="Connect Wallet"
-                fullWidth
-                bordered
-                textColor="white"
-                onClick={() => showModal({ modal: Modals.CONNECT_WALLET })}
-              />
-            </div>
           </div>
         )}
+        <div
+          className={clsx(
+            "fixed lg:hidden top-0 left-[-100vw] px-[61px] flex flex-col space-y-[22px] bg-[#1E1E1E] h-screen w-screen pt-[14vh] transition-all duration-150",
+            { "!left-0": showSlider }
+          )}
+        >
+          <button
+            type="button"
+            className="absolute top-[48.1px] right-[25.1px]"
+            onClick={() => setShowSlider(false)}
+          >
+            <Exit className="fill-[#929AA5]" />
+          </button>
+          <Button
+            text="Sign in"
+            fullWidth
+            background="transparent"
+            bordered
+            className="text-primary"
+            onClick={() => navigate(PageRoutes.SIGN_IN_WITH_EMAIL)}
+          />
+          <Button
+            text="Connect Wallet"
+            fullWidth
+            bordered
+            textColor="white"
+            onClick={() => showModal({ modal: Modals.CONNECT_WALLET })}
+          />
+        </div>
       </div>
     </div>
   )
