@@ -1,13 +1,14 @@
 import React, { useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { ReactComponent as History } from "../../assets/icons/retry.svg"
-import { ReactComponent as Reload } from "../../assets/icons/retry-2.svg"
 import ConverterSide from "./ConverterSide"
 import { useModal } from "../../hooks"
 import { Modals, PageRoutes } from "../../utils/constants"
 import useConverterInterface from "../../hooks/interfaces/useConverterInferface"
 import { TradePrice } from "./TradePrice"
 import ConverterButton from "./ConverterButton"
+import ReloadIcon from "../Svg/reload"
+import useWallet from "../../state/auth/useWallet"
 
 export default function Converter() {
   const navigate = useNavigate()
@@ -15,6 +16,7 @@ export default function Converter() {
 
   const approveModalVisibility = modalIsOpen(Modals.APPROVE_TRANSACTION)
   const approveModalVisibilityRef = useRef(approveModalVisibility)
+  const { connected } = useWallet()
   const {
     buyToken,
     sellToken,
@@ -41,15 +43,17 @@ export default function Converter() {
   return (
     <div className="w-[418px] rounded-3xl bg-lightGreen">
       <div className="h-[53px] flex items-center justify-between border-b border-border">
-        <div className="ml-auto flex space-x-[21.01px] items-center mr-[22px]">
-          <button
-            type="button"
-            onClick={() => navigate(PageRoutes.TRANSACTIONS)}
-          >
-            <History />
-          </button>
-          <button type="button">
-            <Reload />
+        <div className="ml-auto flex space-x-[21.01px] items-center mr-[19px]">
+          {connected && (
+            <button
+              type="button"
+              onClick={() => navigate(PageRoutes.TRANSACTIONS)}
+            >
+              <History />
+            </button>
+          )}
+          <button type="button" className="w-[26px] h-[26px]">
+            <ReloadIcon disabled={!(buyAmount && sellAmount)} />
           </button>
         </div>
       </div>

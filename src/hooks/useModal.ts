@@ -54,7 +54,7 @@ const useModal = (name?: Modals) => {
       const modal = m ?? name
       if (modal) {
         modals[modal]?.onCloseCallback()
-        delete modals[modal]
+        modals[modal] = undefined
         const newModals = { ...modals }
         setModals(newModals)
       }

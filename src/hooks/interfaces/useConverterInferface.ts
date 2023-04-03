@@ -24,7 +24,7 @@ import {
 } from "../../utils/swap"
 import { stableCoin, supportedFiat } from "../../utils/constants/exchange"
 import { handleSetExchangeAtomCreator } from "../../state/exchange/atoms"
-import { getTokenLogoURL } from "../../utils"
+import { getTokenLogoURL, setCurrencyAmountCurrency } from "../../utils"
 import { activeChainId } from "../../utils/config"
 import { wrappedCurrency } from "../../utils/wrappedCurrency"
 import useTokenPrices from "../useTokenPrices"
@@ -90,7 +90,9 @@ const useConverterInterface = (): ReturnTypes => {
     CurrencyAmount<Currency> | undefined
   >()
 
-  const buyTokenPrice = useTokenPrices(sellAmount ? [sellAmount] : undefined)[0]
+  const sellTokenPrice = useTokenPrices(
+    sellAmount ? [sellAmount] : undefined
+  )[0]
   const useBalancesInput = useMemo(() => [sellToken], [sellToken])
   const sellBalance = useBalances(useBalancesInput)[0]
 
@@ -175,10 +177,10 @@ const useConverterInterface = (): ReturnTypes => {
   // get the fiat equivalent of the sellAmount
   const fiatSellEqv: FiatAmount | undefined = useMemo(() => {
     let amount
-    if (buyTokenPrice && sellAmount) {
+    if (sellTokenPrice && sellAmount) {
       const dollarBalance = sellAmount
-        .multiply(buyTokenPrice)
-        .multiply(buyTokenPrice.scalar)
+        .multiply(sellTokenPrice)
+        .multiply(sellTokenPrice.scalar)
       amount = stableCoinAmountToFiat(
         dollarBalance,
         dollarRate,
@@ -186,7 +188,7 @@ const useConverterInterface = (): ReturnTypes => {
       )
     }
     return amount
-  }, [buyTokenPrice, dollarRate, preferredFiat.fiat, sellAmount])
+  }, [sellTokenPrice, dollarRate, preferredFiat.fiat, sellAmount])
 
   // get the fiat equivalent of the buyAmount
   const fiatBuyEqv: FiatAmount | undefined = useMemo(() => {
@@ -208,7 +210,6 @@ const useConverterInterface = (): ReturnTypes => {
   exchangeRate = useMemo(() => {
     if (buyAmount && sellAmount) {
       if (sellAmount.equalTo(0)) return undefined
-
       return new Fraction(
         buyAmount
           .toDollarAmount(
@@ -232,13 +233,7 @@ const useConverterInterface = (): ReturnTypes => {
   // update sellAmount when sellToken changes
   useEffect(() => {
     setSellAmount((oldAmount) =>
-      oldAmount
-        ? CurrencyAmount.fromFractionalAmount(
-            sellToken,
-            oldAmount.numerator,
-            oldAmount.denominator
-          )
-        : undefined
+      oldAmount ? setCurrencyAmountCurrency(oldAmount, sellToken) : undefined
     )
   }, [sellToken])
 

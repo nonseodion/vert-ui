@@ -1,5 +1,13 @@
-import { BigintIsh, ChainId, ERC20Token, JSBI } from "@pancakeswap/sdk"
+import {
+  BigintIsh,
+  ChainId,
+  Currency,
+  CurrencyAmount,
+  ERC20Token,
+  JSBI,
+} from "@pancakeswap/sdk"
 import { getAddress } from "ethers/lib/utils"
+import Big from "big.js"
 import { memoize } from "lodash"
 import { Location, NavigateFunction } from "react-router-dom"
 import { PageRoutes } from "./constants"
@@ -129,3 +137,13 @@ export const comparePasswords = (password1: string, password2: string) =>
   password1?.length > 0
     ? password1?.length > 0 && password2?.length > 0 && password1 === password2
     : true
+
+export function setCurrencyAmountCurrency(
+  currencyAmount: CurrencyAmount<Currency>,
+  currency: Currency
+) {
+  const amount = new Big(currencyAmount.toExact().toString())
+    .mul(10 ** currency.decimals)
+    .toString()
+  return CurrencyAmount.fromRawAmount(currency, amount)
+}
