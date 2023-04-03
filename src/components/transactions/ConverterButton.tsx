@@ -133,7 +133,7 @@ export default function ConverterButton(props: ConverterButtonProps) {
       )
     }
 
-    // TODO: Price impact complete exchange
+    // TODO: Price impact too high
     if (warningSeverity(priceImpactWithoutFee) > 3) {
       return getButton(`Can't complete swap`)
     }

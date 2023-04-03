@@ -40,10 +40,12 @@ export default function useApprove(props: UseApproveProps): UseApproveReturns {
   const shownApproveTxModal = useRef(false)
   const tokenAddress = (sellAmount?.currency as Token)?.address as `0x{string}`
   const { data: allowance, refetch } = useContractRead({
-    address: tokenAddress,
+    address: walletAddress && tokenAddress, // pass tokenAddress only when walletAddress is available to avoid error
     abi: erc20ABI,
     functionName: "allowance",
-    args: [walletAddress ?? "0x", vertRouter.address as `0x{string}`],
+    args: walletAddress
+      ? [walletAddress, vertRouter.address as `0x{string}`]
+      : undefined,
   })
 
   const { data: feeData } = useFeeData()
