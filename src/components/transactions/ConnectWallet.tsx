@@ -1,24 +1,31 @@
-import React, { useState } from "react"
+import React, { useEffect } from "react"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { Button, Modal, WalletConfirmation } from "../general"
-import { providers } from "../../dummy/providers"
 import { doNothing } from "../../utils/functions"
-import { useModal } from "../../hooks"
+import useModal from "../../hooks/useModal"
 import { Modals } from "../../utils/constants"
+import useWallet, { walletProviders } from "../../state/auth/useWallet"
 
 export default function ConnectWallet() {
-  const { hideModal } = useModal(Modals.CONNECT_WALLET)
-  const [selectedProvider, setSelectedProvider] = useState<null | string>(null)
+  const { hideModal, isActive } = useModal(Modals.CONNECT_WALLET)
+  const { connect, connecting, connected } = useWallet()
+
+  useEffect(() => {
+    if (!connecting && connected && isActive) {
+      hideModal()
+    }
+  }, [connected, connecting, hideModal, isActive])
+
   return (
     <Modal
       name={Modals.CONNECT_WALLET}
-      bodyClassNames={selectedProvider ? "pt-[23px] pb-[30px] !m-0" : "!m-0"}
+      bodyClassNames={connecting ? "pt-[23px] pb-[30px] !m-0" : "!m-0"}
     >
-      {selectedProvider ? (
+      {connecting ? (
         <WalletConfirmation
           header="Connecting wallet"
-          buttonText="Disconnect"
-          onClose={() => setSelectedProvider(null)}
+          buttonText="Close"
+          onClose={() => hideModal()}
         />
       ) : (
         <div>
@@ -40,25 +47,26 @@ export default function ConnectWallet() {
             </a>
           </p>
           <div className="flex flex-col space-y-[15px] mb-[30px]">
-            {providers.map((provider) => (
+            {walletProviders.map((provider) => (
               <button
                 type="button"
-                onClick={() => setSelectedProvider(provider.text)}
+                onClick={() => connect(provider.wallet)}
                 className="border-primary border rounded-lg w-full h-12 px-4 flex space-x-3 items-center outline-none"
-                key={provider.text}
+                key={provider.wallet}
               >
                 <img
                   src={provider.icon}
-                  alt={provider.text}
+                  alt={provider.wallet}
                   className="h-7 w-7"
                 />
                 <span className="text-black text-[15px] font-bold">
-                  {provider.text}
+                  {provider.wallet}
                 </span>
               </button>
             ))}
           </div>
           <Button text="Show more" onClick={doNothing} fullWidth />
+
           <p className="mt-7 text-lightBlue text-12">
             By connecting a wallet, you agree to Vert finance{" "}
             <a href="https://www.google.com" className="text-primary">

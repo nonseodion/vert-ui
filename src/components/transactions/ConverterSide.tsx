@@ -1,34 +1,78 @@
-import React, { useMemo } from "react"
-import { buyableCurrencies, sellableCurrencies } from "../../dummy/currencies"
+import React, { useCallback, useMemo } from "react"
+import { Currency, CurrencyAmount } from "@pancakeswap/sdk"
 import { ReactComponent as DropdownIcon } from "../../assets/icons/arrow-down.svg"
+import Fiat from "../../utils/Fiat"
+import TokenImage from "./CurrencyLogo"
+import FiatAmount from "../../utils/FiatAmount"
+import removeTrailingZeros from "../../utils/removeTrailingZeros"
+import useWallet from "../../state/auth/useWallet"
+import { Balance } from "../../state/balances/useBalances"
+import { maxAmountSpend } from "../../utils/maxAmountSpend"
+import BalanceSkeleton from "../skeletons/BalanceSkeleton"
 
 export interface ConverterSideProps {
   side: "sell" | "buy"
+  token: Fiat | Currency
+  amount: undefined | FiatAmount | CurrencyAmount<Currency> | string
+  logos: string[]
+  setAmount: (amount: string) => void
   onTokenSelect: (_: any) => void
-  onValueChange: (value: number | null) => void
-  value: number | null
+  fiatEqv?: FiatAmount
+  tokenBalance?: Balance
 }
 
 export default function ConverterSide({
   side,
   onTokenSelect,
-  onValueChange,
-  value,
+  token,
+  amount,
+  logos,
+  setAmount,
+  fiatEqv,
+  tokenBalance,
 }: ConverterSideProps) {
-  const isBuySide = useMemo(() => side === "buy", [side])
+  const { connected } = useWallet()
+  const decimals = useMemo(
+    () =>
+      (tokenBalance?.amount?.currency.decimals ?? 0) <= 4
+        ? tokenBalance?.amount?.currency.decimals
+        : 4,
+    [tokenBalance?.amount?.currency.decimals]
+  )
+
+  const max = useCallback(() => {
+    const maxAmount = maxAmountSpend(tokenBalance?.amount)
+    setAmount(maxAmount?.toExact() ?? "")
+  }, [setAmount, tokenBalance?.amount])
+
   return (
     <div className="bg-white min-h-[104px] rounded-xl py-[13.5px] px-4">
       <div className="flex justify-between items-center mb-[25.5px]">
         <p className="uppercase text-12">you {side}</p>
         {side === "sell" && (
           <div className="flex items-center space-x-[3.52px]">
-            <span className="text-purple text-12">Balance:0</span>
-            <button
-              type="button"
-              className="bg-[#1AFF91]/[.13] rounded-[4px] px-[3px] py-[2px] text-[#1AFF91] font-medium text-12"
-            >
-              MAX
-            </button>
+            {connected && (
+              <div className="text-purple text-12 flex items-center">
+                {"Balance: "}
+                {tokenBalance?.amount ? (
+                  `${tokenBalance?.amount?.toSignificant(decimals)}`
+                ) : (
+                  <>
+                    <span>&nbsp;</span>{" "}
+                    <BalanceSkeleton className="h-[14px] w-8" />
+                  </>
+                )}
+              </div>
+            )}
+            {connected && tokenBalance?.amount?.greaterThan(0) && (
+              <button
+                type="button"
+                className="bg-[#1AFF91]/[.13] rounded-[4px] px-[3px] py-[2px] text-[#1AFF91] font-medium text-12"
+                onClick={max}
+              >
+                MAX
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -36,17 +80,20 @@ export default function ConverterSide({
         <div className="flex flex-col space-y-[5px]">
           <div className="flex-1">
             <input
-              className="w-full font-medium border-none outline-none focus:outline-none placeholder:text-placeholder text-xl"
+              className="w-full border-none outline-none focus:outline-none placeholder:text-placeholder text-xl"
               placeholder="0.0"
-              value={value ?? ""}
-              onChange={({ target }) =>
-                onValueChange(target.value ? Number(target.value) : null)
+              value={
+                typeof amount === "string"
+                  ? amount
+                  : removeTrailingZeros(amount?.toFixed() ?? "")
               }
+              onChange={(e) => setAmount(e.target.value)}
             />
           </div>
-          {value ? (
+          {fiatEqv ? (
             <span className="leading-none text-[9px] text-purple font-medium">
-              ~28,380.16 USD.
+              ~{removeTrailingZeros(fiatEqv.toExact({ groupSeparator: "," }))}{" "}
+              {fiatEqv.fiat.symbol}
             </span>
           ) : (
             <div className="h-[9px] w-4" />
@@ -58,32 +105,21 @@ export default function ConverterSide({
           onClick={onTokenSelect}
         >
           <div className="w-[130px] h-[40px] flex space-x-[10.1px] justify-center items-center rounded border border-borderLight">
-            <div className="flex space-x-4 items-center">
-              <img
-                src={
-                  isBuySide
-                    ? buyableCurrencies[0]?.icon
-                    : sellableCurrencies[0]?.icon
-                }
-                alt={
-                  isBuySide
-                    ? buyableCurrencies[0]?.label
-                    : sellableCurrencies[0]?.label
-                }
-                className="h-6 w-6 rounded-xl"
-              />
+            <div className="flex space-x-4 items-center converter-side">
+              <TokenImage currency={token} srcs={logos} />
               <span className="font-semibold text-black text-base">
-                {isBuySide
-                  ? buyableCurrencies[0]?.label
-                  : sellableCurrencies[0]?.label}
+                {token.symbol}
               </span>
             </div>
-            {(isBuySide
-              ? buyableCurrencies.length > 1
-              : sellableCurrencies.length > 1) && <DropdownIcon />}
+            {side === "sell" && <DropdownIcon />}
           </div>
         </button>
       </div>
     </div>
   )
+}
+
+ConverterSide.defaultProps = {
+  fiatEqv: undefined,
+  tokenBalance: undefined,
 }

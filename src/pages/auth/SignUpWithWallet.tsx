@@ -6,10 +6,9 @@ import { ReactComponent as LoneLogo } from "../../assets/icons/logo-lone.svg"
 import { Button, Glow, Wrapper } from "../../components/general"
 import { Input } from "../../components/inputs"
 import { BackButton } from "../../components/navigation"
-import { ConnectWallet } from "../../components/transactions"
-import { Modals, PageRoutes } from "../../utils/constants"
 import { useModal } from "../../hooks"
 import { goBackConditionally } from "../../utils/functions"
+import { Modals, PageRoutes } from "../../utils/constants"
 
 interface SignUpWithEmailValues {
   email: string
@@ -32,7 +31,6 @@ export default function SignUpWithWallet() {
   return (
     <Wrapper hideTopNav>
       <Glow />
-      <ConnectWallet />
       <div className="flex justify-center pt-[50px] pb-[30px]">
         <div className="flex flex-col justify-center items-center space-y-[50.75px]">
           <button type="button" onClick={() => navigate(PageRoutes.HOME)}>

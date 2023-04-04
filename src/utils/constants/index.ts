@@ -1,3 +1,6 @@
+import { Token } from "@pancakeswap/sdk"
+import { ChainId } from "../config"
+
 export enum PageRoutes {
   HOME = "/",
   SIGN_IN_WITH_EMAIL = "/sign-in/email",
@@ -38,4 +41,17 @@ export enum Modals {
   CREATE_ACCOUNT = "create_account",
 }
 
+export enum LocalStorage {
+  TOKEN_INFO = "token_Info",
+}
+
+export const NULL_ADDRESS = "0x0000000000000000000000000000000000000000"
+
+export type ChainMap<T> = {
+  readonly [id in ChainId]: T
+}
+export type ChainTokenList = ChainMap<Token[]>
+
 export const TABLE_ROW_SIZE = 6
+
+export const ONE_DAY_IN_MILLISECONDS = 86400000

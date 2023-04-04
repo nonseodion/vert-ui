@@ -1,25 +1,49 @@
 import React, { useMemo } from "react"
+import { ERC20Token } from "@pancakeswap/sdk"
 import { ReactComponent as Search } from "../../assets/icons/search.svg"
 import { ReactComponent as Settings } from "../../assets/icons/settings.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import userTokens, { availableTokens } from "../../dummy/user-tokens"
-import UserToken from "./UserToken"
-import { Button } from "../general"
+import useSelectTokenInterface from "../../hooks/interfaces/useSelectTokenInterface"
+import { pinnedTokens } from "../../utils/constants/exchange"
+import PinnedToken from "./PinnedToken"
+import { activeChainId } from "../../utils/config"
+import TokenList from "./TokenList"
+import { Steps } from "../../utils/types"
 
 interface SelectTokenProps {
-  setCurrentStep: React.Dispatch<React.SetStateAction<string>>
-  setAddress: React.Dispatch<React.SetStateAction<string>>
-  steps: { [key: string]: string }
-  address: string
+  setCurrentStep: React.Dispatch<React.SetStateAction<Steps>>
+  startImportingToken: (token: ERC20Token, logo: string) => void
 }
 
 export default function SelectToken({
-  address,
-  setAddress,
   setCurrentStep,
-  steps,
+  startImportingToken,
 }: SelectTokenProps) {
-  const addressIsEmpty = useMemo(() => address.trim().length === 0, [address])
+  const {
+    tokens,
+    logos,
+    fiatBalances,
+    tokenBalances,
+    searchQuery,
+    setSearchQuery,
+    handleSelectToken,
+    otherTokens,
+    otherLogos,
+  } = useSelectTokenInterface()
+
+  const pinnedTokenList = useMemo(
+    () =>
+      pinnedTokens[activeChainId].map(([token, logo]) => (
+        <PinnedToken
+          onClick={() => handleSelectToken(token, logo)}
+          key={token.address}
+          token={token}
+          icon={logo}
+          className="mb-1 mr-[6px] cursor-pointer"
+        />
+      )),
+    [handleSelectToken]
+  )
 
   return (
     <div>
@@ -30,81 +54,38 @@ export default function SelectToken({
         <input
           className="h-12 w-full flex-1 text-sm text-lightBlue bg-transparent outline-none border-none"
           placeholder="Search name or paste address"
-          value={address}
-          onChange={({ target: { value } }) => setAddress(value)}
+          value={searchQuery}
+          onChange={({ target: { value } }) => setSearchQuery(value)}
         />
-        {!addressIsEmpty && (
+        {!(searchQuery.trim().length === 0) && (
           <button
             type="button"
-            onClick={() => setAddress("")}
+            onClick={() => setSearchQuery("")}
             className="outline-none border-none flex-shrink-0 ml-[3.05px]"
           >
             <Exit className="h-3 w-3 fill-[#929AA5]" />
           </button>
         )}
       </div>
-      <div className="mx-6 flex flex-wrap pb-[9px]">
-        {userTokens.map((token) => (
-          <UserToken
-            key={token.token}
-            token={token.token}
-            icon={token.icon}
-            className="mb-1 mr-[6px] cursor-pointer"
-          />
-        ))}
-      </div>
+      <div className="mx-6 flex flex-wrap pb-[9px]">{pinnedTokenList}</div>
       <div className="mx-2 h-[1px] bg-lightBlue" />
-      {addressIsEmpty ? (
-        <ul className="px-6 pt-6 max-h-[320px] overflow-y-scroll scrollbar-hide">
-          {availableTokens.map((token) => (
-            <li key={token.token}>
-              <button
-                type="button"
-                className="w-full text-left flex space-x-4 items-center mb-8"
-              >
-                <img
-                  src={token.icon}
-                  alt={token.token_name}
-                  className="h-10 w-10 rounded-[20px]"
-                />
-                <div className="flex flex-col space-y-[3.5px]">
-                  <h4 className="font-medium text-base text-black">
-                    {token.token_name}
-                  </h4>
-                  <span className="text-[13px] text-lightBlue">
-                    {token.token}
-                  </span>
-                </div>
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <div className="pt-6 h-[320px] px-6">
-          <div className="justify-between flex items-center">
-            <div className="flex space-x-4 items-center">
-              <div className="h-10 bg-[#CADAF4] w-10 rounded-full flex items-center justify-center">
-                <span className="text-lightBlue text-base">W</span>
-              </div>
-              <div className="flex flex-col space-y-[3.5px]">
-                <h4 className="font-medium text-base text-black">
-                  Wakanda Inu Token
-                </h4>
-                <span className="text-[13px] text-lightBlue">WKD</span>
-              </div>
-            </div>
-            <Button
-              text="Import"
-              onClick={() => setCurrentStep(steps.IMPORT_TOKEN)}
-              className="h-8 p-0 w-[72px] flex items-center justify-center text-[13px]"
-            />
-          </div>
-        </div>
-      )}
+      <TokenList
+        {...{
+          tokens,
+          otherTokens,
+          logos,
+          otherLogos,
+          fiatBalances,
+          tokenBalances,
+          handleSelectToken,
+          searchQuery,
+          startImportingToken,
+        }}
+      />
       <div className="pb-[11px] flex items-center justify-center">
         <button
           type="button"
-          onClick={() => setCurrentStep(steps.CUSTOM_TOKENS)}
+          onClick={() => setCurrentStep(Steps.CUSTOM_TOKENS)}
           className="flex items-center space-x-[12.95px]"
         >
           <Settings />

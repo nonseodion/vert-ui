@@ -1,38 +1,61 @@
 import React, { useState } from "react"
+import { ERC20Token } from "@pancakeswap/sdk"
 import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 import { ReactComponent as CheckBox } from "../../assets/icons/checkbox.svg"
 import { Button, Copy } from "../general"
+import { chain } from "../../utils/config"
+import { shortenAddress } from "../../utils"
 
-export default function TokenImport() {
-  const [confirmed, setConfirmed] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
+const blockExplorer = chain.blockExplorers
+
+export default function TokenImport({
+  token,
+  logo,
+}: {
+  token: ERC20Token
+  logo: string
+}) {
+  const [confirmed, setConfirmed] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const { symbol, address, name } = token
+
   return (
     <div className="px-6">
       <div className="p-[17px] flex space-x-3 items-center border border-primary rounded-2xl">
-        <div className="h-[40px] w-[40px] flex-shrink-0 rounded-full bg-[#CADAF4] flex items-center justify-center">
-          <span className="text-lightBlue text-base">W</span>
-        </div>
+        {logo !== "" ? (
+          <img src={logo} alt={name} className="h-10 w-10 rounded-[20px]" />
+        ) : (
+          <div className="h-[40px] w-[40px] flex-shrink-0 rounded-full bg-[#CADAF4] flex items-center justify-center">
+            <span className="text-lightBlue text-base">
+              {symbol.slice(0, 4)}
+            </span>
+          </div>
+        )}
+
         <div className="flex flex-col space-y-1 w-full">
           <div className="flex items-center">
             <h3 className="text-black font-medium text-base">
-              Wakanda Inu Token
+              {name}
               <span className="text-[13px] bg-lightGrey rounded-[4px] p-1 ml-[6.75px] text-dark">
-                WKD
+                {symbol}
               </span>
             </h3>
           </div>
           <div className="justify-between items-center flex">
             <div className="flex space-x-[8.68px]">
-              <span className="text-13">0x534...c3d</span>
+              <span className="text-13">{shortenAddress(address)}</span>
               <Copy text="0x534...c3d" />
             </div>
-            <button
-              type="button"
+            <a
+              href={`${blockExplorer.default.url}/token/${address}`}
+              target="blank"
               className="border-none outline-none flex items-center space-x-[5.45px]"
             >
-              <span className="text-13 text-purple">BscScan</span>
+              <span className="text-13 text-purple">
+                {blockExplorer.default.name}
+              </span>
               <LinkIcon />
-            </button>
+            </a>
           </div>
         </div>
       </div>

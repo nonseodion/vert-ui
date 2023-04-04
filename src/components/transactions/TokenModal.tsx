@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { ERC20Token } from "@pancakeswap/sdk"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { doNothing } from "../../utils/functions"
@@ -6,43 +7,45 @@ import TokenImport from "./TokenImport"
 import CustomTokens from "./CustomTokens"
 import SelectToken from "./SelectToken"
 import { Modal } from "../general"
-import { useModal } from "../../hooks"
+import useModal from "../../hooks/useModal"
 import { Modals } from "../../utils/constants"
-
-const steps = {
-  IMPORT_TOKEN: "IMPORT_TOKEN",
-  DEFAULT: "DEFAULT",
-  CUSTOM_TOKENS: "CUSTOM_TOKENS",
-}
+import { Steps } from "../../utils/types"
 
 export default function TokenModal() {
   const { hideModal } = useModal(Modals.TOKEN_MODAL)
-  const [currentStep, setCurrentStep] = useState<string>(steps.DEFAULT)
-  const [address, setAddress] = useState<string>("")
+  const [currentStep, setCurrentStep] = useState<Steps>(Steps.DEFAULT)
+  const [importingToken, importToken] = useState<{
+    token: ERC20Token | undefined
+    logo: string
+  }>({ token: undefined, logo: "" })
+
+  const startImportingToken = (token: ERC20Token, logo: string) => {
+    importToken({ token, logo })
+    setCurrentStep(Steps.IMPORT_TOKEN)
+  }
 
   return (
     <Modal
       name={Modals.TOKEN_MODAL}
-      onClose={() => setAddress("")}
       bodyClassNames="rounded-3xl !lg:w-[434px] pt-[30px] !px-0 !pb-0"
     >
       <div className="flex items-center justify-between mb-[21px] px-6">
         <button
           type="button"
           onClick={() =>
-            currentStep === steps.DEFAULT
+            currentStep === Steps.DEFAULT
               ? hideModal()
-              : setCurrentStep(steps.DEFAULT)
+              : setCurrentStep(Steps.DEFAULT)
           }
         >
           <ArrowLeft />
         </button>
-        <h3 className="text-xl text-black font-medium text-center">
-          {currentStep === steps.DEFAULT && "Select a token"}
-          {currentStep === steps.IMPORT_TOKEN && "Import Tokens"}
-          {currentStep === steps.CUSTOM_TOKENS && "Custom Tokens"}
+        <h3 className="text-xl text-black font-medium">
+          {currentStep === Steps.DEFAULT && "Select a token"}
+          {currentStep === Steps.IMPORT_TOKEN && "Import Tokens"}
+          {currentStep === Steps.CUSTOM_TOKENS && "Custom Tokens"}
         </h3>
-        {currentStep !== steps.IMPORT_TOKEN ? (
+        {currentStep !== Steps.IMPORT_TOKEN ? (
           <button
             type="button"
             onClick={doNothing}
@@ -53,18 +56,25 @@ export default function TokenModal() {
         ) : (
           <button
             type="button"
-            onClick={() => setCurrentStep(steps.DEFAULT)}
+            onClick={() => setCurrentStep(Steps.DEFAULT)}
             className="border-none outline-none"
           >
             <Exit className="h-5 w-5 path-primary fill-[#929AA5]" />
           </button>
         )}
       </div>
-      {currentStep === steps.DEFAULT && (
-        <SelectToken {...{ setAddress, address, steps, setCurrentStep }} />
+      {currentStep === Steps.DEFAULT && (
+        <SelectToken
+          {...{
+            setCurrentStep,
+            startImportingToken,
+          }}
+        />
       )}
-      {currentStep === steps.IMPORT_TOKEN && <TokenImport />}
-      {currentStep === steps.CUSTOM_TOKENS && <CustomTokens />}
+      {currentStep === Steps.IMPORT_TOKEN && importingToken.token && (
+        <TokenImport token={importingToken.token} logo={importingToken.logo} />
+      )}
+      {currentStep === Steps.CUSTOM_TOKENS && <CustomTokens />}
     </Modal>
   )
 }

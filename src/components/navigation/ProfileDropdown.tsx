@@ -5,11 +5,11 @@ import { ReactComponent as History } from "../../assets/icons/history.svg"
 import { ReactComponent as Settings } from "../../assets/icons/settings-white.svg"
 import { ReactComponent as SignOut } from "../../assets/icons/sign-out.svg"
 import { ReactComponent as PowerSwitch } from "../../assets/icons/power-switch.svg"
-import metamask from "../../assets/icons/metamask.png"
-import { useAuth } from "../../hooks"
-import { PageRoutes } from "../../utils/constants"
-import { handleProfileDropdown } from "../../utils/functions"
 import Copy from "../general/Copy"
+import useAuth from "../../state/auth/useAuth"
+import { PageRoutes } from "../../utils/constants"
+import { handleProfileDropdown, shortenAddress } from "../../utils/functions"
+import useWallet from "../../state/auth/useWallet"
 
 interface ProfileDropdownLink {
   icon: JSX.Element
@@ -21,6 +21,7 @@ interface ProfileDropdownLink {
 export default function ProfileDropdown() {
   const { user, logOut } = useAuth()
   const navigate = useNavigate()
+  const { address, walletProvider } = useWallet()
 
   const signUserOut = () => {
     logOut()
@@ -102,12 +103,12 @@ export default function ProfileDropdown() {
       <div className="flex py-[13px] px-3 border-[0.25px] justify-between border-primary rounded-xl">
         <div className="flex items-center space-x-3">
           <div className="h-7 w-7 rounded-full bg-[#FFD3A2] flex items-center justify-center">
-            <img src={metamask} alt="Metmask logo" />
+            <img src={walletProvider.icon} alt="Metmask logo" />
           </div>
           <div className="flex flex-col space-y-[9.5px]">
             <div className="flex space-x-2 items-center">
               <span className="text-white font-medium text-[15px] leading-4">
-                0x6810...9568
+                {shortenAddress(address || "")}
               </span>
               <Copy text="0x6810...9568" color="purple" />
             </div>

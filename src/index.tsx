@@ -7,6 +7,10 @@ import "./index.css"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
 
+// used to add Buffer for WalletConnect
+// since webpack does not come bundled with node packages
+window.Buffer = require("buffer/").Buffer
+
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <React.StrictMode>

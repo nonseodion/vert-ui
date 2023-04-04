@@ -7,6 +7,7 @@ import btcb from "../assets/icons/btcb.png"
 import rkv from "../assets/icons/rkv.png"
 import wkd from "../assets/icons/wkd.png"
 import frl from "../assets/icons/frl.png"
+import busd from "../assets/icons/busd.png"
 
 const userTokens = [
   { token: "BNB", icon: bnb },
@@ -15,6 +16,7 @@ const userTokens = [
   { token: "DAI", icon: dai },
   { token: "USDT", icon: usdt },
   { token: "BTCB", icon: btcb },
+  { token: "BUSD", icon: busd },
 ]
 
 export const availableTokens = [
@@ -23,6 +25,7 @@ export const availableTokens = [
   { icon: usdc, token: "USDC", token_name: "USD Coin" },
   { icon: dai, token: "DAI", token_name: "Dai Token" },
   { icon: usdt, token: "USDT", token_name: "Tether USD" },
+  { icon: busd, token: "BUSD", token_name: "Binance-Pegged BUSD" },
 ]
 
 export const importedTokens = [

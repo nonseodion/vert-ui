@@ -5,8 +5,8 @@ import { Link, useNavigate } from "react-router-dom"
 import { ReactComponent as LoneLogo } from "../../assets/icons/logo-lone.svg"
 import { Button, Glow, Wrapper } from "../../components/general"
 import { Input } from "../../components/inputs"
-import { ConnectWallet } from "../../components/transactions"
-import { useAuth, useModal } from "../../hooks"
+import useAuth from "../../state/auth/useAuth"
+import { useModal } from "../../hooks"
 import { Modals, PageRoutes } from "../../utils/constants"
 
 interface SignInWithEmailValues {
@@ -32,7 +32,6 @@ export default function SignInWithEmail() {
 
   return (
     <Wrapper hideTopNav>
-      <ConnectWallet />
       <Glow />
       <div className="flex justify-center pt-[50px] pb-[30px]">
         <div className="flex flex-col justify-center items-center space-y-[50.75px]">

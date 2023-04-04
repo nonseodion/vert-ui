@@ -1,55 +1,99 @@
-import React, { useState, useMemo } from "react"
+import React, { useState, useMemo, useEffect } from "react"
 import clsx from "classnames"
+import { WagmiConfig } from "wagmi"
+import { fetchBlockNumber, watchBlockNumber } from "@wagmi/core"
+import { Provider as ReduxProvider } from "react-redux"
 import { BrowserRouter as Router } from "react-router-dom"
 import { SkeletonTheme } from "react-loading-skeleton"
 import { Banner } from "./components/general"
 import AuthContext, { AuthStateValues } from "./contexts/AuthContext"
 import Routes from "./Routes"
+import { store } from "./state/redux"
+import { Updater as MulticallUpdater } from "./utils/multicall"
+import { activeChainId, client } from "./utils/config"
 import { hideAllHideables } from "./utils/functions"
 import ToastDisplay from "./components/general/ToastDisplay"
-import ModalContext, { ActiveModalsArrayValue } from "./contexts/ModalContext"
+import ModalContext, { ActiveModals } from "./contexts/ModalContext"
+import ConnectWallet from "./components/transactions/ConnectWallet"
+import { ApproveTransactionModal, TokenModal } from "./components/transactions"
+
+function Modals() {
+  return (
+    <>
+      <ApproveTransactionModal />
+      <TokenModal />
+      <ConnectWallet />
+    </>
+  )
+}
 
 function App() {
   const [showBanner] = useState(true)
+  const [blocknumber, setBlocknumber] = useState<undefined | number>()
   const [authState, setAuthState] = useState<AuthStateValues>({
     isAuthenticated: false,
     user: null,
   })
-
-  const [modals, setModals] = useState<ActiveModalsArrayValue[]>([])
-
+  const [modals, setModals] = useState<ActiveModals>({})
   const value = useMemo(() => ({ authState, setAuthState }), [authState])
   const modalStateValue = useMemo(() => ({ modals, setModals }), [modals])
 
+  // get block number for Redux Multicall
+  useEffect(() => {
+    ;(async () => {
+      const no = await fetchBlockNumber({ chainId: activeChainId })
+      setBlocknumber(no)
+    })()
+    watchBlockNumber(
+      {
+        listen: true,
+      },
+      (number) => {
+        console.log("changed")
+        setBlocknumber(number)
+      }
+    )
+  }, [])
+
   return (
-    <AuthContext.Provider value={value}>
-      <ModalContext.Provider value={modalStateValue}>
-        <ToastDisplay />
-        <SkeletonTheme
-          baseColor="#262626"
-          highlightColor="rgba(229, 231, 235, .4)"
-        >
-          <Router>
-            <div
-              className="bg-black min-h-screen"
-              onClick={() => {
-                hideAllHideables()
-              }}
-              role="presentation"
+    <ReduxProvider store={store}>
+      <AuthContext.Provider value={value}>
+        <ModalContext.Provider value={modalStateValue}>
+          <WagmiConfig client={client}>
+            <MulticallUpdater
+              chainId={activeChainId}
+              blockNumber={blocknumber}
+              blocksPerFetch={5}
+            />
+            <ToastDisplay />
+            <SkeletonTheme
+              baseColor="#262626"
+              highlightColor="rgba(229, 231, 235, .4)"
             >
-              {showBanner && <Banner />}
-              <div
-                className={clsx({
-                  "pt-7 md:pt-10": showBanner,
-                })}
-              >
-                <Routes />
-              </div>
-            </div>
-          </Router>
-        </SkeletonTheme>
-      </ModalContext.Provider>
-    </AuthContext.Provider>
+              <Modals />
+              <Router>
+                <div
+                  className="bg-black min-h-screen"
+                  onClick={() => {
+                    hideAllHideables()
+                  }}
+                  role="presentation"
+                >
+                  {showBanner && <Banner />}
+                  <div
+                    className={clsx({
+                      "pt-7 md:pt-10": showBanner,
+                    })}
+                  >
+                    <Routes />
+                  </div>
+                </div>
+              </Router>
+            </SkeletonTheme>
+          </WagmiConfig>
+        </ModalContext.Provider>
+      </AuthContext.Provider>
+    </ReduxProvider>
   )
 }
 
