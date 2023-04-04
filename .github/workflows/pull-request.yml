@@ -10,7 +10,8 @@ jobs:
           node-version: 16
       - run: yarn
       - name: Run checks
-        run: npx tsc -p tsconfig.json --noEmit
+        run: npm run typechain
+      - run: npx tsc -p tsconfig.json --noEmit
       - run: npx eslint
       - run: npx prettier --check ./src
       - run: echo "🍏 Done"
