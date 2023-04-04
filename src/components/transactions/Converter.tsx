@@ -7,7 +7,6 @@ import { Modals, PageRoutes } from "../../utils/constants"
 import useConverterInterface from "../../hooks/interfaces/useConverterInferface"
 import { TradePrice } from "./TradePrice"
 import ConverterButton from "./ConverterButton"
-import ReloadIcon from "../Svg/reload"
 import useWallet from "../../state/auth/useWallet"
 
 export default function Converter() {
@@ -52,9 +51,6 @@ export default function Converter() {
               <History />
             </button>
           )}
-          <button type="button" className="w-[26px] h-[26px]">
-            <ReloadIcon disabled={!(buyAmount && sellAmount)} />
-          </button>
         </div>
       </div>
       <div className="px-[18px] pt-4 pb-6">

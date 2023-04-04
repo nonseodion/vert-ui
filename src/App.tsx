@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react"
 import clsx from "classnames"
 import { WagmiConfig } from "wagmi"
-import { fetchBlockNumber } from "@wagmi/core"
+import { fetchBlockNumber, watchBlockNumber } from "@wagmi/core"
 import { Provider as ReduxProvider } from "react-redux"
 import { BrowserRouter as Router } from "react-router-dom"
 import { SkeletonTheme } from "react-loading-skeleton"
@@ -29,7 +29,7 @@ function Modals() {
 
 function App() {
   const [showBanner] = useState(true)
-  const [blkNum, setBlkNum] = useState<undefined | number>()
+  const [blocknumber, setBlocknumber] = useState<undefined | number>()
   const [authState, setAuthState] = useState<AuthStateValues>({
     isAuthenticated: false,
     user: null,
@@ -42,8 +42,17 @@ function App() {
   useEffect(() => {
     ;(async () => {
       const no = await fetchBlockNumber({ chainId: activeChainId })
-      setBlkNum(no)
+      setBlocknumber(no)
     })()
+    watchBlockNumber(
+      {
+        listen: true,
+      },
+      (number) => {
+        console.log("changed")
+        setBlocknumber(number)
+      }
+    )
   }, [])
 
   return (
@@ -53,8 +62,8 @@ function App() {
           <WagmiConfig client={client}>
             <MulticallUpdater
               chainId={activeChainId}
-              blockNumber={blkNum}
-              blocksPerFetch={6}
+              blockNumber={blocknumber}
+              blocksPerFetch={5}
             />
             <ToastDisplay />
             <SkeletonTheme

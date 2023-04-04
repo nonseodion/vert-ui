@@ -1,5 +1,6 @@
 import { Currency, Pair, CurrencyAmount } from "@pancakeswap/sdk"
 import { useMemo } from "react"
+import { ListenerOptionsWithGas } from "@uniswap/redux-multicall"
 import { useBlockNumber } from "wagmi"
 import { Interface } from "ethers/lib/utils"
 import { wrappedCurrency } from "../utils/wrappedCurrency"
@@ -20,7 +21,8 @@ const pairInterface = new Interface(PairAbi)
 const chainId = activeChainId
 
 export function usePairs(
-  currencies: [Currency | undefined, Currency | undefined][]
+  currencies: [Currency | undefined, Currency | undefined][],
+  listenerOptions?: ListenerOptionsWithGas
 ): [PairState, Pair | null][] {
   const tokens = useMemo(
     () =>
@@ -62,7 +64,9 @@ export function usePairs(
     blockNumber,
     pairAddresses,
     pairInterface,
-    "getReserves"
+    "getReserves",
+    [],
+    listenerOptions
   )
 
   return useMemo(

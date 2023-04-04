@@ -10,7 +10,6 @@ import {
 } from "@pancakeswap/sdk"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useAtom } from "jotai"
-// import { useBlockNumber } from "wagmi"
 import { parseUnits } from "ethers/lib/utils"
 import useTokens from "../../state/tokens/hooks"
 import ngnLogo from "../../assets/icons/ngn.png"
@@ -90,9 +89,11 @@ const useConverterInterface = (): ReturnTypes => {
     CurrencyAmount<Currency> | undefined
   >()
 
-  const sellTokenPrice = useTokenPrices(
-    sellAmount ? [sellAmount] : undefined
-  )[0]
+  const amountToFetchPrice = useMemo(
+    () => (sellAmount ? [sellAmount] : undefined),
+    [sellAmount]
+  )
+  const sellTokenPrice = useTokenPrices(amountToFetchPrice)[0]
   const useBalancesInput = useMemo(() => [sellToken], [sellToken])
   const sellBalance = useBalances(useBalancesInput)[0]
 
@@ -236,22 +237,6 @@ const useConverterInterface = (): ReturnTypes => {
       oldAmount ? setCurrencyAmountCurrency(oldAmount, sellToken) : undefined
     )
   }, [sellToken])
-
-  // const { refetch } = useBlockNumber({
-  //   scopeKey: "pairReserves"
-  // })
-
-  // //
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     console.log("refetching")
-  //     refetch().then(res => console.log(res))
-  //   }, 6000)
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   }
-  // }, [refetch])
 
   // update buyAmount when sellAmount or sellToken changes
   useEffect(() => {

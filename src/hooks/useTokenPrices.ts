@@ -38,7 +38,7 @@ export default function useTokenPrices(
   }, [currencies])
 
   const tokenPairs = getTokenPairs()
-  const pairs = usePairs(tokenPairs)
+  const pairs = usePairs(tokenPairs, { blocksPerFetch: 100 })
   const prices: (Price<Currency, Currency> | undefined)[] = useMemo(() => {
     const pricesHolder: (Price<Currency, Currency> | undefined)[] = []
     for (let i = 0; i < currencies.length; i += 1) {
