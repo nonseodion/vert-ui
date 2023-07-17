@@ -10,6 +10,7 @@ import {
   useContractWrite,
   useContractEvent,
   useFeeData,
+  useChainId,
 } from "wagmi"
 import useWallet from "../../state/auth/useWallet"
 import { Modals } from "../../utils/constants"
@@ -30,10 +31,10 @@ interface UseApproveReturns {
   approvalFee?: JSBI
 }
 
-const { vertRouter } = getContracts()
-
 export default function useApprove(props: UseApproveProps): UseApproveReturns {
   const { sellAmount } = props
+  const chainId = useChainId()
+  const { vertRouter } = getContracts(chainId)
   const { modalIsOpen, hideModal, showModal } = useModal()
   const { address: walletAddress } = useWallet()
   // used to ensure approve tx modal shows only once

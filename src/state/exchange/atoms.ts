@@ -2,14 +2,10 @@ import { Currency, CurrencyAmount } from "@pancakeswap/sdk"
 import { atom } from "jotai"
 import Fiat from "../../utils/Fiat"
 import FiatAmount from "../../utils/FiatAmount"
-import {
-  defaultSellLogo,
-  defaultSellToken,
-  supportedFiat,
-} from "../../utils/constants/exchange"
+import { supportedFiat } from "../../utils/constants/exchange"
 
 interface Exchange {
-  sellToken: { token: Currency; logo: string }
+  sellToken: { token?: Currency; logo?: string }
   sellAmount: CurrencyAmount<Currency> | ""
 
   buyToken: { fiat: Fiat; logo: string }
@@ -22,7 +18,7 @@ interface Exchange {
 }
 
 export const exchangeAtom = atom<Exchange>({
-  sellToken: { token: defaultSellToken, logo: defaultSellLogo },
+  sellToken: {},
   sellAmount: "",
 
   buyToken: supportedFiat.ngn,

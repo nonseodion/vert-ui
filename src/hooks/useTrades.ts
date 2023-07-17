@@ -6,19 +6,18 @@ import {
   Trade,
   TradeType,
 } from "@pancakeswap/sdk"
+import { useChainId } from "wagmi"
 import { useMemo } from "react"
 import flatMap from "lodash/flatMap"
 import { BASES_TO_CHECK_TRADES_AGAINST } from "../utils/constants/exchange"
-import { activeChainId } from "../utils/config"
 import { wrappedCurrency } from "../utils/wrappedCurrency"
 import { PairState, usePairs } from "./usePairs"
-
-const chainId = activeChainId
 
 export function useAllCommonPairs(
   currencyA?: Currency,
   currencyB?: Currency
 ): Pair[] {
+  const chainId = useChainId()
   const [tokenA, tokenB] = useMemo(
     () =>
       chainId
@@ -27,7 +26,7 @@ export function useAllCommonPairs(
             wrappedCurrency(currencyB, chainId),
           ]
         : [undefined, undefined],
-    [currencyA, currencyB]
+    [chainId, currencyA, currencyB]
   )
 
   const bases: Token[] = useMemo(() => {
@@ -35,7 +34,7 @@ export function useAllCommonPairs(
     const common = BASES_TO_CHECK_TRADES_AGAINST[chainId] ?? []
 
     return common
-  }, [])
+  }, [chainId])
 
   const basePairs: [Token, Token][] = useMemo(
     () =>

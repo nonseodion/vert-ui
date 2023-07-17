@@ -1,12 +1,10 @@
 import React, { useState } from "react"
+import { useNetwork } from "wagmi"
 import { ERC20Token } from "@pancakeswap/sdk"
 import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 import { ReactComponent as CheckBox } from "../../assets/icons/checkbox.svg"
 import { Button, Copy } from "../general"
-import { chain } from "../../utils/config"
 import { shortenAddress } from "../../utils"
-
-const blockExplorer = chain.blockExplorers
 
 export default function TokenImport({
   token,
@@ -18,6 +16,8 @@ export default function TokenImport({
   const [confirmed, setConfirmed] = useState(false)
   const [loading, setLoading] = useState(false)
   const { symbol, address, name } = token
+  const { chain } = useNetwork()
+  const blockExplorer = chain?.blockExplorers?.[0]
 
   return (
     <div className="px-6">
@@ -47,13 +47,11 @@ export default function TokenImport({
               <Copy text="0x534...c3d" />
             </div>
             <a
-              href={`${blockExplorer.default.url}/token/${address}`}
+              href={`${blockExplorer?.url}/token/${address}`}
               target="blank"
               className="border-none outline-none flex items-center space-x-[5.45px]"
             >
-              <span className="text-13 text-purple">
-                {blockExplorer.default.name}
-              </span>
+              <span className="text-13 text-purple">{blockExplorer?.name}</span>
               <LinkIcon />
             </a>
           </div>

@@ -1,6 +1,5 @@
 import { Currency, Price, WNATIVE, JSBI, Pair } from "@pancakeswap/sdk"
 import { PairState } from "../hooks/usePairs"
-import { activeChainId } from "./config"
 import { bscTokens, bscTestnetTokens } from "./constants/tokens"
 
 /**
@@ -9,12 +8,12 @@ import { bscTokens, bscTestnetTokens } from "./constants/tokens"
  */
 export default function getBUSDPrice(
   pairs: [PairState, Pair | null][],
+  chainId?: number,
   currency?: Currency
 ): Price<Currency, Currency> | undefined {
-  const chainId = activeChainId
   const wrapped = currency?.wrapped
-  const wnative = WNATIVE[chainId]
-  const stable = activeChainId === 56 ? bscTokens.busd : bscTestnetTokens.busd
+  const wnative = chainId && WNATIVE[chainId]
+  const stable = chainId === 56 ? bscTokens.busd : bscTestnetTokens.busd
 
   const [
     [bnbPairState, bnbPair],

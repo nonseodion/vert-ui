@@ -1,6 +1,5 @@
 import {
   BigintIsh,
-  ChainId,
   Currency,
   CurrencyAmount,
   ERC20Token,
@@ -11,7 +10,7 @@ import Big from "big.js"
 import { memoize } from "lodash"
 import { Location, NavigateFunction } from "react-router-dom"
 import { PageRoutes } from "./constants"
-import { activeChainId } from "./config"
+import { ChainId } from "./config"
 
 export const doNothing = (): void => {}
 
@@ -104,15 +103,14 @@ export const goBackConditionally = (
 
 const mapping = {
   [ChainId.BSC]: "smartchain",
-  [ChainId.ETHEREUM]: "ethereum",
   [ChainId.BSC_TESTNET]: "",
 }
 
 export const getTokenLogoURL = memoize(
-  (token?: ERC20Token) => {
-    if (token && mapping[activeChainId]) {
+  (token?: ERC20Token, chainId?: ChainId) => {
+    if (token && chainId && mapping[chainId]) {
       return `https://assets-cdn.trustwallet.com/blockchains/${
-        mapping[activeChainId]
+        mapping[chainId] || ""
       }/assets/${getAddress(token.address)}/logo.png`
     }
     return undefined
@@ -121,10 +119,10 @@ export const getTokenLogoURL = memoize(
 )
 
 export const getTokenLogoURLByAddress = memoize(
-  (address?: string, chainId?: number) => {
-    if (address && chainId && mapping[activeChainId]) {
+  (address?: string, chainId?: ChainId) => {
+    if (address && chainId && mapping[chainId]) {
       return `https://assets-cdn.trustwallet.com/blockchains/${
-        mapping[activeChainId]
+        mapping[chainId]
       }/assets/${getAddress(address)}/logo.png`
     }
     return null

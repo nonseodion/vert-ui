@@ -1,10 +1,9 @@
 import React, { useMemo } from "react"
-import { useBlockNumber } from "wagmi"
+import { useBlockNumber, useChainId } from "wagmi"
 import { ERC20Token } from "@pancakeswap/sdk"
 import { Button } from "../general"
 import { getTokenLogoURL, isAddress } from "../../utils"
 import CurrencyLogo from "./CurrencyLogo"
-import { activeChainId } from "../../utils/config"
 import { useSingleContractWithCallData } from "../../utils/multicall"
 import getContracts from "../../utils/getContracts"
 
@@ -14,28 +13,29 @@ interface ResolvedTokenProps {
   handleClick: (token: ERC20Token, logo: string) => void
 }
 
-const { erc20Token } = getContracts()
-const erc20TokenInterface = erc20Token.interface
-const callDatas: string[] = [
-  erc20TokenInterface.encodeFunctionData("name"),
-  erc20TokenInterface.encodeFunctionData("symbol"),
-  erc20TokenInterface.encodeFunctionData("decimals"),
-]
-
 export default function ResolvedToken({
   searchQuery,
   handleClick,
   logo,
 }: ResolvedTokenProps) {
   const { data: blockNumber } = useBlockNumber({ staleTime: Infinity })
+  const chainId = useChainId()
+
+  const { erc20Token } = getContracts(chainId)
+  const erc20TokenInterface = erc20Token.interface
+  const callDatas: string[] = [
+    erc20TokenInterface.encodeFunctionData("name"),
+    erc20TokenInterface.encodeFunctionData("symbol"),
+    erc20TokenInterface.encodeFunctionData("decimals"),
+  ]
   const tokenContract = useMemo(
     () => erc20Token.attach(isAddress(searchQuery) as string),
-    [searchQuery]
+    [erc20Token, searchQuery]
   )
 
   // fetch user query token
   const results = useSingleContractWithCallData(
-    activeChainId,
+    chainId,
     blockNumber,
     tokenContract,
     callDatas
@@ -48,14 +48,14 @@ export default function ResolvedToken({
       // make sure results is valid
       results.reduce((prev, curr) => prev && curr.valid && !!curr.result, true)
         ? new ERC20Token(
-            activeChainId,
+            chainId,
             erc20Token.address,
             results[2].result?.[0],
             results[1].result?.[0],
             results[0].result?.[0]
           )
         : null,
-    [results]
+    [chainId, erc20Token.address, results]
   )
 
   return token ? (

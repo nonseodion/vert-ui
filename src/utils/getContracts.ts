@@ -3,7 +3,7 @@ import VertRouterAbi from "./abis/contracts/VertRouter.json"
 import PairAbi from "./abis/contracts/Pair.json"
 import ERC20Abi from "./abis/contracts/ERC20Token.json"
 import UniswapInterfaceMulticallAbi from "./abis/contracts/UniswapInterfaceMulticall.json"
-import { activeChainId, provider as blockProvider } from "./config"
+import { ChainId, provider } from "./config"
 import {
   Pair as PairContractType,
   UniswapInterfaceMulticall as UniswapInterfaceMulticallContractType,
@@ -28,16 +28,15 @@ const bscTestnetAddresses = {
     "0x001Da96cb83d65aCFC89510856F5E54da1615F2B",
 }
 
-const getAddress = (contractName: ContractNames) =>
-  activeChainId === 56
+const getAddress = (contractName: ContractNames, chainId: ChainId) =>
+  chainId === 56
     ? bscAddresses[contractName]
     : bscTestnetAddresses[contractName]
 
-const provider = blockProvider({ chainId: activeChainId })
 // returns contracts
-const getContracts = () => {
+const getContracts = (chainId: ChainId) => {
   const vertRouter = getContract({
-    address: getAddress(ContractNames.VERTROUTER),
+    address: getAddress(ContractNames.VERTROUTER, chainId),
     abi: VertRouterAbi,
   }) as VertRouter
 
@@ -50,15 +49,15 @@ const getContracts = () => {
   }) as PairContractType
 
   const multicall = getContract({
-    address: getAddress(ContractNames.UNISWAPINTERFACEMULTICALL),
+    address: getAddress(ContractNames.UNISWAPINTERFACEMULTICALL, chainId),
     abi: UniswapInterfaceMulticallAbi,
-    signerOrProvider: provider,
+    signerOrProvider: provider({ chainId }),
   }) as UniswapInterfaceMulticallContractType
 
   const erc20Token = getContract({
-    address: "0x74ad3f1C96E23456B8e6c9D7d7F67d1169949b5B",
+    address: "0x74ad3f1C96E23456B8e6c9D7d7F67d1169949b5B", // dummy address
     abi: ERC20Abi,
-    signerOrProvider: provider,
+    signerOrProvider: provider({ chainId }),
   }) as ERC20Token
 
   return {

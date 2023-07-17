@@ -22,7 +22,7 @@ interface Props {
 }
 
 export function Updater({ chainId, blockNumber, blocksPerFetch }: Props) {
-  const { multicall: multicallContract } = getContracts()
+  const { multicall: multicallContract } = getContracts(chainId)
   const listenerOptions = blocksPerFetch ? { blocksPerFetch } : undefined
   return (
     <multicall.Updater

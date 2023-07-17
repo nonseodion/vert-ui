@@ -1,10 +1,9 @@
 import { useEffect, useMemo } from "react"
-import { useBalance, useBlockNumber } from "wagmi"
+import { useBalance, useBlockNumber, useChainId } from "wagmi"
 import { Currency, CurrencyAmount, Native } from "@pancakeswap/sdk"
 import { Interface } from "ethers/lib/utils"
 import { useAtomValue, useSetAtom } from "jotai"
 import { balancesAtom, setBalancesAtom } from "./atoms"
-import { activeChainId } from "../../utils/config"
 import { useMultipleContractSingleData } from "../../utils/multicall"
 import Erc20Abi from "../../utils/abis/contracts/ERC20Token.json"
 import { NULL_ADDRESS } from "../../utils/constants"
@@ -19,6 +18,7 @@ export type Balance = {
 
 export const useBalances = (tokens: Currency[]): Balance[] => {
   const { address } = useWallet()
+  const chainId = useChainId()
   const addresses: string[] = useMemo(
     () =>
       tokens.map((token) => {
@@ -56,7 +56,7 @@ export const useBalances = (tokens: Currency[]): Balance[] => {
   })
 
   const results = useMultipleContractSingleData(
-    activeChainId,
+    chainId,
     blockNumber,
     unavailable,
     Erc20Interface,
@@ -72,7 +72,7 @@ export const useBalances = (tokens: Currency[]): Balance[] => {
     const amountMap: { [key: string]: CurrencyAmount<Currency> } = {}
     if (nativeBalance)
       amountMap[NULL_ADDRESS] = CurrencyAmount.fromRawAmount(
-        Native.onChain(activeChainId),
+        Native.onChain(chainId),
         nativeBalance.value.toString()
       )
 

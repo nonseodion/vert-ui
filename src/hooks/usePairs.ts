@@ -1,10 +1,9 @@
 import { Currency, Pair, CurrencyAmount } from "@pancakeswap/sdk"
 import { useMemo } from "react"
 import { ListenerOptionsWithGas } from "@uniswap/redux-multicall"
-import { useBlockNumber } from "wagmi"
+import { useBlockNumber, useChainId } from "wagmi"
 import { Interface } from "ethers/lib/utils"
 import { wrappedCurrency } from "../utils/wrappedCurrency"
-import { activeChainId } from "../utils/config"
 import { getAbis } from "../utils/getContracts"
 import { useMultipleContractSingleData } from "../utils/multicall"
 
@@ -18,19 +17,18 @@ export enum PairState {
 const { PairAbi } = getAbis()
 const pairInterface = new Interface(PairAbi)
 
-const chainId = activeChainId
-
 export function usePairs(
   currencies: [Currency | undefined, Currency | undefined][],
   listenerOptions?: ListenerOptionsWithGas
 ): [PairState, Pair | null][] {
+  const chainId = useChainId()
   const tokens = useMemo(
     () =>
       currencies.map(([currencyA, currencyB]) => [
         wrappedCurrency(currencyA, chainId),
         wrappedCurrency(currencyB, chainId),
       ]),
-    [currencies]
+    [chainId, currencies]
   )
 
   const pairAddresses = useMemo(
@@ -43,9 +41,9 @@ export function usePairs(
         } catch (error: any) {
           // Debug Invariant failed related to this line
           console.error(
-            error.msg,
+            error.message,
             `- pairAddresses: ${tokenA?.address}-${tokenB?.address}`,
-            `chainId: ${tokenA?.chainId}`
+            `chainIds: ${tokenA?.chainId}- ${tokenB?.chainId}`
           )
 
           return undefined
@@ -60,7 +58,7 @@ export function usePairs(
   })
 
   const results = useMultipleContractSingleData(
-    activeChainId,
+    chainId,
     blockNumber,
     pairAddresses,
     pairInterface,

@@ -1,5 +1,6 @@
 import { ERC20Token } from "@pancakeswap/sdk"
 import React from "react"
+import { useChainId } from "wagmi"
 import { Button } from "../general"
 import CurrencyLogo from "./CurrencyLogo"
 import { getTokenLogoURL } from "../../utils"
@@ -16,6 +17,7 @@ export default function UnImportedToken({
   handleClick,
 }: InactiveTokenProps) {
   const { name, symbol, address } = token
+  const chainId = useChainId()
 
   return (
     <li key={address}>
@@ -23,7 +25,7 @@ export default function UnImportedToken({
         <div className="w-full text-left flex space-x-4 items-center mb-8">
           <CurrencyLogo
             currency={token}
-            srcs={[logo, getTokenLogoURL(token) ?? ""]}
+            srcs={[logo, getTokenLogoURL(token, chainId) ?? ""]}
           />
           <div className="flex flex-col space-y-[3.5px]">
             <h4 className="font-medium text-base text-black">{name}</h4>

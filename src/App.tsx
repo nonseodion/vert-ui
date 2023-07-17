@@ -1,7 +1,6 @@
-import React, { useState, useMemo, useEffect } from "react"
+import React, { useState, useMemo } from "react"
 import clsx from "classnames"
-import { WagmiConfig } from "wagmi"
-import { fetchBlockNumber, watchBlockNumber } from "@wagmi/core"
+import { WagmiConfig, useBlockNumber, useChainId } from "wagmi"
 import { Provider as ReduxProvider } from "react-redux"
 import { BrowserRouter as Router } from "react-router-dom"
 import { SkeletonTheme } from "react-loading-skeleton"
@@ -9,8 +8,8 @@ import { Banner } from "./components/general"
 import AuthContext, { AuthStateValues } from "./contexts/AuthContext"
 import Routes from "./Routes"
 import { store } from "./state/redux"
-import { Updater as MulticallUpdater } from "./utils/multicall"
-import { activeChainId, client } from "./utils/config"
+import { Updater } from "./utils/multicall"
+import { client } from "./utils/config"
 import { hideAllHideables } from "./utils/functions"
 import ToastDisplay from "./components/general/ToastDisplay"
 import ModalContext, { ActiveModals } from "./contexts/ModalContext"
@@ -27,9 +26,14 @@ function Modals() {
   )
 }
 
+function MulticallUpdater() {
+  const chainId = useChainId()
+  const { data } = useBlockNumber()
+  return <Updater chainId={chainId} blockNumber={data} blocksPerFetch={5} />
+}
+
 function App() {
   const [showBanner] = useState(true)
-  const [blocknumber, setBlocknumber] = useState<undefined | number>()
   const [authState, setAuthState] = useState<AuthStateValues>({
     isAuthenticated: false,
     user: null,
@@ -38,33 +42,12 @@ function App() {
   const value = useMemo(() => ({ authState, setAuthState }), [authState])
   const modalStateValue = useMemo(() => ({ modals, setModals }), [modals])
 
-  // get block number for Redux Multicall
-  useEffect(() => {
-    ;(async () => {
-      const no = await fetchBlockNumber({ chainId: activeChainId })
-      setBlocknumber(no)
-    })()
-    watchBlockNumber(
-      {
-        listen: true,
-      },
-      (number) => {
-        console.log("changed")
-        setBlocknumber(number)
-      }
-    )
-  }, [])
-
   return (
     <ReduxProvider store={store}>
       <AuthContext.Provider value={value}>
         <ModalContext.Provider value={modalStateValue}>
           <WagmiConfig client={client}>
-            <MulticallUpdater
-              chainId={activeChainId}
-              blockNumber={blocknumber}
-              blocksPerFetch={5}
-            />
+            <MulticallUpdater />
             <ToastDisplay />
             <SkeletonTheme
               baseColor="#262626"

@@ -1,4 +1,5 @@
 import React from "react"
+import { useChainId } from "wagmi"
 import clsx from "classnames"
 import { ERC20Token } from "@pancakeswap/sdk"
 import { getTokenLogoURL } from "../../utils"
@@ -17,6 +18,8 @@ export default function PinnedToken({
   icon,
   className,
 }: PinnedTokenProps) {
+  const chainId = useChainId()
+
   return (
     <button
       className={clsx(
@@ -28,7 +31,7 @@ export default function PinnedToken({
     >
       <CurrencyLogo
         currency={token}
-        srcs={[icon, getTokenLogoURL(token) ?? ""]}
+        srcs={[icon, getTokenLogoURL(token, chainId) ?? ""]}
       />
       <span className="text-[13px] text-black">{token.symbol}</span>
     </button>

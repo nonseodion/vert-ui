@@ -1,5 +1,5 @@
 import { ERC20Token, JSBI, Percent } from "@pancakeswap/sdk"
-import { ChainId, activeChainId } from "../config"
+import { ChainId } from "../config"
 import { ChainTokenList } from "."
 import { bscTokens, bscTestnetTokens } from "./tokens"
 import ngnLogo from "../../assets/icons/ngn.png"
@@ -23,10 +23,14 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ],
 }
 
-export const stableCoin =
-  activeChainId === ChainId.BSC ? bscTokens.busd : bscTestnetTokens.busd
-export const defaultSellToken =
-  activeChainId === ChainId.BSC ? bscTokens.busd : bscTestnetTokens.busd
+export const stableCoins = {
+  [ChainId.BSC]: bscTokens.busd,
+  [ChainId.BSC_TESTNET]: bscTestnetTokens.busd,
+}
+export const defaultSellTokens = {
+  [ChainId.BSC]: bscTokens.busd,
+  [ChainId.BSC_TESTNET]: bscTestnetTokens.busd,
+}
 export const defaultSellLogo =
   "https://tokens.pancakeswap.finance/images/symbol/bnb.png"
 

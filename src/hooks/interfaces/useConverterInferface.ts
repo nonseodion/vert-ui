@@ -8,6 +8,7 @@ import {
   Trade,
   TradeType,
 } from "@pancakeswap/sdk"
+import { useChainId, useNetwork } from "wagmi"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useAtom } from "jotai"
 import { parseUnits } from "ethers/lib/utils"
@@ -21,10 +22,14 @@ import {
   fiatToStableCoinAmount,
   stableCoinAmountToFiat,
 } from "../../utils/swap"
-import { stableCoin, supportedFiat } from "../../utils/constants/exchange"
+import {
+  defaultSellLogo,
+  defaultSellTokens,
+  stableCoins,
+  supportedFiat,
+} from "../../utils/constants/exchange"
 import { handleSetExchangeAtomCreator } from "../../state/exchange/atoms"
 import { getTokenLogoURL, setCurrencyAmountCurrency } from "../../utils"
-import { activeChainId } from "../../utils/config"
 import { wrappedCurrency } from "../../utils/wrappedCurrency"
 import useTokenPrices from "../useTokenPrices"
 import { Balance, useBalances } from "../../state/balances/useBalances"
@@ -66,14 +71,17 @@ interface ReturnTypes {
 }
 
 const useConverterInterface = (): ReturnTypes => {
+  const chainId = useChainId()
   const { tokens } = useTokens()
   const buyToken = NGN
   const {
-    sellToken: { token: sellToken, logo: sellLogo },
+    sellToken: { token: sellTokenPlaceholder, logo: sellLogo },
     dollarRate,
     preferredFiat,
     dollarRates,
   } = useExchange()
+  const sellToken = sellTokenPlaceholder ?? defaultSellTokens[chainId]
+
   const [, setSellToken] = useAtom(
     useMemo(
       () =>
@@ -103,26 +111,27 @@ const useConverterInterface = (): ReturnTypes => {
         sellToken,
         JSBI.exponentiate(TEN, JSBI.BigInt(sellToken.decimals))
       ),
-    stableCoin
+    stableCoins[chainId]
   )
 
   const stableCoinAmount = useMemo(
     () =>
       fiatToStableCoinAmount(
         buyAmount || FiatAmount.fromRawAmount(NGN, "1"),
-        stableCoin,
+        stableCoins[chainId],
         dollarRates.ngn
       ),
-    [buyAmount, dollarRates]
+    [buyAmount, chainId, dollarRates.ngn]
   )
+  const { chain } = useNetwork()
 
   const tradeOut = useTradeExactOut(
     sellToken,
     buyAmount
       ? stableCoinAmount
       : CurrencyAmount.fromRawAmount(
-          stableCoin,
-          JSBI.exponentiate(TEN, JSBI.BigInt(stableCoin.decimals))
+          stableCoins[chainId],
+          JSBI.exponentiate(TEN, JSBI.BigInt(stableCoins[chainId]?.decimals))
         )
   )
 
@@ -231,6 +240,14 @@ const useConverterInterface = (): ReturnTypes => {
     return undefined
   }, [buyAmount, sellAmount, dollarRates, preferredFiat.fiat.symbol])
 
+  // set default sell token
+  useEffect(() => {
+    setSellToken({
+      key: "sellToken",
+      value: { token: defaultSellTokens[chainId], logo: defaultSellLogo },
+    })
+  }, [chainId, setSellToken])
+
   // update sellAmount when sellToken changes
   useEffect(() => {
     setSellAmount((oldAmount) =>
@@ -249,7 +266,7 @@ const useConverterInterface = (): ReturnTypes => {
     ) {
       ;(async (): Promise<void> => {
         const amountOut =
-          sellToken.symbol === stableCoin.symbol
+          sellToken.symbol === stableCoins[chainId].symbol
             ? sellAmount
             : tradeIn?.outputAmount ?? ""
 
@@ -281,8 +298,12 @@ const useConverterInterface = (): ReturnTypes => {
     ) {
       ;(async (): Promise<void> => {
         const amountIn =
-          sellToken.symbol === stableCoin.symbol
-            ? fiatToStableCoinAmount(buyAmount, stableCoin, dollarRates.ngn)
+          sellToken.symbol === stableCoins[chainId].symbol
+            ? fiatToStableCoinAmount(
+                buyAmount,
+                stableCoins[chainId],
+                dollarRates.ngn
+              )
             : tradeOut?.inputAmount ?? undefined
         setSellAmount(amountIn)
       })()
@@ -304,8 +325,8 @@ const useConverterInterface = (): ReturnTypes => {
     setSellToken,
     setSellAmount: setSellAmount1,
     sellLogos: [
-      sellLogo,
-      getTokenLogoURL(wrappedCurrency(sellToken, activeChainId)) ?? "",
+      sellLogo || defaultSellLogo,
+      getTokenLogoURL(wrappedCurrency(sellToken, chain?.id)) ?? "",
     ],
     fiatSellEqv,
     sellBalance,

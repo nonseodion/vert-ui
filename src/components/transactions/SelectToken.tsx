@@ -1,12 +1,12 @@
 import React, { useMemo } from "react"
 import { ERC20Token } from "@pancakeswap/sdk"
+import { useChainId } from "wagmi"
 import { ReactComponent as Search } from "../../assets/icons/search.svg"
 import { ReactComponent as Settings } from "../../assets/icons/settings.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import useSelectTokenInterface from "../../hooks/interfaces/useSelectTokenInterface"
 import { pinnedTokens } from "../../utils/constants/exchange"
 import PinnedToken from "./PinnedToken"
-import { activeChainId } from "../../utils/config"
 import TokenList from "./TokenList"
 import { Steps } from "../../utils/types"
 
@@ -30,10 +30,11 @@ export default function SelectToken({
     otherTokens,
     otherLogos,
   } = useSelectTokenInterface()
+  const chainId = useChainId()
 
   const pinnedTokenList = useMemo(
     () =>
-      pinnedTokens[activeChainId].map(([token, logo]) => (
+      pinnedTokens[chainId].map(([token, logo]) => (
         <PinnedToken
           onClick={() => handleSelectToken(token, logo)}
           key={token.address}
@@ -42,7 +43,7 @@ export default function SelectToken({
           className="mb-1 mr-[6px] cursor-pointer"
         />
       )),
-    [handleSelectToken]
+    [handleSelectToken, chainId]
   )
 
   return (

@@ -1,11 +1,11 @@
 import React from "react"
 import { Currency } from "@pancakeswap/sdk"
+import { useChainId } from "wagmi"
 import { Balance } from "../../state/balances/useBalances"
 import removeTrailingZeros from "../../utils/removeTrailingZeros"
 import { getTokenLogoURL } from "../../utils"
 import CurrencyLogo from "./CurrencyLogo"
 import { wrappedCurrency } from "../../utils/wrappedCurrency"
-import { activeChainId } from "../../utils/config"
 import FiatAmount from "../../utils/FiatAmount"
 import BalanceSkeleton from "../skeletons/BalanceSkeleton"
 
@@ -27,6 +27,7 @@ export default function ImportedToken({
   connected,
 }: ImportedTokenProps) {
   const { name, symbol } = token
+  const chainId = useChainId()
 
   return (
     <li className="w-full">
@@ -40,7 +41,7 @@ export default function ImportedToken({
             currency={token}
             srcs={[
               logo,
-              getTokenLogoURL(wrappedCurrency(token, activeChainId)) ?? "",
+              getTokenLogoURL(wrappedCurrency(token, chainId)) ?? "",
             ]}
           />
           <div className="flex flex-col ml-4 space-y-[3.5px]">

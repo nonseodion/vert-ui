@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo } from "react"
 import { Currency, ERC20Token } from "@pancakeswap/sdk"
+import { useChainId } from "wagmi"
 import { v4 as uuidv4 } from "uuid"
 import { Balance } from "../../state/balances/useBalances"
 import ImportedToken from "./ImportedToken"
 import { wrappedCurrency } from "../../utils/wrappedCurrency"
-import { activeChainId } from "../../utils/config"
 import FiatAmount from "../../utils/FiatAmount"
 import ResolvedToken from "./ResolvedToken"
 import { isAddress } from "../../utils"
@@ -37,6 +37,7 @@ export default function TokenList(props: TokenRowsProps) {
     startImportingToken,
   } = props
   const { connected } = useWallet()
+  const chainId = useChainId()
 
   const query: string = useMemo(
     () => searchQuery.trim().toLowerCase(),
@@ -61,7 +62,7 @@ export default function TokenList(props: TokenRowsProps) {
             token.name?.toLowerCase().includes(query) ||
             // compare address of all tokens exculuding BNB
             (!token.isNative &&
-              wrappedCurrency(token, activeChainId)?.address.toLowerCase() ===
+              wrappedCurrency(token, chainId)?.address.toLowerCase() ===
                 query.trim())
           return matching
         })
@@ -99,7 +100,7 @@ export default function TokenList(props: TokenRowsProps) {
           ) : (
             <UnImportedToken
               {...{
-                token: wrappedCurrency(token, activeChainId)!,
+                token: wrappedCurrency(token, chainId)!,
                 logo,
                 handleClick: startImportingToken,
               }}
@@ -117,6 +118,7 @@ export default function TokenList(props: TokenRowsProps) {
       startImportingToken,
       tokenBalances,
       connected,
+      chainId,
     ]
   )
 

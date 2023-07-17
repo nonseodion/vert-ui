@@ -1,11 +1,16 @@
 // wraps wagmi library to conform with the Wallet interface in useWallet
 
-import { useConnect, Connector, useDisconnect, useAccount } from "wagmi"
+import {
+  useConnect,
+  Connector,
+  useDisconnect,
+  useAccount,
+  useChainId,
+} from "wagmi"
 import { MetaMaskConnector } from "wagmi/connectors/metaMask"
 import { InjectedConnector } from "wagmi/connectors/injected"
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
 // import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
-import { activeChainId } from "../../utils/config"
 import trustwallet from "../../assets/icons/trustwallet.png"
 import walletconnect from "../../assets/icons/walletconnect.png"
 import metamask from "../../assets/icons/metamask.png"
@@ -48,7 +53,8 @@ const walletToConnector = new Map<Wallets, Connector>([
 ])
 
 const useWallet = (): Wallet => {
-  const { connectAsync } = useConnect({ chainId: activeChainId })
+  const chainId = useChainId()
+  const { connectAsync } = useConnect({ chainId })
   const { disconnectAsync } = useDisconnect()
   const { address, isConnected, isConnecting } = useAccount()
   let walletProvider: { name: Wallets; icon: string } = {

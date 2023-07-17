@@ -1,8 +1,8 @@
 import { Currency, ERC20Token, Native } from "@pancakeswap/sdk"
 import { useEffect, useMemo } from "react"
+import { useChainId } from "wagmi"
 import { useAtom } from "jotai"
 import { groupBy, uniqBy } from "lodash"
-import { activeChainId } from "../../utils/config"
 import { TokenList, defaultTokensAtom, otherTokensAtom } from "./atoms"
 import { defaultTokenInfo as initialTokenInfo } from "../../utils/constants/tokens"
 import { LoadState, TokenInfo } from "../../utils/types"
@@ -86,6 +86,7 @@ let otherTokensState: "unloaded" | "loading" | "loaded" = "unloaded"
 const useTokens = (): UseTokensReturnType => {
   const [defaultTokens, setDefaultTokens] = useAtom(defaultTokensAtom)
   const [otherTokens, setOtherTokens] = useAtom(otherTokensAtom)
+  const chainId = useChainId()
 
   // fetch all tokens and merge with default list
   useEffect(() => {
@@ -169,18 +170,18 @@ const useTokens = (): UseTokensReturnType => {
   }, [otherTokens, setOtherTokens, defaultTokens])
 
   const [activeTokens, activelogoURIs] = useMemo((): [Currency[], string[]] => {
-    const currencies = tokenListToTokens(defaultTokens[activeChainId])
+    const currencies = tokenListToTokens(defaultTokens[chainId])
     // add BNB
-    currencies[0].push(Native.onChain(activeChainId))
+    currencies[0].push(Native.onChain(chainId))
     currencies[1].push(
       "https://tokens.pancakeswap.finance/images/symbol/bnb.png"
     )
     return currencies
-  }, [defaultTokens])
+  }, [defaultTokens, chainId])
 
   const [inactiveTokens, inActivelogoURIs] = useMemo(
-    (): [Currency[], string[]] => tokenListToTokens(otherTokens[activeChainId]),
-    [otherTokens]
+    (): [Currency[], string[]] => tokenListToTokens(otherTokens[chainId]),
+    [chainId, otherTokens]
   )
 
   return {
