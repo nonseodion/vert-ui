@@ -27,7 +27,9 @@ export const fiatToStableCoinAmount = (
   stableCoin: ERC20Token,
   dollarRate: number
 ): CurrencyAmount<ERC20Token> => {
-  const usdAmount = buyAmount.toDollarAmount(dollarRate)
+  const usdAmount = buyAmount
+    .toDollarAmount(Math.floor(dollarRate * 100))
+    .multiply(100)
   const rawBUSDAmount = usdAmount
     .multiply(
       JSBI.exponentiate(TEN, JSBI.BigInt(stableCoin.decimals)).toString()
@@ -47,8 +49,12 @@ export const stableCoinAmountToFiat = (
     stableCoinAmount.multiply(100).numerator,
     JSBI.multiply(stableCoinAmount.decimalScale, stableCoinAmount.denominator)
   )
-  const fiatAmount = FiatAmount.fromOtherAmount(fiat, USDAmount, dollarRate)
-  return fiatAmount
+  const fiatAmount = FiatAmount.fromOtherAmount(
+    fiat,
+    USDAmount,
+    dollarRate * 100
+  )
+  return fiatAmount.divide(100)
 }
 
 export function calculateSlippageAmount(

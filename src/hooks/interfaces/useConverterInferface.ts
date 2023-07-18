@@ -80,7 +80,11 @@ const useConverterInterface = (): ReturnTypes => {
     preferredFiat,
     dollarRates,
   } = useExchange()
-  const sellToken = sellTokenPlaceholder ?? defaultSellTokens[chainId]
+
+  const sellToken = useMemo(
+    () => sellTokenPlaceholder ?? defaultSellTokens[chainId],
+    [chainId, sellTokenPlaceholder]
+  )
 
   const [, setSellToken] = useAtom(
     useMemo(
@@ -209,7 +213,7 @@ const useConverterInterface = (): ReturnTypes => {
         preferredFiat.fiat,
         buyAmount,
         preferredFiat.fiat.symbol.toLowerCase() === "usd"
-          ? new Fraction(1, dollarRates.ngn)
+          ? new Fraction(1, dollarRates.ngn * 100).multiply(100)
           : 1
       )
     }
@@ -225,10 +229,11 @@ const useConverterInterface = (): ReturnTypes => {
           .toDollarAmount(
             dollarRates[
               preferredFiat.fiat.symbol.toLowerCase() === "usd" ? "ngn" : "usd"
-            ]
+            ] * 100
           )
-          .divide(buyAmount.decimalScale)
           .multiply(sellAmount.decimalScale)
+          .multiply(100)
+          .divide(buyAmount.decimalScale)
           .toFixed(0),
         sellAmount
           .multiply(sellAmount.decimalScale)
