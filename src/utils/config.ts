@@ -14,18 +14,16 @@ export enum ChainId {
 
 export const defaultChain = defaultChainId === 56 ? bsc : bscTestnet
 
+const rpcUrls = {
+  97: "https://data-seed-prebsc-1-s1.binance.org:8545",
+  56: "https://bsc-dataseed.binance.org",
+}
+
 export const { provider, webSocketProvider } = configureChains(
-  [chains.bsc, chains.bscTestnet],
+  [chains.bscTestnet, chains.bsc],
   [
     jsonRpcProvider({
-      rpc: () => ({
-        http: "https://bsc-dataseed.binance.org",
-      }),
-    }),
-    jsonRpcProvider({
-      rpc: () => ({
-        http: "https://data-seed-prebsc-1-s1.binance.org:8545",
-      }),
+      rpc: (chain) => ({ http: rpcUrls[chain.id as keyof typeof rpcUrls] }),
     }),
     publicProvider(),
   ]
