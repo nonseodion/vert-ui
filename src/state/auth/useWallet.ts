@@ -12,7 +12,7 @@ import { InjectedConnector } from "wagmi/connectors/injected"
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
 // import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import trustwallet from "../../assets/icons/trustwallet.png"
-import walletconnect from "../../assets/icons/walletconnect.png"
+// import walletconnect from "../../assets/icons/walletconnect.png"
 import metamask from "../../assets/icons/metamask.png"
 // import binance from "../../assets/icons/binance.png"
 
@@ -28,7 +28,7 @@ export const walletProviders = [
   { wallet: Wallets.METAMASK, icon: metamask },
   // { wallet: Wallets., icon: binance },
   { wallet: Wallets.TRUST_WALLET, icon: trustwallet },
-  { wallet: Wallets.WALLET_CONNECT, icon: walletconnect },
+  // { wallet: Wallets.WALLET_CONNECT, icon: walletconnect },
 ]
 
 export interface Wallet {
