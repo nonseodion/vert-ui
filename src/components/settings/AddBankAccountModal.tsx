@@ -8,7 +8,12 @@ import { Modals } from "../../utils/constants"
 import { Modal, Button } from "../general"
 import { Input } from "../inputs"
 import Select, { OptionType } from "../inputs/Select"
-import { BankAccount, getBanks } from "../../services/banks"
+import {
+  BankAccount,
+  getBankAccountName,
+  getBanks,
+  reactQueryWrapper,
+} from "../../services/banks"
 import { checkBanks } from "../../utils"
 
 interface AddBankAccountModalProps {
@@ -36,9 +41,39 @@ export default function AddBankAccountModal({
 
   const { data: banks } = useQuery("banks", getBanks)
 
-  const onChange = (key: keyof BankAccount, value: string) => {
-    setBankAccount({ ...bankAccount, [key]: value })
-  }
+  const onChange = useCallback(
+    (key: keyof BankAccount, value: string) => {
+      if (
+        key === "accountNumber" && // only for accountNumber
+        (!bankAccount?.bank?.code || // bank must be filled)
+          (!Number(value) && // account number must be a number
+            value !== "" &&
+            Number(value) !== 0) || // account number can be empty or start with zero
+          value.length > 10) // account number length cannot be > 10
+      ) {
+        return
+      }
+      setBankAccount({ ...bankAccount, [key]: value })
+    },
+    [bankAccount]
+  )
+
+  const {
+    data: accountName,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: [
+      "bankAccountName",
+      {
+        bankCode: bankAccount.bank.code,
+        accountNumber: bankAccount.accountNumber,
+      },
+    ],
+    queryFn: reactQueryWrapper(getBankAccountName),
+    enabled:
+      bankAccount?.accountNumber?.length === 10 && !!bankAccount?.bank?.code,
+  })
 
   const reset = useCallback(() => {
     setBankAccount({ ...emptyBankAccount })
@@ -56,6 +91,11 @@ export default function AddBankAccountModal({
     option?.data?.aliases?.find((alias: string) =>
       alias?.toLowerCase().includes(inputValue.toLowerCase())
     )
+
+  useEffect(() => {
+    onChange("accountName", accountName ?? "")
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accountName, isLoading])
 
   useEffect(() => {
     if (modalParams) {
@@ -111,7 +151,10 @@ export default function AddBankAccountModal({
               onChange={(e) =>
                 onChange("accountNumber", (e.target as HTMLInputElement).value)
               }
+              hasError={isError}
+              errorMessage="Failed to fetch account name"
             />
+            {isLoading && <div className="text-right !mt-0 ">...</div>}
             <Input
               outerClassName="!rounded-xl h-[52px]"
               name="account-name"

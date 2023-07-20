@@ -5,15 +5,14 @@ import { ReactComponent as Plus } from "../../assets/icons/plus.svg"
 import { Modals, PageRoutes } from "../../utils/constants"
 import { goBackConditionally } from "../../utils/functions"
 import { Wrapper } from "../../components/general"
-// import { BankAccount } from "../../components/transactions"
-import fakeBankAccounts from "../../dummy/bank-accounts"
 // import { SelectBankListSkeleton } from "../../components/skeletons"
 import { useModal } from "../../hooks"
 import { AddBankAccountModal } from "../../components/settings"
 import { BankAccount } from "../../services/banks"
+import { BankAccountComponent } from "../../components/transactions"
 
 export default function SelectBankAccount() {
-  const [bankAccounts, setBankAccounts] = useState(fakeBankAccounts)
+  const [bankAccounts, setBankAccounts] = useState<BankAccount[]>([])
   const [addingBank, setAddingBank] = useState(false)
   const { showModal, hideModal } = useModal()
   const navigate = useNavigate()
@@ -28,11 +27,9 @@ export default function SelectBankAccount() {
 
   const addNewBank = (bankAccount: BankAccount) => {
     setAddingBank(true)
-    setTimeout(() => {
-      setBankAccounts([...bankAccounts, bankAccount])
-      setAddingBank(false)
-      hideModal(Modals.BANK_ACCOUNT)
-    }, 3000)
+    setBankAccounts([...bankAccounts, bankAccount])
+    setAddingBank(false)
+    hideModal(Modals.BANK_ACCOUNT)
   }
 
   return (
@@ -80,21 +77,18 @@ export default function SelectBankAccount() {
                 Saved Bank details
               </p>
             )} */}
-            {/* {loading && <SelectBankListSkeleton />}
-            {!loading && (
-              <ul className="flex flex-col space-y-4">
-                {bankAccounts.map((account) => (
-                  <BankAccount
-                    key={account.account_number}
-                    onClick={() => navigate(PageRoutes.PROCESS_TRANSACTION)}
-                    className="bg-[#F4FFF2]"
-                    bank_name={account.bank_name}
-                    account_name={account.account_name}
-                    account_number={account.account_number}
-                  />
-                ))}
-              </ul>
-            )} */}
+            {/* {loading && <SelectBankListSkeleton />} */}
+
+            <ul className="flex flex-col space-y-4 mt-[38px] lg:mt-[52px]">
+              {bankAccounts.map((account) => (
+                <BankAccountComponent
+                  key={account.accountNumber}
+                  onClick={() => navigate(PageRoutes.PROCESS_TRANSACTION)}
+                  className="bg-[#F4FFF2]"
+                  bankAccount={account}
+                />
+              ))}
+            </ul>
           </div>
         </div>
       </div>

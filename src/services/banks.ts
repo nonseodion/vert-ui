@@ -1,3 +1,4 @@
+import { QueryKey } from "react-query"
 import { fetchWithoutHandle } from "../utils/api"
 
 type FetchedBank = {
@@ -31,4 +32,27 @@ export async function getBanks(): Promise<Bank[]> {
   }))
 
   return banks
+}
+
+type GetBankAccountNameParams = {
+  bankCode: string
+  accountNumber: string
+}
+
+export async function getBankAccountName(
+  params: GetBankAccountNameParams
+): Promise<string> {
+  const data = await fetchWithoutHandle<{ account_name: string }>(
+    `${process.env.REACT_APP_BACKEND_URL}/banks/accountname`,
+    { bank_code: params.bankCode, account_number: params.accountNumber }
+  )
+
+  return data.account_name
+}
+
+export function reactQueryWrapper<T, K>(cb: (_: T) => K) {
+  return ({ queryKey }: { queryKey: QueryKey }) => {
+    const args = queryKey[1] as T
+    return cb(args)
+  }
 }
