@@ -1,8 +1,9 @@
-import { Currency, CurrencyAmount } from "@pancakeswap/sdk"
+import { Currency, CurrencyAmount, Trade, TradeType } from "@pancakeswap/sdk"
 import { atom } from "jotai"
 import Fiat from "../../utils/Fiat"
 import FiatAmount from "../../utils/FiatAmount"
 import { supportedFiat } from "../../utils/constants/exchange"
+import { BankAccount } from "../../services/banks"
 
 interface Exchange {
   sellToken: { token?: Currency; logo?: string }
@@ -11,22 +12,29 @@ interface Exchange {
   buyToken: { fiat: Fiat; logo: string }
   buyAmount: FiatAmount | ""
 
+  trade?: Trade<Currency, Currency, TradeType>
+
   dollarRate: number
   preferredFiat: { fiat: Fiat; logo: string }
 
   dollarRates: { [key in keyof typeof supportedFiat]: number }
+
+  bankAccount?: BankAccount
 }
 
 export const exchangeAtom = atom<Exchange>({
   sellToken: {},
   sellAmount: "",
 
+  trade: undefined,
   buyToken: supportedFiat.ngn,
   buyAmount: "",
   dollarRate: 1,
   preferredFiat: supportedFiat.usd,
 
   dollarRates: { usd: 1, ngn: 745 },
+
+  bankAccount: undefined,
 })
 
 export const sellAmountAtom = atom(

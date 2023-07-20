@@ -20,15 +20,20 @@ const bscAddresses = {
   [ContractNames.VERTROUTER]: "0x0a055140C146bf8aAca189c65d8572Ee18Dd7e01",
   [ContractNames.UNISWAPINTERFACEMULTICALL]:
     "0x018b527df898381a690a5e9DD4633310d005837b",
+  receiver: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
 }
 
 const bscTestnetAddresses = {
   [ContractNames.VERTROUTER]: "0x74ad3f1C96E23456B8e6c9D7d7F67d1169949b5B",
   [ContractNames.UNISWAPINTERFACEMULTICALL]:
     "0x001Da96cb83d65aCFC89510856F5E54da1615F2B",
+  receiver: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
 }
 
-const getAddress = (contractName: ContractNames, chainId: ChainId) =>
+export const getAddress = (
+  contractName: keyof typeof bscTestnetAddresses,
+  chainId: ChainId
+) =>
   chainId === 56
     ? bscAddresses[contractName]
     : bscTestnetAddresses[contractName]

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"
+import React, { useCallback, useMemo } from "react"
 import { useBalance } from "wagmi"
 import { useNavigate } from "react-router-dom"
 import {
@@ -19,6 +19,7 @@ import useWallet from "../../state/auth/useWallet"
 import { ButtonLoader } from "../general/Loader"
 import useApprove from "../../hooks/transactions.ts/useApprove"
 import { computeTradePriceBreakdown, warningSeverity } from "../../utils/swap"
+import useExchange from "../../state/exchange/useExchange"
 
 interface ConverterButtonProps {
   trade?: Trade<
@@ -70,6 +71,15 @@ export default function ConverterButton(props: ConverterButtonProps) {
     () => computeTradePriceBreakdown(trade ?? null),
     [trade]
   )
+  const { setExchange } = useExchange()
+
+  const proceed = useCallback(() => {
+    setExchange({ key: "sellAmount", value: sellAmount })
+    setExchange({ key: "buyAmount", value: buyAmount })
+    setExchange({ key: "trade", value: trade })
+    navigate(PageRoutes.SELECT_BANK_ACCOUNT)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [buyAmount, sellAmount])
 
   const button = useMemo(() => {
     // no amounts entered/generated
@@ -98,6 +108,7 @@ export default function ConverterButton(props: ConverterButtonProps) {
     }
     // check if approving
     if (!sellAmount.currency.isNative && approving) {
+      console.log(approving)
       return getButton(
         `Approving ${sellAmount.currency.symbol}`,
         undefined,
@@ -159,12 +170,7 @@ export default function ConverterButton(props: ConverterButtonProps) {
     // }
 
     // proceeds to exchange
-    return getButton(
-      "Proceed",
-      () => navigate(PageRoutes.SELECT_BANK_ACCOUNT),
-      <Proceed />,
-      false
-    )
+    return getButton("Proceed", proceed, <Proceed />, false)
   }, [
     sellAmount,
     buyAmount,
@@ -177,7 +183,7 @@ export default function ConverterButton(props: ConverterButtonProps) {
     priceImpactWithoutFee,
     showModal,
     approve,
-    navigate,
+    proceed,
   ])
 
   return (

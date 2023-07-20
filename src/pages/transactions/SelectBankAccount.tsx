@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useCallback } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { ReactComponent as Plus } from "../../assets/icons/plus.svg"
@@ -10,6 +10,7 @@ import { useModal } from "../../hooks"
 import { AddBankAccountModal } from "../../components/settings"
 import { BankAccount } from "../../services/banks"
 import { BankAccountComponent } from "../../components/transactions"
+import useExchange from "../../state/exchange/useExchange"
 
 export default function SelectBankAccount() {
   const [bankAccounts, setBankAccounts] = useState<BankAccount[]>([])
@@ -17,6 +18,13 @@ export default function SelectBankAccount() {
   const { showModal, hideModal } = useModal()
   const navigate = useNavigate()
   const location = useLocation()
+  const { setExchange } = useExchange()
+  const handleClick = useCallback(() => {
+    setExchange({ key: "bankAccount", value: bankAccounts[0] })
+    navigate(PageRoutes.PROCESS_TRANSACTION)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bankAccounts])
+
   // const [loading, setLoading] = useState(true)
 
   // useEffect(() => {
@@ -83,7 +91,7 @@ export default function SelectBankAccount() {
               {bankAccounts.map((account) => (
                 <BankAccountComponent
                   key={account.accountNumber}
-                  onClick={() => navigate(PageRoutes.PROCESS_TRANSACTION)}
+                  onClick={handleClick}
                   className="bg-[#F4FFF2]"
                   bankAccount={account}
                 />

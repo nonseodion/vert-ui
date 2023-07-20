@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import clsx from "classnames"
+import { RpcError } from "wagmi"
 import { useNavigate } from "react-router-dom"
+import toast from "react-hot-toast"
 import { ReactComponent as Cash } from "../../assets/images/cash.svg"
 import { ReactComponent as Error } from "../../assets/icons/error.svg"
 import { ReactComponent as Question } from "../../assets/icons/question.svg"
@@ -10,8 +12,11 @@ import { ReactComponent as PaperAirplane } from "../../assets/images/paper-airpl
 import { Button, Copy, Loader } from "../general"
 import { useModal } from "../../hooks"
 import ConfirmExchangeModal from "./ConfirmExchangeModal"
-import { getRandomBoolean } from "../../utils/functions"
 import { Modals, PageRoutes } from "../../utils/constants"
+import useExchange from "../../state/exchange/useExchange"
+import { toTwoDecimalPlaces } from "../../utils/functions"
+import useSwap from "../../hooks/transactions.ts/useSwap"
+import walletErrorMessages from "../../utils/constants/walletErrorsMessages"
 
 interface TransactionStepProps {
   proceed: () => void
@@ -51,38 +56,75 @@ export function ViewOnBsc() {
 
 export function ConfirmTransaction({ proceed }: TransactionStepProps) {
   const navigate = useNavigate()
-  const { showModal, hideModal } = useModal()
-  const [isConfirmed, setIsConfirmed] = useState(false)
+  const {
+    showModal,
+    hideModal,
+    isActive: confirmExchangeIsActive,
+  } = useModal(Modals.CONFIRM_EXCHANGE)
   const [rateChanged, setRateChanged] = useState(false)
+  const { bankAccount, buyAmount, sellAmount, sellToken } = useExchange()
+  const { swapping, swap, swapSuccessful, swapError } = useSwap()
+  // console.log(sellAmount && sellAmount., buyAmount && buyAmount.toExact())
 
-  useEffect(() => {
-    setRateChanged(getRandomBoolean())
-  }, [])
+  const exchangeRate = useMemo(() => {
+    if (buyAmount === "" || !sellAmount) return ""
+    return buyAmount
+      .divide(sellAmount)
+      .multiply(sellAmount.decimalScale)
+      .toExact()
+  }, [buyAmount, sellAmount])
 
   const acceptRateChange = () => setRateChanged(false)
 
   const startConfirmation = () => {
     showModal({ modal: Modals.CONFIRM_EXCHANGE })
-    setTimeout(() => {
-      hideModal(Modals.CONFIRM_EXCHANGE)
-      setIsConfirmed(true)
-      setTimeout(() => {
-        proceed()
-      }, 3000)
-    }, 3000)
+    swap?.()
+
+    // setTimeout(() => {
+    //   hideModal(Modals.CONFIRM_EXCHANGE)
+    //   setIsConfirmed(true)
+    //   setTimeout(() => {
+    //     proceed()
+    //   }, 3000)
+    // }, 3000)
   }
+
+  useEffect(() => {
+    if (!swapping && (swapSuccessful || swapError)) {
+      if (confirmExchangeIsActive) {
+        hideModal(Modals.CONFIRM_EXCHANGE)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [confirmExchangeIsActive, swapping])
+
+  useEffect(() => {
+    if (swapSuccessful) {
+      toast.success(`Swap completed successfully`)
+      proceed()
+    }
+    if (swapError) {
+      const message = walletErrorMessages({
+        code: (swapError as RpcError)?.code as keyof typeof walletErrorMessages,
+      })
+      toast.error(
+        message ?? `${sellAmount && sellAmount?.currency.symbol} swap failed`
+      )
+      // reset()
+    }
+  }, [proceed, sellAmount, swapError, swapSuccessful])
 
   return (
     <div
       className={clsx(
         "bg-white w-full max-w-[463px] rounded-3xl py-5 !mb-10 px-6",
         {
-          "!p-[25px]": isConfirmed,
+          "!p-[25px]": swapping,
         }
       )}
     >
       <ConfirmExchangeModal />
-      {!isConfirmed ? (
+      {!swapping ? (
         <div>
           <div className="flex items-center justify-between">
             <h3 className="text-25 leading-[37.5px] text-black">
@@ -96,7 +138,11 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
             <Cash />
           </div>
           <p className="text-[17px] leading-[31px] font-semibold text-center">
-            Selling 0.16 BNB for 100,800.90 Naira
+            {`Selling ${sellAmount && sellAmount.toExact()} ${
+              sellToken?.token?.symbol
+            } for ${
+              buyAmount && toTwoDecimalPlaces(buyAmount.toExact())
+            } Naira`}
           </p>
           {rateChanged && (
             <div className="transition-all duration-150 mt-[18px] h-[74px] rounded-xl flex justify-between border border-primary px-5 items-center">
@@ -125,7 +171,7 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
                     <Question />
                   </div>
                   <span className="text-13 text-darkPurple text-right">
-                    1 BNB = 7200.06 NGN
+                    {`1 ${sellToken?.token?.symbol} = ${exchangeRate} NGN`}
                   </span>
                 </li>
                 <li className="flex justify-between items-center">
@@ -142,13 +188,13 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
                     Estimated processing time
                   </span>
                   <span className="text-13 text-darkPurple text-right">
-                    3-5mins
+                    &lt;2mins
                   </span>
                 </li>
                 <li className="flex justify-between">
                   <span className="text-sm text-darkPurple">Bank details</span>
                   <span className="text-13 text-darkPurple text-right max-w-[155px]">
-                    ELUJOBA EMMANUEL. A 0245786573 GT Bank Plc
+                    {`${bankAccount?.accountName} ${bankAccount?.accountNumber} ${bankAccount?.bank.label}`}
                   </span>
                 </li>
               </ul>
@@ -169,7 +215,7 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
             <div className="px-[21px] pt-[7.5px] pb-[11px] flex justify-between items-center">
               <span className="text-sm text-black">You will receive</span>
               <h4 className="text-[18px] text-black text-right">
-                100,800.90 NGN
+                {buyAmount ? toTwoDecimalPlaces(buyAmount.toExact()) : ""} NGN
               </h4>
             </div>
           </div>
@@ -186,7 +232,7 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
               className="h-[52px] !py-0 !rounded-lg disabled:bg-primary/[.4] disabled:border-0"
               bordered
               text="Confirm"
-              onClick={() => startConfirmation()}
+              onClick={startConfirmation}
               fullWidth
               textColor="white"
               disabled={rateChanged}
@@ -215,10 +261,10 @@ export function WaitingForConfirmation({
   onConfirm,
 }: WaitingForConfirmationProps) {
   useEffect(() => {
-    setTimeout(() => {
-      onConfirm()
-      proceed()
-    }, 5000)
+    // setTimeout(() => {
+    //   onConfirm()
+    //   proceed()
+    // }, 5000)
   }, [onConfirm, proceed])
   return (
     <div className="bg-white w-full max-w-[463px] pt-[25px] py-[30px] px-[30px] rounded-3xl">

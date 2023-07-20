@@ -157,3 +157,10 @@ export function checkBanks(query: string, banks: Bank[]) {
 
   return selectedBank
 }
+
+export function toTwoDecimalPlaces(value: string) {
+  const [integer, decimal] = value.split(".")
+  const decimal0 = `${decimal && decimal}00`.slice(0, 2)
+
+  return `${integer}.${decimal0}`
+}
