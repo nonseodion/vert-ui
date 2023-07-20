@@ -9,7 +9,6 @@ import {
 } from "wagmi"
 import { MetaMaskConnector } from "wagmi/connectors/metaMask"
 import { InjectedConnector } from "wagmi/connectors/injected"
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
 // import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import trustwallet from "../../assets/icons/trustwallet.png"
 // import walletconnect from "../../assets/icons/walletconnect.png"
@@ -19,7 +18,6 @@ import metamask from "../../assets/icons/metamask.png"
 export enum Wallets {
   METAMASK = "MetaMask",
   TRUST_WALLET = "Trust Wallet",
-  WALLET_CONNECT = "WalletConnect",
   COINBASE = "COINBASE",
   BINANCE_WALLET = "Binance Chain Wallet",
 }
@@ -28,7 +26,6 @@ export const walletProviders = [
   { wallet: Wallets.METAMASK, icon: metamask },
   // { wallet: Wallets., icon: binance },
   { wallet: Wallets.TRUST_WALLET, icon: trustwallet },
-  // { wallet: Wallets.WALLET_CONNECT, icon: walletconnect },
 ]
 
 export interface Wallet {
@@ -43,12 +40,6 @@ export interface Wallet {
 const walletToConnector = new Map<Wallets, Connector>([
   [Wallets.METAMASK, new MetaMaskConnector()],
   [Wallets.TRUST_WALLET, new InjectedConnector()],
-  [
-    Wallets.WALLET_CONNECT,
-    new WalletConnectConnector({
-      options: { qrcode: true },
-    }),
-  ],
   // [Connectors.COINBASE, new CoinbaseWalletConnector()]
 ])
 
