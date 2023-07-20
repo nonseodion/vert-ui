@@ -170,6 +170,7 @@ const useTokens = (): UseTokensReturnType => {
   }, [otherTokens, setOtherTokens, defaultTokens])
 
   const [activeTokens, activelogoURIs] = useMemo((): [Currency[], string[]] => {
+    console.log(chainId)
     const currencies = tokenListToTokens(defaultTokens[chainId])
     // add BNB
     currencies[0].push(Native.onChain(chainId))

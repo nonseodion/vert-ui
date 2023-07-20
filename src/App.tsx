@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react"
 import clsx from "classnames"
 import { WagmiConfig, useBlockNumber, useChainId } from "wagmi"
+import { QueryClient, QueryClientProvider } from "react-query"
 import { Provider as ReduxProvider } from "react-redux"
 import { BrowserRouter as Router } from "react-router-dom"
 import { SkeletonTheme } from "react-loading-skeleton"
@@ -45,40 +46,43 @@ function App() {
   const modalStateValue = useMemo(() => ({ modals, setModals }), [modals])
   const ratesDataX = useGetRates()
   const ratesData = useMemo(() => ratesDataX, [ratesDataX])
+  const queryClient = new QueryClient()
 
   return (
     <ReduxProvider store={store}>
       <AuthContext.Provider value={value}>
         <ModalContext.Provider value={modalStateValue}>
           <RateContext.Provider value={ratesData}>
-            <WagmiConfig client={client}>
-              <MulticallUpdater />
-              <ToastDisplay />
-              <SkeletonTheme
-                baseColor="#262626"
-                highlightColor="rgba(229, 231, 235, .4)"
-              >
-                <Modals />
-                <Router>
-                  <div
-                    className="bg-black min-h-screen"
-                    onClick={() => {
-                      hideAllHideables()
-                    }}
-                    role="presentation"
-                  >
-                    {showBanner && <Banner />}
+            <QueryClientProvider client={queryClient}>
+              <WagmiConfig client={client}>
+                <MulticallUpdater />
+                <ToastDisplay />
+                <SkeletonTheme
+                  baseColor="#262626"
+                  highlightColor="rgba(229, 231, 235, .4)"
+                >
+                  <Modals />
+                  <Router>
                     <div
-                      className={clsx({
-                        "pt-7 md:pt-10": showBanner,
-                      })}
+                      className="bg-black min-h-screen"
+                      onClick={() => {
+                        hideAllHideables()
+                      }}
+                      role="presentation"
                     >
-                      <Routes />
+                      {showBanner && <Banner />}
+                      <div
+                        className={clsx({
+                          "pt-7 md:pt-10": showBanner,
+                        })}
+                      >
+                        <Routes />
+                      </div>
                     </div>
-                  </div>
-                </Router>
-              </SkeletonTheme>
-            </WagmiConfig>
+                  </Router>
+                </SkeletonTheme>
+              </WagmiConfig>
+            </QueryClientProvider>
           </RateContext.Provider>
         </ModalContext.Provider>
       </AuthContext.Provider>

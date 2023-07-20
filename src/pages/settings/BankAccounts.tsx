@@ -5,23 +5,23 @@ import { Wrapper } from "../../components/general"
 import { Navigator } from "../../components/navigation"
 import { AddBankAccountModal, SettingsContent } from "../../components/settings"
 import { BanksSkeleton } from "../../components/skeletons"
-import { BankAccount } from "../../components/transactions"
-import { BankAccountDetails } from "../../dummy/currencies"
+import { BankAccountComponent } from "../../components/transactions"
+import { BankAccount } from "../../services/banks"
 import { useModal } from "../../hooks"
 import { Modals } from "../../utils/constants"
 
 export default function BankAccounts() {
-  const [accounts, setAccounts] = useState<BankAccountDetails[]>([])
+  const [accounts, setAccounts] = useState<BankAccount[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [adding, setAdding] = useState<boolean>(false)
   const { showModal, hideModal } = useModal()
 
-  const onConfirm = (bank_info: BankAccountDetails) => {
+  const onConfirm = (bank_info: BankAccount) => {
     setAdding(true)
     setTimeout(() => {
       setAdding(false)
       hideModal(Modals.BANK_ACCOUNT)
-      setAccounts([...accounts, { ...bank_info, account_name: "Emmanuel" }])
+      setAccounts([...accounts, { ...bank_info, accountName: "Emmanuel" }])
       toast("Bank account information added successfully.")
     }, 3000)
   }
@@ -65,12 +65,8 @@ export default function BankAccounts() {
           {accounts.length > 0 && (
             <ul className="mt-[44px] flex flex-col space-y-4">
               {accounts.map((account) => (
-                <li key={account.account_number}>
-                  <BankAccount
-                    bank_name={account.selected_bank.value}
-                    account_name={account.account_name}
-                    account_number={account.account_number}
-                  />
+                <li key={account.accountNumber}>
+                  <BankAccountComponent bankAccount={account} />
                 </li>
               ))}
             </ul>

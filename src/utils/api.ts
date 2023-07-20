@@ -16,3 +16,13 @@ export const fetch = async <T>(
     return null
   }
 }
+
+export const fetchWithoutHandle = async <T>(
+  url: string,
+  queryParams?: { [key: string]: any }
+): Promise<T> => {
+  const response: AxiosResponse = await axios.get<T>(url, {
+    params: queryParams,
+  })
+  return response.data
+}

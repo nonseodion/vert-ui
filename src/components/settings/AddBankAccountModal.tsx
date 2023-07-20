@@ -1,25 +1,25 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { SingleValue } from "react-select"
+import { useQuery } from "react-query"
 import { FilterOptionOption } from "react-select/dist/declarations/src/filters"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import { BankAccountDetails, banks } from "../../dummy/currencies"
 import { useModal } from "../../hooks"
 import { Modals } from "../../utils/constants"
 import { Modal, Button } from "../general"
 import { Input } from "../inputs"
 import Select, { OptionType } from "../inputs/Select"
+import { BankAccount, getBanks } from "../../services/banks"
+import { checkBanks } from "../../utils"
 
 interface AddBankAccountModalProps {
   adding: boolean
   onClose: () => void
-  onConfirm: (_bank_info: BankAccountDetails) => void
+  onConfirm: (_bank_info: BankAccount) => void
 }
 
-const initialState = {
-  bank_name: "",
-  account_name: "",
-  account_number: "",
-  selected_bank: { value: "", label: "" },
+const emptyBankAccount: BankAccount = {
+  accountNumber: "",
+  bank: { value: "", label: "", code: "", aliases: [] },
 }
 
 export default function AddBankAccountModal({
@@ -30,23 +30,22 @@ export default function AddBankAccountModal({
   const {
     modalValues: { modalParams },
   } = useModal(Modals.BANK_ACCOUNT)
-  const [bankInfo, setBankInfo] = useState<BankAccountDetails>({
-    ...initialState,
+  const [bankAccount, setBankAccount] = useState<BankAccount>({
+    ...emptyBankAccount,
   })
 
-  const onChange = (
-    key: "account_name" | "account_number" | "selected_bank",
-    value: string
-  ) => {
-    setBankInfo({ ...bankInfo, [key]: value })
+  const { data: banks } = useQuery("banks", getBanks)
+
+  const onChange = (key: keyof BankAccount, value: string) => {
+    setBankAccount({ ...bankAccount, [key]: value })
   }
 
   const reset = useCallback(() => {
-    setBankInfo({ ...initialState })
+    setBankAccount({ ...emptyBankAccount })
   }, [])
 
   const onBankChange = (bank: SingleValue<OptionType> | unknown | any) => {
-    onChange("selected_bank", bank)
+    onChange("bank", bank)
   }
 
   const filterOption = (
@@ -60,18 +59,20 @@ export default function AddBankAccountModal({
 
   useEffect(() => {
     if (modalParams) {
-      setBankInfo({
-        selected_bank:
-          banks.find(
-            (bank) => bank.value === modalParams?.selected_bank?.value
-          ) || banks[0],
-        account_name: modalParams?.account_name,
-        account_number: modalParams?.account_number,
+      setBankAccount({
+        bank: checkBanks(modalParams?.bank?.value || "", banks || []) || {
+          value: "",
+          label: "",
+          code: "",
+          aliases: [],
+        },
+        accountName: modalParams?.account_name,
+        accountNumber: modalParams?.account_number,
       })
     } else {
-      setBankInfo({ ...initialState })
+      setBankAccount({ ...emptyBankAccount })
     }
-  }, [modalParams])
+  }, [banks, modalParams])
 
   return (
     <Modal
@@ -98,7 +99,7 @@ export default function AddBankAccountModal({
               filterOption={filterOption}
               label="Bank name"
               options={banks}
-              value={bankInfo.selected_bank}
+              value={bankAccount.bank}
               onChange={onBankChange}
             />
             <div />
@@ -106,15 +107,15 @@ export default function AddBankAccountModal({
               outerClassName="!rounded-xl h-[52px]"
               name="account-number"
               label="Bank account number"
-              value={bankInfo.account_number}
+              value={bankAccount.accountNumber}
               onChange={(e) =>
-                onChange("account_number", (e.target as HTMLInputElement).value)
+                onChange("accountNumber", (e.target as HTMLInputElement).value)
               }
             />
             <Input
               outerClassName="!rounded-xl h-[52px]"
               name="account-name"
-              value={bankInfo.account_name}
+              value={bankAccount.accountName}
               label="Name of account"
               disabled
             />
@@ -127,7 +128,7 @@ export default function AddBankAccountModal({
                     : "Add"
                 }
                 loading={adding}
-                onClick={() => onConfirm(bankInfo)}
+                onClick={() => onConfirm(bankAccount)}
                 showLoadingText={false}
                 className="h-[52px]"
               />

@@ -11,6 +11,7 @@ import { memoize } from "lodash"
 import { Location, NavigateFunction } from "react-router-dom"
 import { PageRoutes } from "./constants"
 import { ChainId } from "./config"
+import { Bank } from "../services/banks"
 
 export const doNothing = (): void => {}
 
@@ -144,4 +145,15 @@ export function setCurrencyAmountCurrency(
     .mul(10 ** currency.decimals)
     .toString()
   return CurrencyAmount.fromRawAmount(currency, amount)
+}
+
+export function checkBanks(query: string, banks: Bank[]) {
+  const lowerQuery = query.toLowerCase()
+  const selectedBank = banks.find(
+    (bank) =>
+      bank.label.toLowerCase().includes(lowerQuery) ||
+      bank.aliases.map((alias) => alias.toLowerCase()).includes(lowerQuery)
+  )
+
+  return selectedBank
 }

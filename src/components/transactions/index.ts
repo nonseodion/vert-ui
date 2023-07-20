@@ -1,5 +1,5 @@
 import ApproveTransactionModal from "./ApproveTransactionModal"
-import BankAccount from "./BankAccount"
+import BankAccountComponent from "./BankAccount"
 import CashSentModal from "./CashSentModal"
 import ConnectWallet from "./ConnectWallet"
 import Converter from "./Converter"
@@ -21,7 +21,7 @@ export {
   TransactionDetailsModal,
   CashSentModal,
   TransactionProgress,
-  BankAccount,
+  BankAccountComponent,
   TransactionStatus,
   ConnectWallet,
   Converter,

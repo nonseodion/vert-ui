@@ -1,13 +1,21 @@
 const bankAccounts = [
   {
-    account_number: "0245786573",
-    bank_name: "Guaranty Trust Bank",
-    account_name: "ELUJOBA EMMANUEL AYOBAMI",
+    accountNumber: "0245786573",
+    bank: {
+      value: "Guaranty Trust Bank",
+      label: "Guaranty Trust Bank",
+      code: "",
+    },
+    accountName: "ELUJOBA EMMANUEL AYOBAMI",
   },
   {
-    account_number: "0245786533",
-    bank_name: "Guaranty Trust Bank",
-    account_name: "CHRISTOPHER MAURICE BROWN",
+    accountNumber: "0245786533",
+    bank: {
+      value: "Guaranty Trust Bank",
+      label: "Guaranty Trust Bank",
+      code: "",
+    },
+    accountName: undefined,
   },
 ]
 

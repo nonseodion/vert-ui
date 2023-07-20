@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { ReactComponent as Plus } from "../../assets/icons/plus.svg"
 import { Modals, PageRoutes } from "../../utils/constants"
 import { goBackConditionally } from "../../utils/functions"
 import { Wrapper } from "../../components/general"
-import { BankAccount } from "../../components/transactions"
+// import { BankAccount } from "../../components/transactions"
 import fakeBankAccounts from "../../dummy/bank-accounts"
-import { SelectBankListSkeleton } from "../../components/skeletons"
+// import { SelectBankListSkeleton } from "../../components/skeletons"
 import { useModal } from "../../hooks"
 import { AddBankAccountModal } from "../../components/settings"
-import { BankAccountDetails } from "../../dummy/currencies"
+import { BankAccount } from "../../services/banks"
 
 export default function SelectBankAccount() {
   const [bankAccounts, setBankAccounts] = useState(fakeBankAccounts)
@@ -18,23 +18,18 @@ export default function SelectBankAccount() {
   const { showModal, hideModal } = useModal()
   const navigate = useNavigate()
   const location = useLocation()
-  const [loading, setLoading] = useState(true)
+  // const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 3000)
-  }, [])
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false)
+  //   }, 3000)
+  // }, [])
 
-  const addNewBank = (bank: BankAccountDetails) => {
+  const addNewBank = (bankAccount: BankAccount) => {
     setAddingBank(true)
     setTimeout(() => {
-      const newBank = {
-        bank_name: bank.selected_bank.value,
-        account_number: bank.account_number,
-        account_name: "ELUJOBA EMMANUEL",
-      }
-      setBankAccounts([...bankAccounts, newBank])
+      setBankAccounts([...bankAccounts, bankAccount])
       setAddingBank(false)
       hideModal(Modals.BANK_ACCOUNT)
     }, 3000)
@@ -79,12 +74,13 @@ export default function SelectBankAccount() {
             </span>
           </button>
           <div className="flex flex-col space-y-[18px]">
-            {(loading || bankAccounts.length > 0) && (
+            {/* List of saved bank accounts */}
+            {/* {(loading || bankAccounts.length > 0) && (
               <p className="text-[#212833] mt-[38px] lg:mt-[52px]">
                 Saved Bank details
               </p>
-            )}
-            {loading && <SelectBankListSkeleton />}
+            )} */}
+            {/* {loading && <SelectBankListSkeleton />}
             {!loading && (
               <ul className="flex flex-col space-y-4">
                 {bankAccounts.map((account) => (
@@ -98,7 +94,7 @@ export default function SelectBankAccount() {
                   />
                 ))}
               </ul>
-            )}
+            )} */}
           </div>
         </div>
       </div>

@@ -1,12 +1,12 @@
 import { useCallback, useContext, useMemo } from "react"
 import ModalContext from "../contexts/ModalContext"
-import { BankAccountDetails } from "../dummy/currencies"
 import { Modals } from "../utils/constants"
 import { doNothing, handleBodyScroll } from "../utils/functions"
+import { BankAccount } from "../services/banks"
 
 type ModalParamsMapping = {
   [Modals.RESET_PASSWORD_MODAL]: { email: string }
-  [Modals.BANK_ACCOUNT]: BankAccountDetails
+  [Modals.BANK_ACCOUNT]: BankAccount
   [key: string]: {}
 }
 

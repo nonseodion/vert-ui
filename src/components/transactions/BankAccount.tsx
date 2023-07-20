@@ -6,22 +6,20 @@ import { ReactComponent as Trash } from "../../assets/icons/trash.svg"
 import { doNothing } from "../../utils/functions"
 import { useModal } from "../../hooks"
 import { Modals } from "../../utils/constants"
+import { BankAccount } from "../../services/banks"
 
 interface BankAccountProps {
-  bank_name: string
-  account_name: string
-  account_number: string
+  bankAccount: BankAccount
   className?: string
   onClick?: (_: any) => void
 }
 
-export default function BankAccount({
-  account_name,
-  account_number,
-  bank_name,
+export default function BankAccountComponent({
+  bankAccount,
   className,
   onClick,
 }: BankAccountProps) {
+  const { accountName, accountNumber, bank } = bankAccount
   const { showModal } = useModal()
   return (
     <div
@@ -38,9 +36,9 @@ export default function BankAccount({
           <Bank className="stroke-primary" />
         </div>
         <div className="flex flex-col space-y-[7px]">
-          <h3 className="text-[#0F172A] font-medium text-sm">{account_name}</h3>
+          <h3 className="text-[#0F172A] font-medium text-sm">{accountName}</h3>
           <p className="text-lightBlue text-sm font-medium">
-            {account_number} {bank_name}
+            {accountNumber} {bank.value}
           </p>
         </div>
       </div>
@@ -52,9 +50,9 @@ export default function BankAccount({
             showModal({
               modal: Modals.BANK_ACCOUNT,
               modalParams: {
-                selected_bank: { label: bank_name, value: bank_name },
-                account_name,
-                account_number,
+                bank,
+                accountName,
+                accountNumber,
               },
             })
           }}
@@ -69,7 +67,7 @@ export default function BankAccount({
   )
 }
 
-BankAccount.defaultProps = {
+BankAccountComponent.defaultProps = {
   className: "",
   onClick: doNothing,
 }

@@ -85,9 +85,6 @@ export const useBalances = (tokens: Currency[]): Balance[] => {
     })
 
     if (Object.keys(amountMap).length > 0) {
-      console.log(
-        amountMap["0x14016E85a25aeb13065688cAFB43044C2ef86784".toLowerCase()]
-      )
       setBalances(amountMap)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
