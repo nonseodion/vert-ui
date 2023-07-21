@@ -8,7 +8,6 @@ import {
   usePrepareContractWrite,
   RpcError,
   useContractWrite,
-  useContractEvent,
   useFeeData,
   useChainId,
 } from "wagmi"
@@ -52,16 +51,16 @@ export default function useApprove(props: UseApproveProps): UseApproveReturns {
   const { data: feeData } = useFeeData()
 
   // watch for Approval event
-  useContractEvent({
-    address: tokenAddress,
-    abi: erc20ABI,
-    eventName: "Approval",
-    listener(owner, spender) {
-      if (owner === walletAddress && spender === vertRouter.address) {
-        refetch()
-      }
-    },
-  })
+  // useContractEvent({
+  //   address: tokenAddress,
+  //   abi: erc20ABI,
+  //   eventName: "Approval",
+  //   listener(owner, spender) {
+  //     if (owner === walletAddress && spender === vertRouter.address) {
+  //       refetch()
+  //     }
+  //   },
+  // })
 
   const { config, data: preparedWriteData } = usePrepareContractWrite({
     address: tokenAddress,
@@ -129,6 +128,7 @@ export default function useApprove(props: UseApproveProps): UseApproveReturns {
     if (isSuccess) {
       toast.success(`Approved ${sellAmount?.currency.symbol} successfully`)
       reset()
+      tx?.wait(1).then(() => refetch())
     }
     if (isError) {
       const message = walletErrorMessages({
@@ -137,7 +137,15 @@ export default function useApprove(props: UseApproveProps): UseApproveReturns {
       toast.error(message ?? `${sellAmount?.currency.symbol} approval failed`)
       reset()
     }
-  }, [error, isError, isSuccess, reset, sellAmount?.currency.symbol])
+  }, [
+    error,
+    isError,
+    isSuccess,
+    refetch,
+    reset,
+    sellAmount?.currency.symbol,
+    tx,
+  ])
 
   return {
     approve: write,
