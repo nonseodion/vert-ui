@@ -14,6 +14,7 @@ export default function useExchange() {
     buyAmount,
     bankAccount,
     trade,
+    txHash,
   } = useAtomValue(exchangeAtom)
   const set = useSetAtom(handleSetExchangeAtomCreator())
 
@@ -51,5 +52,6 @@ export default function useExchange() {
     setExchange: set,
     bankAccount,
     trade,
+    txHash,
   }
 }

@@ -20,6 +20,7 @@ interface Exchange {
   dollarRates: { [key in keyof typeof supportedFiat]: number }
 
   bankAccount?: BankAccount
+  txHash: `0x${string}`
 }
 
 export const exchangeAtom = atom<Exchange>({
@@ -35,6 +36,7 @@ export const exchangeAtom = atom<Exchange>({
   dollarRates: { usd: 1, ngn: 745 },
 
   bankAccount: undefined,
+  txHash: "0x",
 })
 
 export const sellAmountAtom = atom(
