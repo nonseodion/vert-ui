@@ -26,14 +26,14 @@ function useSwap() {
         ? [
             trade?.outputAmount.numerator.toString(),
             trade?.route.path.map((i) => i.address),
-            Math.floor(new Date().getTime() / 1000) + 30,
+            Math.floor(new Date().getTime() / 1000) + 120,
             receiver,
           ]
         : [
             trade?.inputAmount.numerator.toString(),
             trade?.outputAmount.numerator.toString(),
             trade?.route.path.map((i) => i.address),
-            Math.floor(new Date().getTime() / 1000) + 30,
+            Math.floor(new Date().getTime() / 1000) + 120,
             receiver,
           ],
     overrides: {

@@ -108,7 +108,7 @@ export default function ProfileDropdown() {
           <div className="flex flex-col space-y-[9.5px]">
             <div className="flex space-x-2 items-center">
               <span className="text-white font-medium text-[15px] leading-4">
-                {shortenAddress(address || "")}
+                {shortenAddress(address || "0x")}
               </span>
               <Copy text="0x6810...9568" color="purple" />
             </div>

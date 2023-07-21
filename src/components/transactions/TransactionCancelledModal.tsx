@@ -5,7 +5,7 @@ import { Modals } from "../../utils/constants"
 import { Button, Modal } from "../general"
 
 export default function TransactionCancelledModal() {
-  const { hideModal } = useModal(Modals.TRANSACTION_CANCELLED)
+  const { hideModal, modalValues } = useModal(Modals.TRANSACTION_CANCELLED)
   return (
     <Modal
       name={Modals.TRANSACTION_CANCELLED}
@@ -19,7 +19,7 @@ export default function TransactionCancelledModal() {
         <Exit className="fill-[#929AA5]" />
       </button>
       <h3 className="font-semibold text-25 leading-[37.5px] text-black">
-        Cancelled by user
+        {modalValues.modalParams?.text}
       </h3>
       <div className="flex items-center justify-center mt-[51px] mb-[70px]">
         <div className="h-20 w-20 rounded-full flex items-center justify-center border-danger border-2">
@@ -28,7 +28,10 @@ export default function TransactionCancelledModal() {
       </div>
       <Button
         text="Close"
-        onClick={() => hideModal()}
+        onClick={() => {
+          modalValues.modalParams?.onClose()
+          hideModal()
+        }}
         fullWidth
         className="!h-[52px] !py-0"
       />

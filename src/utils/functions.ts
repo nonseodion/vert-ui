@@ -80,7 +80,7 @@ export const isAddress = memoize((value: any): string | false => {
   }
 })
 
-export const shortenAddress = memoize((value: string): string => {
+export const shortenAddress = memoize((value: `0x${string}`): string => {
   const address = isAddress(value)
   if (!address) {
     return value
@@ -160,7 +160,8 @@ export function checkBanks(query: string, banks: Bank[]) {
 
 export function toTwoDecimalPlaces(value: string) {
   const [integer, decimal] = value.split(".")
-  const decimal0 = `${decimal && decimal}00`.slice(0, 2)
+  if (!decimal) return `${integer}.00`
 
+  const decimal0 = `${decimal}00`.slice(0, 2)
   return `${integer}.${decimal0}`
 }

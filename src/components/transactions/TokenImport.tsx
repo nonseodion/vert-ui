@@ -17,7 +17,7 @@ export default function TokenImport({
   const [loading, setLoading] = useState(false)
   const { symbol, address, name } = token
   const { chain } = useNetwork()
-  const blockExplorer = chain?.blockExplorers?.[0]
+  const blockExplorer = chain?.blockExplorers?.default
 
   return (
     <div className="px-6">
@@ -43,7 +43,9 @@ export default function TokenImport({
           </div>
           <div className="justify-between items-center flex">
             <div className="flex space-x-[8.68px]">
-              <span className="text-13">{shortenAddress(address)}</span>
+              <span className="text-13">
+                {shortenAddress(address as `0x${string}`)}
+              </span>
               <Copy text="0x534...c3d" />
             </div>
             <a

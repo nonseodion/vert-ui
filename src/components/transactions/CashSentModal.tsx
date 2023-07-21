@@ -3,13 +3,15 @@ import { useNavigate } from "react-router-dom"
 import { ReactComponent as SmilingGirl } from "../../assets/images/smiling-girl.svg"
 import { useModal } from "../../hooks"
 import { Modals, PageRoutes } from "../../utils/constants"
-import { handleBodyScroll } from "../../utils/functions"
+import { handleBodyScroll, toTwoDecimalPlaces } from "../../utils/functions"
 import { Button, Modal } from "../general"
+import useExchange from "../../state/exchange/useExchange"
 
 export default function CashSentModal() {
   const navigate = useNavigate()
   const { hideModal, isActive, showModal } = useModal(Modals.CASH_SENT)
   const [showTransactionDetails, setShowTransactionDetails] = useState(false)
+  const { buyAmount } = useExchange()
 
   const onClose = () => {
     hideModal()
@@ -41,7 +43,9 @@ export default function CashSentModal() {
         <span className="text-purple text-[15px] text-center leading-6">
           You received
         </span>
-        <h3 className="text-center text-black text-[22px]">100,800.90 NAIRA</h3>
+        <h3 className="text-center text-black text-[22px]">
+          {buyAmount && toTwoDecimalPlaces(buyAmount.toExact())} NGN
+        </h3>
       </div>
       <div className="mt-[50.5px] flex items-center space-x-5">
         <Button

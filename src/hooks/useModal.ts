@@ -7,6 +7,7 @@ import { BankAccount } from "../services/banks"
 type ModalParamsMapping = {
   [Modals.RESET_PASSWORD_MODAL]: { email: string }
   [Modals.BANK_ACCOUNT]: BankAccount
+  [Modals.TRANSACTION_CANCELLED]: { text: string }
   [key: string]: {}
 }
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react"
 import clsx from "classnames"
-import { RpcError } from "wagmi"
+import { RpcError, useChainId, useNetwork } from "wagmi"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 import { ReactComponent as Cash } from "../../assets/images/cash.svg"
@@ -14,24 +14,34 @@ import { useModal } from "../../hooks"
 import ConfirmExchangeModal from "./ConfirmExchangeModal"
 import { Modals, PageRoutes } from "../../utils/constants"
 import useExchange from "../../state/exchange/useExchange"
-import { toTwoDecimalPlaces } from "../../utils/functions"
+import { shortenAddress, toTwoDecimalPlaces } from "../../utils/functions"
 import useSwap from "../../hooks/transactions.ts/useSwap"
 import walletErrorMessages from "../../utils/constants/walletErrorsMessages"
+import useFiatTx from "../../hooks/useFiatTx"
+import useWallet from "../../state/auth/useWallet"
+import useRates from "../../hooks/useRates"
+import { SupportedNetworks } from "../../contexts/FiatTx"
 
 interface TransactionStepProps {
   proceed: () => void
 }
 
-interface WaitingForConfirmationProps extends TransactionStepProps {
-  onConfirm: () => void
+interface ConfirmTransactionProps extends TransactionStepProps {
+  onConfirm: (hash: `0x${string}`) => void
 }
 
-export function ViewOnBsc() {
+export function ViewOnBsc({ hash }: { hash: `0x${string}` }) {
+  const { chain } = useNetwork()
   return (
     <div className="text-base max-w-[229.68px] text-[#0F172A]/[.8]">
       Confirmed Transaction.
       <br />
-      <a className="flex items-center space-x-1" href="https://www.google.com">
+      <a
+        className="flex items-center space-x-1"
+        target="_blank"
+        rel="noreferrer"
+        href={`${chain?.blockExplorers?.default.url}/tx/${hash}`}
+      >
         <span>View on bscscan</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -54,16 +64,28 @@ export function ViewOnBsc() {
   )
 }
 
-export function ConfirmTransaction({ proceed }: TransactionStepProps) {
+export function ConfirmTransaction({
+  proceed,
+  onConfirm,
+}: ConfirmTransactionProps) {
   const navigate = useNavigate()
+  const { sendSwapDetails } = useFiatTx()
+  const chainId = useChainId()
   const {
     showModal,
     hideModal,
     isActive: confirmExchangeIsActive,
   } = useModal(Modals.CONFIRM_EXCHANGE)
   const [rateChanged, setRateChanged] = useState(false)
-  const { bankAccount, buyAmount, sellAmount, sellToken } = useExchange()
-  const { swapping, swap, swapSuccessful, swapError } = useSwap()
+  const { bankAccount, buyAmount, sellAmount, sellToken, setExchange } =
+    useExchange()
+  const { swapping, swap, swapSuccessful, swapError, tx } = useSwap()
+  const swapDone = useMemo(
+    () => swapSuccessful || swapError,
+    [swapError, swapSuccessful]
+  )
+  const rates = useRates()
+  const { address } = useWallet()
   // console.log(sellAmount && sellAmount., buyAmount && buyAmount.toExact())
 
   const exchangeRate = useMemo(() => {
@@ -79,14 +101,6 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
   const startConfirmation = () => {
     showModal({ modal: Modals.CONFIRM_EXCHANGE })
     swap?.()
-
-    // setTimeout(() => {
-    //   hideModal(Modals.CONFIRM_EXCHANGE)
-    //   setIsConfirmed(true)
-    //   setTimeout(() => {
-    //     proceed()
-    //   }, 3000)
-    // }, 3000)
   }
 
   useEffect(() => {
@@ -99,10 +113,25 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
   }, [confirmExchangeIsActive, swapping])
 
   useEffect(() => {
-    if (swapSuccessful) {
-      toast.success(`Swap completed successfully`)
-      proceed()
+    const process = async () => {
+      if (swapSuccessful) {
+        await tx?.wait(2) // wait for two blocks b4 sending tx to backend
+        onConfirm(tx?.hash!)
+        sendSwapDetails?.({
+          sender: address!,
+          txHash: tx?.hash!,
+          accountName: bankAccount?.accountName!,
+          accountNumber: bankAccount?.accountNumber!,
+          bankCode: bankAccount?.bank.code!,
+          rates: rates.data!,
+          network: SupportedNetworks[chainId as 56 | 97],
+        })
+        setExchange({ key: "txHash", value: tx?.hash })
+        proceed()
+      }
     }
+    process()
+
     if (swapError) {
       const message = walletErrorMessages({
         code: (swapError as RpcError)?.code as keyof typeof walletErrorMessages,
@@ -112,7 +141,20 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
       )
       // reset()
     }
-  }, [proceed, sellAmount, swapError, swapSuccessful])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    address,
+    bankAccount?.accountName,
+    tx,
+    bankAccount?.accountNumber,
+    bankAccount?.bank.code,
+    chainId,
+    rates.data,
+    sellAmount,
+    swapError,
+    swapSuccessful,
+    tx?.hash,
+  ])
 
   return (
     <div
@@ -124,7 +166,19 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
       )}
     >
       <ConfirmExchangeModal />
-      {!swapping ? (
+      {swapping || swapDone ? (
+        <div>
+          <h3 className="mb-[48.5px] text-center text-black text-25">
+            Processing blockchain transaction
+          </h3>
+          <div className="flex items-center justify-center">
+            <Loader className="h-[75px] w-[75px]" />
+          </div>
+          <p className="mt-12 font-medium text-base text-lightBlue text-center">
+            Please, wait while transaction is being processed on the blockchain.
+          </p>
+        </div>
+      ) : (
         <div>
           <div className="flex items-center justify-between">
             <h3 className="text-25 leading-[37.5px] text-black">
@@ -239,33 +293,27 @@ export function ConfirmTransaction({ proceed }: TransactionStepProps) {
             />
           </div>
         </div>
-      ) : (
-        <div>
-          <h3 className="mb-[48.5px] text-center text-black text-25">
-            Processing blockchain transaction
-          </h3>
-          <div className="flex items-center justify-center">
-            <Loader className="h-[75px] w-[75px]" />
-          </div>
-          <p className="mt-12 font-medium text-base text-lightBlue text-center">
-            Please, wait while transaction is being processed on the blockchain.
-          </p>
-        </div>
       )}
     </div>
   )
 }
 
-export function WaitingForConfirmation({
-  proceed,
-  onConfirm,
-}: WaitingForConfirmationProps) {
+export function WaitingForConfirmation({ proceed }: TransactionStepProps) {
+  const [confirmations, setConfirmations] = useState<number>(0)
+  const { txConfirmations, txConfirmationStatus } = useFiatTx()
+  const { address } = useWallet()
+  const { txHash } = useExchange()
+
   useEffect(() => {
-    // setTimeout(() => {
-    //   onConfirm()
-    //   proceed()
-    // }, 5000)
-  }, [onConfirm, proceed])
+    setConfirmations(txConfirmations)
+  }, [txConfirmations])
+
+  useEffect(() => {
+    if (txConfirmationStatus) {
+      proceed()
+    }
+  }, [proceed, txConfirmationStatus])
+
   return (
     <div className="bg-white w-full max-w-[463px] pt-[25px] py-[30px] px-[30px] rounded-3xl">
       <h3 className="text-25 text-black font-semibold text-center">
@@ -277,13 +325,17 @@ export function WaitingForConfirmation({
       <ul className="mt-[41px] flex flex-col space-y-[10px]">
         <li className="flex justify-between items-center">
           <span className="text-[15px] text-darkPurple">Confirmation</span>
-          <span className="text-[15px] text-darkPurple text-right">26/4</span>
+          <span className="text-[15px] text-darkPurple text-right">
+            {confirmations}/5
+          </span>
         </li>
         <li className="flex justify-between items-center">
           <span className="text-[15px] text-darkPurple">Address</span>
           <div className="flex items-center space-x-1">
-            <span className="text-[15px] text-darkPurple">0x6810...9568</span>
-            <Copy text="0x6810...9568" />
+            <span className="text-[15px] text-darkPurple">
+              {shortenAddress(address ?? "0x")}
+            </span>
+            <Copy text={address ?? ""} />
           </div>
         </li>
         <li className="flex justify-between items-center">
@@ -303,8 +355,10 @@ export function WaitingForConfirmation({
         <li className="flex justify-between items-center">
           <span className="text-[15px] text-darkPurple">Trx Hash</span>
           <div className="flex items-center space-x-1">
-            <span className="text-[15px] text-darkPurple">0x8028934cd..</span>
-            <Copy text="0x8028934cd.." />
+            <span className="text-[15px] text-darkPurple">
+              {txHash.slice(0, 5)}...${txHash.slice(-3)}
+            </span>
+            <Copy text={txHash} />
           </div>
         </li>
       </ul>
@@ -314,11 +368,12 @@ export function WaitingForConfirmation({
 
 export function SuccessfulTransaction() {
   const { showModal } = useModal()
+  const { exchangeStatus } = useFiatTx()
 
   useEffect(() => {
-    setTimeout(() => {
+    if (exchangeStatus) {
       showModal({ modal: Modals.CASH_SENT })
-    }, 5000)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

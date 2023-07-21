@@ -1,15 +1,39 @@
-import React from "react"
+import React, { useMemo } from "react"
 import { useNavigate } from "react-router-dom"
+import { useNetwork } from "wagmi"
 import { ReactComponent as Right } from "../../assets/icons/right.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { ReactComponent as LinkIcon } from "../../assets/icons/link.svg"
 import { useModal } from "../../hooks"
 import { Button, Copy, Modal } from "../general"
 import { Modals, PageRoutes } from "../../utils/constants"
+import useExchange from "../../state/exchange/useExchange"
+import { shortenAddress, toTwoDecimalPlaces } from "../../utils"
+import useWallet from "../../state/auth/useWallet"
+
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+]
 
 export default function TransactionDetailsModal() {
   const { hideModal } = useModal(Modals.TRANSACTION_DETAILS)
   const navigate = useNavigate()
+  const { chain } = useNetwork()
+  const { sellAmount, buyAmount, bankAccount, txHash } = useExchange()
+  const date = useMemo(() => new Date(), [])
+  const { address } = useWallet()
+
   return (
     <Modal
       name={Modals.TRANSACTION_DETAILS}
@@ -35,7 +59,10 @@ export default function TransactionDetailsModal() {
             TRANSACTION SUCCESSFUL
           </h4>
           <p className="text-[11px] leading-[17.5px] text-black">
-            Successfully sold 7 BNB for 100,800.90 Naira
+            Successfully sold &nbsp;
+            {sellAmount && sellAmount.toExact()} &nbsp;
+            {sellAmount && sellAmount.currency.symbol} &nbsp; for{" "}
+            {buyAmount && toTwoDecimalPlaces(buyAmount.toExact())} NGN
           </p>
         </div>
       </div>
@@ -46,7 +73,12 @@ export default function TransactionDetailsModal() {
               Date
             </span>
             <p className="font-semibold text-[13.13px] leading-[16.5px]">
-              Jan 29, 2023 at 12:14 AM
+              {months[date.getMonth()]} {date.getDay()}, {date.getFullYear()} at{" "}
+              {date.toLocaleTimeString("en-US", {
+                hour12: true,
+                hour: "numeric",
+                minute: "numeric",
+              })}
             </p>
           </div>
         </li>
@@ -57,21 +89,21 @@ export default function TransactionDetailsModal() {
             </span>
             <div className="flex flex-col">
               <p className="font-semibold text-[12.13px] leading-[20.5px] text-black">
-                Elujoba Emmanuel A
+                {bankAccount?.accountName}
               </p>
               <p className="text-[12.13px] leading-[20.5px] text-black">
-                0245786573 GTBank Plc
+                {bankAccount?.accountNumber} {bankAccount?.bank.label}
               </p>
             </div>
           </div>
           <div className="flex items-center space-y-1">
             <span className="mb-[-3px] font-semibold text-black text-[12.13px]">
-              0x6810...9568
+              {shortenAddress(address ?? "0x")}
             </span>
-            <Copy text="0x6810...9568" />
+            <Copy text={address ?? "0x"} />
           </div>
         </li>
-        <li className="pt-[15px] pb-[18px] flex justify-between border-b border-b-[rgba(220, 220, 224, 0.3)]">
+        {/* <li className="pt-[15px] pb-[18px] flex justify-between border-b border-b-[rgba(220, 220, 224, 0.3)]">
           <div className="flex flex-col space-y-[5.31px]">
             <span className="text-[12.25px] font-inter text-extraGrey">
               Transaction Reference No
@@ -80,7 +112,7 @@ export default function TransactionDetailsModal() {
               090267230130001438041100652094
             </p>
           </div>
-        </li>
+        </li> */}
         <li className="pt-[15px] pb-[18px] flex justify-between border-b border-b-[rgba(220, 220, 224, 0.3)]">
           <div className="flex flex-col space-y-[5.31px]">
             <span className="text-[12.25px] font-inter text-extraGrey">
@@ -97,15 +129,21 @@ export default function TransactionDetailsModal() {
       </ul>
       <div className="mt-[15.93px] flex flex-col items-center justify-center space-y-[9px]">
         <a
-          href="https://www.google.com"
+          href="#support"
           className="text-primary text-center text-sm font-medium underline"
         >
           Contact support
         </a>
-        <Button
-          icon={<LinkIcon className="path-white" />}
-          text="View on bscscan"
-        />
+        <a
+          href={`${chain?.blockExplorers?.default.url}/tx/${txHash}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Button
+            icon={<LinkIcon className="path-white" />}
+            text="View on bscscan"
+          />
+        </a>
       </div>
     </Modal>
   )
