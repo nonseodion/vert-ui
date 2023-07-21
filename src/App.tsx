@@ -18,6 +18,8 @@ import ModalContext, { ActiveModals } from "./contexts/ModalContext"
 import ConnectWallet from "./components/transactions/ConnectWallet"
 import { ApproveTransactionModal, TokenModal } from "./components/transactions"
 import { useGetRates } from "./hooks/useRates"
+import FiatTxContext from "./contexts/FiatTx"
+import { useGetFiatTxDetails } from "./hooks/useFiatTx"
 
 function Modals() {
   return (
@@ -45,6 +47,7 @@ function App() {
   const value = useMemo(() => ({ authState, setAuthState }), [authState])
   const modalStateValue = useMemo(() => ({ modals, setModals }), [modals])
   const ratesDataX = useGetRates()
+  const fiatTxData = useGetFiatTxDetails()
   const ratesData = useMemo(() => ratesDataX, [ratesDataX])
   const queryClient = new QueryClient()
 
@@ -52,38 +55,40 @@ function App() {
     <ReduxProvider store={store}>
       <AuthContext.Provider value={value}>
         <ModalContext.Provider value={modalStateValue}>
-          <RateContext.Provider value={ratesData}>
-            <QueryClientProvider client={queryClient}>
-              <WagmiConfig client={client}>
-                <MulticallUpdater />
-                <ToastDisplay />
-                <SkeletonTheme
-                  baseColor="#262626"
-                  highlightColor="rgba(229, 231, 235, .4)"
-                >
-                  <Modals />
-                  <Router>
-                    <div
-                      className="bg-black min-h-screen"
-                      onClick={() => {
-                        hideAllHideables()
-                      }}
-                      role="presentation"
-                    >
-                      {showBanner && <Banner />}
+          <FiatTxContext.Provider value={fiatTxData}>
+            <RateContext.Provider value={ratesData}>
+              <QueryClientProvider client={queryClient}>
+                <WagmiConfig client={client}>
+                  <MulticallUpdater />
+                  <ToastDisplay />
+                  <SkeletonTheme
+                    baseColor="#262626"
+                    highlightColor="rgba(229, 231, 235, .4)"
+                  >
+                    <Modals />
+                    <Router>
                       <div
-                        className={clsx({
-                          "pt-7 md:pt-10": showBanner,
-                        })}
+                        className="bg-black min-h-screen"
+                        onClick={() => {
+                          hideAllHideables()
+                        }}
+                        role="presentation"
                       >
-                        <Routes />
+                        {showBanner && <Banner />}
+                        <div
+                          className={clsx({
+                            "pt-7 md:pt-10": showBanner,
+                          })}
+                        >
+                          <Routes />
+                        </div>
                       </div>
-                    </div>
-                  </Router>
-                </SkeletonTheme>
-              </WagmiConfig>
-            </QueryClientProvider>
-          </RateContext.Provider>
+                    </Router>
+                  </SkeletonTheme>
+                </WagmiConfig>
+              </QueryClientProvider>
+            </RateContext.Provider>
+          </FiatTxContext.Provider>
         </ModalContext.Provider>
       </AuthContext.Provider>
     </ReduxProvider>
