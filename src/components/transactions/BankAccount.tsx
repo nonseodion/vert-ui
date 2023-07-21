@@ -2,7 +2,6 @@ import React from "react"
 import clsx from "classnames"
 import { ReactComponent as Bank } from "../../assets/icons/bank.svg"
 import { ReactComponent as Pencil } from "../../assets/icons/pencil.svg"
-import { ReactComponent as Trash } from "../../assets/icons/trash.svg"
 import { doNothing } from "../../utils/functions"
 import { useModal } from "../../hooks"
 import { Modals } from "../../utils/constants"
@@ -59,9 +58,9 @@ export default function BankAccountComponent({
         >
           <Pencil className="fill-black/[.4]" />
         </button>
-        <button type="button">
+        {/* <button type="button">
           <Trash />
-        </button>
+        </button> */}
       </div>
     </div>
   )

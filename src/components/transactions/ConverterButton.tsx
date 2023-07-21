@@ -108,7 +108,6 @@ export default function ConverterButton(props: ConverterButtonProps) {
     }
     // check if approving
     if (!sellAmount.currency.isNative && approving) {
-      console.log(approving)
       return getButton(
         `Approving ${sellAmount.currency.symbol}`,
         undefined,

@@ -38,6 +38,7 @@ export default function AddBankAccountModal({
   const [bankAccount, setBankAccount] = useState<BankAccount>({
     ...emptyBankAccount,
   })
+  const [buttonActive, setButtonActive] = useState(false)
 
   const { data: banks } = useQuery("banks", getBanks)
 
@@ -98,6 +99,18 @@ export default function AddBankAccountModal({
   }, [accountName, isLoading])
 
   useEffect(() => {
+    if (
+      bankAccount.accountName &&
+      bankAccount.accountNumber &&
+      bankAccount.bank
+    ) {
+      setButtonActive(true)
+    } else {
+      setButtonActive(false)
+    }
+  }, [bankAccount])
+
+  useEffect(() => {
     if (modalParams) {
       setBankAccount({
         bank: checkBanks(modalParams?.bank?.value || "", banks || []) || {
@@ -106,8 +119,8 @@ export default function AddBankAccountModal({
           code: "",
           aliases: [],
         },
-        accountName: modalParams?.account_name,
-        accountNumber: modalParams?.account_number,
+        accountName: modalParams?.accountName,
+        accountNumber: modalParams?.accountNumber,
       })
     } else {
       setBankAccount({ ...emptyBankAccount })
@@ -165,6 +178,7 @@ export default function AddBankAccountModal({
             <div className="pt-[10px]">
               <Button
                 fullWidth
+                disabled={!buttonActive}
                 text={
                   modalParams?.account_name || modalParams?.account_number
                     ? "Edit"
