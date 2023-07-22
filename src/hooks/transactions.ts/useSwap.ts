@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import { BigNumber } from "ethers"
-import { JSBI } from "@pancakeswap/sdk"
+import { Fraction, JSBI, TradeType } from "@pancakeswap/sdk"
 import {
   useChainId,
   usePrepareContractWrite,
@@ -16,6 +16,14 @@ function useSwap() {
   const { vertRouter } = getContracts(chainId)
   const { sellAmount, trade } = useExchange()
   const receiver = useMemo(() => getAddress("receiver", chainId), [chainId])
+  const minStableCoinBuyAmount =
+    trade?.tradeType === TradeType.EXACT_INPUT
+      ? trade.outputAmount.numerator.toString()
+      : new Fraction(trade?.outputAmount.numerator.toString()!)
+          .multiply(9900990099) // get back the original buy amount
+          .divide(10000000000)
+          .toFixed(0)
+
   const { config, data: preparedWriteData } = usePrepareContractWrite({
     address: vertRouter.address as `0x{string}`,
     abi: vertRouterABI,
@@ -24,14 +32,14 @@ function useSwap() {
     args:
       sellAmount && sellAmount.currency.isNative
         ? [
-            trade?.outputAmount.numerator.toString(),
+            minStableCoinBuyAmount,
             trade?.route.path.map((i) => i.address),
             Math.floor(new Date().getTime() / 1000) + 120,
             receiver,
           ]
         : [
-            trade?.inputAmount.numerator.toString(),
-            trade?.outputAmount.numerator.toString(),
+            sellAmount && sellAmount.numerator.toString(),
+            minStableCoinBuyAmount,
             trade?.route.path.map((i) => i.address),
             Math.floor(new Date().getTime() / 1000) + 120,
             receiver,
@@ -39,7 +47,7 @@ function useSwap() {
     overrides: {
       value:
         sellAmount && sellAmount.currency.isNative
-          ? BigNumber.from(trade?.inputAmount.numerator.toString() || "")
+          ? BigNumber.from(sellAmount.numerator.toString() || "")
           : 0,
     },
   })

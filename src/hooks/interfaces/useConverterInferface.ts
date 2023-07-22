@@ -114,7 +114,7 @@ const useConverterInterface = (): ReturnTypes => {
       CurrencyAmount.fromRawAmount(
         sellToken,
         JSBI.exponentiate(TEN, JSBI.BigInt(sellToken.decimals))
-      ),
+      ).multiply(new Fraction(99, 100)), // 1% slippage
     stableCoins[chainId]
   )
 
@@ -136,7 +136,7 @@ const useConverterInterface = (): ReturnTypes => {
       : CurrencyAmount.fromRawAmount(
           stableCoins[chainId],
           JSBI.exponentiate(TEN, JSBI.BigInt(stableCoins[chainId]?.decimals))
-        )
+        ).multiply(new Fraction(101, 100)) // 1% slippage
   )
 
   const trade = useMemo(

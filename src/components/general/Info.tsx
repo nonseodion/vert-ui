@@ -28,7 +28,7 @@ export default function Info({
       />
       {tooltip_id && (
         <ReactTooltip
-          className="!bg-white border border-[#DDE0E8] rounded-lg"
+          className="!bg-white border border-[#DDE0E8] rounded-lg z-10"
           anchorSelect={`#question-${tooltip_id}`}
           place="bottom"
         >
