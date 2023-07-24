@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react"
 import clsx from "classnames"
+import { utils } from "ethers"
 import { RpcError, useChainId, useNetwork } from "wagmi"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
@@ -79,7 +80,7 @@ export function ConfirmTransaction({
   const [rateChanged, setRateChanged] = useState(false)
   const { bankAccount, buyAmount, sellAmount, sellToken, setExchange } =
     useExchange()
-  const { swapping, swap, swapSuccessful, swapError, tx } = useSwap()
+  const { swapping, swap, swapSuccessful, swapError, tx, swapFee } = useSwap()
   const swapDone = useMemo(
     () => swapSuccessful || swapError,
     [swapError, swapSuccessful]
@@ -234,7 +235,7 @@ export function ConfirmTransaction({
                     <Question />
                   </div>
                   <span className="text-13 text-darkPurple text-right">
-                    0.0004 BNB
+                    {utils.formatEther(swapFee?.toString() ?? "0")} BNB
                   </span>
                 </li>
                 <li className="flex justify-between items-center">
@@ -303,6 +304,7 @@ export function WaitingForConfirmation({ proceed }: TransactionStepProps) {
   const { txConfirmations, txConfirmationStatus } = useFiatTx()
   const { address } = useWallet()
   const { txHash } = useExchange()
+  const { swapFee } = useSwap()
 
   useEffect(() => {
     setConfirmations(txConfirmations)
@@ -341,22 +343,22 @@ export function WaitingForConfirmation({ proceed }: TransactionStepProps) {
         <li className="flex justify-between items-center">
           <span className="text-[15px] text-darkPurple">Network fee</span>
           <span className="text-[15px] text-darkPurple text-right">
-            0.0004 BNB
+            {utils.formatEther(swapFee?.toString() ?? "0")}
           </span>
         </li>
-        <li className="flex justify-between items-center">
+        {/* <li className="flex justify-between items-center">
           <span className="text-[15px] text-darkPurple">
             Estimated confirmation time
           </span>
           <span className="text-[15px] text-darkPurple text-right">
             22 secs
           </span>
-        </li>
+        </li> */}
         <li className="flex justify-between items-center">
-          <span className="text-[15px] text-darkPurple">Trx Hash</span>
+          <span className="text-[15px] text-darkPurple">Tx Hash</span>
           <div className="flex items-center space-x-1">
             <span className="text-[15px] text-darkPurple">
-              {txHash.slice(0, 5)}...${txHash.slice(-3)}
+              {txHash.slice(0, 5)}...{txHash.slice(-3)}
             </span>
             <Copy text={txHash} />
           </div>

@@ -27,7 +27,6 @@ interface TokenRowsProps {
 export default function TokenList(props: TokenRowsProps) {
   const {
     tokens: defaultTokens,
-    otherTokens,
     otherLogos,
     searchQuery,
     logos,
@@ -124,8 +123,8 @@ export default function TokenList(props: TokenRowsProps) {
 
   const importedTokens = getRows(defaultTokens)
   // return 20 max unimported tokens
-  const unImportedTokens =
-    searchQuery.trim() !== "" ? getRows(otherTokens, true).slice(0, 20) : ""
+  const unImportedTokens: JSX.Element[] = []
+  // searchQuery.trim() !== "" ? getRows(otherTokens, true).slice(0, 20) : ""
   let noTokens = unImportedTokens.length + importedTokens.length === 0
   const resolvedToken = isAddress(searchQuery) && noTokens && (
     <ResolvedToken

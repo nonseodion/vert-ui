@@ -100,7 +100,7 @@ const useTokens = (): UseTokensReturnType => {
 
       let allTokenInfo = [
         ...initialTokenInfo,
-        ...(await fetchTokenInfo(DEFAULT_TOKEN_LIST_URLS)),
+        ...(await fetchTokenInfo(DEFAULT_TOKEN_LIST_URLS)).slice(0, 100), // limit the list to 100
       ]
       allTokenInfo = uniqBy(
         allTokenInfo,

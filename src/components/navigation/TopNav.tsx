@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import clsx from "classnames"
-import { useNavigate, Link, useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { ReactComponent as Logo } from "../../assets/icons/logo.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import { ReactComponent as Dropdown } from "../../assets/icons/dropdown.svg"
@@ -15,7 +15,6 @@ import { useModal } from "../../hooks"
 import CurrencySelect from "../transactions/CurrencySelect"
 
 export default function TopNav() {
-  const navigate = useNavigate()
   const location = useLocation()
   const [showSlider, setShowSlider] = useState<boolean>(false)
   const { isAuthenticated, user } = useAuth()
@@ -59,12 +58,12 @@ export default function TopNav() {
                   <Hamburger className="mb-[-4px]" />
                 </button>
                 <div className="hidden lg:flex items-center space-x-[15px]">
-                  <Button
+                  {/* <Button
                     bordered
                     text="sign in"
                     onClick={() => navigate(PageRoutes.SIGN_IN_WITH_EMAIL)}
                     background="transparent"
-                  />
+                  /> */}
                   <Button
                     text="Connect Wallet"
                     onClick={() => showModal({ modal: Modals.CONNECT_WALLET })}
@@ -88,14 +87,14 @@ export default function TopNav() {
           >
             <Exit className="fill-[#929AA5]" />
           </button>
-          <Button
+          {/* <Button
             text="Sign in"
             fullWidth
             background="transparent"
             bordered
             className="text-primary"
             onClick={() => navigate(PageRoutes.SIGN_IN_WITH_EMAIL)}
-          />
+          /> */}
           <Button
             text="Connect Wallet"
             fullWidth

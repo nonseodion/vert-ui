@@ -129,7 +129,9 @@ export default function TransactionDetailsModal() {
       </ul>
       <div className="mt-[15.93px] flex flex-col items-center justify-center space-y-[9px]">
         <a
-          href="#support"
+          href="https://twitter.com/nonseodion"
+          target="_blank"
+          rel="noreferrer"
           className="text-primary text-center text-sm font-medium underline"
         >
           Contact support

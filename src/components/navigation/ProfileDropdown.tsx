@@ -79,6 +79,7 @@ export default function ProfileDropdown() {
         {links.map((link) => (
           <li key={link.text}>
             <button
+              disabled
               type="button"
               onClick={() => onLinkClick(link)}
               className="h-11 space-x-[15px] flex items-center"
@@ -94,6 +95,7 @@ export default function ProfileDropdown() {
       <div className="flex mb-[13px]">
         <button
           type="button"
+          disabled
           onClick={() => onClick(PageRoutes.MANAGE_WALLETS)}
           className="text-white/[.6] ml-auto font-medium text-13"
         >

@@ -2,7 +2,7 @@ import React, { useMemo } from "react"
 import { ERC20Token } from "@pancakeswap/sdk"
 import { useChainId } from "wagmi"
 import { ReactComponent as Search } from "../../assets/icons/search.svg"
-import { ReactComponent as Settings } from "../../assets/icons/settings.svg"
+// import { ReactComponent as Settings } from "../../assets/icons/settings.svg"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
 import useSelectTokenInterface from "../../hooks/interfaces/useSelectTokenInterface"
 import { pinnedTokens } from "../../utils/constants/exchange"
@@ -15,10 +15,7 @@ interface SelectTokenProps {
   startImportingToken: (token: ERC20Token, logo: string) => void
 }
 
-export default function SelectToken({
-  setCurrentStep,
-  startImportingToken,
-}: SelectTokenProps) {
+export default function SelectToken({ startImportingToken }: SelectTokenProps) {
   const {
     tokens,
     logos,
@@ -83,7 +80,7 @@ export default function SelectToken({
           startImportingToken,
         }}
       />
-      <div className="pb-[11px] flex items-center justify-center">
+      {/* <div className="pb-[11px] flex items-center justify-center">
         <button
           type="button"
           onClick={() => setCurrentStep(Steps.CUSTOM_TOKENS)}
@@ -94,7 +91,7 @@ export default function SelectToken({
             Custom Tokens
           </span>
         </button>
-      </div>
+      </div> */}
     </div>
   )
 }
