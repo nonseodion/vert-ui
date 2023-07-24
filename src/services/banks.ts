@@ -1,5 +1,6 @@
 import { QueryKey } from "react-query"
 import { fetchWithoutHandle } from "../utils/api"
+import { SupportedNetworks } from "../contexts/FiatTx"
 
 type FetchedBank = {
   name: string
@@ -48,6 +49,17 @@ export async function getBankAccountName(
   )
 
   return data.account_name
+}
+
+export async function getLiquidity(
+  network: (typeof SupportedNetworks)[56 | 97]
+): Promise<number> {
+  const data = await fetchWithoutHandle<{
+    amount: number
+    formattedAmount: number
+  }>(`${process.env.REACT_APP_BACKEND_URL}/banks/liquidity`, { network })
+
+  return data.formattedAmount
 }
 
 export function reactQueryWrapper<T, K>(cb: (_: T) => K) {
