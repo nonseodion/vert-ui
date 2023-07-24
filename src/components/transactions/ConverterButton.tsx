@@ -148,6 +148,11 @@ export default function ConverterButton(props: ConverterButtonProps) {
       return getButton(`Can't complete swap`)
     }
 
+    // buy amount cannot exceed #500
+    if (buyAmount.greaterThan(50000)) {
+      return getButton(`Max Buy is 500 NGN`)
+    }
+
     // TODO: Check if sufficient funds to exchange
     // if (
     //   nativeBalance &&
