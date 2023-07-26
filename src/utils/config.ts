@@ -20,7 +20,7 @@ const rpcUrls = {
 }
 
 export const { provider, webSocketProvider } = configureChains(
-  [chains.bsc, chains.bscTestnet],
+  [chains.bscTestnet, chains.bsc],
   [
     jsonRpcProvider({
       rpc: (chain) => ({ http: rpcUrls[chain.id as keyof typeof rpcUrls] }),
