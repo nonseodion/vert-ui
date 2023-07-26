@@ -110,11 +110,13 @@ const useConverterInterface = (): ReturnTypes => {
   const sellBalance = useBalances(useBalancesInput)[0]
 
   const tradeIn = useTradeExactIn(
-    sellAmount ||
+    (
+      sellAmount ||
       CurrencyAmount.fromRawAmount(
         sellToken,
         JSBI.exponentiate(TEN, JSBI.BigInt(sellToken.decimals))
-      ).multiply(new Fraction(99, 100)), // 1% slippage
+      )
+    ).multiply(new Fraction(99, 100)), // 1% slippage
     stableCoins[chainId]
   )
 
@@ -131,12 +133,13 @@ const useConverterInterface = (): ReturnTypes => {
 
   const tradeOut = useTradeExactOut(
     sellToken,
-    buyAmount
+    (buyAmount
       ? stableCoinAmount
       : CurrencyAmount.fromRawAmount(
           stableCoins[chainId],
           JSBI.exponentiate(TEN, JSBI.BigInt(stableCoins[chainId]?.decimals))
-        ).multiply(new Fraction(101, 100)) // 1% slippage
+        )
+    ).multiply(new Fraction(101, 100)) // 1% slippage
   )
 
   const trade = useMemo(

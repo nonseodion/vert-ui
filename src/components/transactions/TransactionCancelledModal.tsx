@@ -12,7 +12,10 @@ export default function TransactionCancelledModal() {
       bodyClassNames="!max-w-[430px] px-[30px] py-5"
     >
       <button
-        onClick={() => hideModal()}
+        onClick={() => {
+          modalValues?.onCloseCallback()
+          hideModal()
+        }}
         type="button"
         className="absolute top-[31.57px] right-[27.58px]"
       >
@@ -29,7 +32,7 @@ export default function TransactionCancelledModal() {
       <Button
         text="Close"
         onClick={() => {
-          modalValues.modalParams?.onClose()
+          modalValues?.onCloseCallback()
           hideModal()
         }}
         fullWidth

@@ -162,7 +162,7 @@ export default function ConverterButton(props: ConverterButtonProps) {
     }
 
     // buy amount cannot exceed #500
-    if (buyAmount.greaterThan(50000) || buyAmount.lessThan(50000)) {
+    if (+buyAmount.toExact() !== 500) {
       return getButton(`You can only buy 500 NGN`)
     }
 

@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import { BigNumber } from "ethers"
-import { Fraction, JSBI, TradeType } from "@pancakeswap/sdk"
+import { Fraction, JSBI, Rounding, TradeType } from "@pancakeswap/sdk"
 import {
   useChainId,
   usePrepareContractWrite,
@@ -19,10 +19,10 @@ function useSwap() {
   const minStableCoinBuyAmount =
     trade?.tradeType === TradeType.EXACT_INPUT
       ? trade.outputAmount.numerator.toString()
-      : new Fraction(trade?.outputAmount.numerator.toString()!)
+      : new Fraction(trade?.outputAmount.quotient.toString()!)
           .multiply(9900990099) // get back the original buy amount
           .divide(10000000000)
-          .toFixed(0)
+          .toFixed(0, undefined, Rounding.ROUND_UP)
 
   const { config, data: preparedWriteData } = usePrepareContractWrite({
     address: vertRouter.address as `0x{string}`,

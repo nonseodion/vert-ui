@@ -74,6 +74,7 @@ export default function AddBankAccountModal({
     queryFn: reactQueryWrapper(getBankAccountName),
     enabled:
       bankAccount?.accountNumber?.length === 10 && !!bankAccount?.bank?.code,
+    retry: 1,
   })
 
   const reset = useCallback(() => {

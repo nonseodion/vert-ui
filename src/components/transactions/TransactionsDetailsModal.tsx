@@ -10,6 +10,7 @@ import { Modals, PageRoutes } from "../../utils/constants"
 import useExchange from "../../state/exchange/useExchange"
 import { shortenAddress, toTwoDecimalPlaces } from "../../utils"
 import useWallet from "../../state/auth/useWallet"
+import useFiatTx from "../../hooks/useFiatTx"
 
 const months = [
   "Jan",
@@ -33,6 +34,7 @@ export default function TransactionDetailsModal() {
   const { sellAmount, buyAmount, bankAccount, txHash } = useExchange()
   const date = useMemo(() => new Date(), [])
   const { address } = useWallet()
+  const { reset } = useFiatTx()
 
   return (
     <Modal
@@ -43,6 +45,7 @@ export default function TransactionDetailsModal() {
         type="button"
         onClick={() => {
           hideModal()
+          reset?.()
           navigate(PageRoutes.HOME)
         }}
         className="absolute top-[24.04px] right-[19.84px]"

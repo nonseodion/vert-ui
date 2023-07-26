@@ -1,4 +1,4 @@
 import { io } from "socket.io-client"
 
-export const rateSocket = io("http://localhost:3001/rates")
-export const txSocket = io("http://localhost:3001/transactions")
+export const rateSocket = io(`${process.env.REACT_APP_BACKEND_URL}/rates`)
+export const txSocket = io(`${process.env.REACT_APP_BACKEND_URL}/transactions`)
