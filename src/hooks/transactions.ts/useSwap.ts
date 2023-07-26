@@ -68,6 +68,7 @@ function useSwap() {
     isLoading,
     isSuccess,
     data: tx,
+    reset,
   } = useContractWrite({
     ...config,
     onSettled() {
@@ -83,6 +84,7 @@ function useSwap() {
     swapSuccessful: isSuccess,
     swapFee,
     tx,
+    reset,
   }
 }
 

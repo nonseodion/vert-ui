@@ -80,11 +80,8 @@ export function ConfirmTransaction({
   const [rateChanged, setRateChanged] = useState(false)
   const { bankAccount, buyAmount, sellAmount, sellToken, setExchange } =
     useExchange()
-  const { swapping, swap, swapSuccessful, swapError, tx, swapFee } = useSwap()
-  const swapDone = useMemo(
-    () => swapSuccessful || swapError,
-    [swapError, swapSuccessful]
-  )
+  const { swapping, swap, swapSuccessful, swapError, tx, swapFee, reset } =
+    useSwap()
   const rates = useRates()
   const { address } = useWallet()
   // console.log(sellAmount && sellAmount., buyAmount && buyAmount.toExact())
@@ -140,8 +137,8 @@ export function ConfirmTransaction({
       toast.error(
         message ?? `${sellAmount && sellAmount?.currency.symbol} swap failed`
       )
-      // reset()
     }
+    reset()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     address,
@@ -167,7 +164,7 @@ export function ConfirmTransaction({
       )}
     >
       <ConfirmExchangeModal />
-      {swapping || swapDone ? (
+      {swapping || swapSuccessful ? (
         <div>
           <h3 className="mb-[48.5px] text-center text-black text-25">
             Processing blockchain transaction
