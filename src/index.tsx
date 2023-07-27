@@ -1,8 +1,15 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
+import "react-loading-skeleton/dist/skeleton.css"
+import "react-tooltip/dist/react-tooltip.css"
+import "react-calendar/dist/Calendar.css"
 import "./index.css"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
+
+// used to add Buffer for WalletConnect
+// since webpack does not come bundled with node packages
+window.Buffer = require("buffer/").Buffer
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(

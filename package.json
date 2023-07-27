@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@pancakeswap/sdk": "^3.1.4",
+    "@reduxjs/toolkit": "^1.9.3",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -10,10 +12,38 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "@uniswap/redux-multicall": "^1.1.8",
+    "axios": "^1.3.4",
+    "big.js": "^6.2.1",
+    "buffer": "^6.0.3",
+    "classnames": "^2.3.2",
+    "ethers": "^5",
+    "jotai": "^2.0.2",
+    "jsbi": "3.2.5",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
+    "react-calendar": "^4.0.0",
+    "react-data-table-component": "^7.5.3",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.1",
+    "react-hot-toast": "^2.4.0",
+    "react-loading-skeleton": "^3.2.0",
+    "react-otp-input": "^2.4.0",
+    "react-query": "^3.39.3",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "6.0",
     "react-scripts": "5.0.1",
+    "react-select": "^5.7.0",
+    "react-tooltip": "^5.9.1",
+    "socket.io-client": "^4.7.1",
+    "styled-components": "^5.3.6",
+    "tiny-invariant": "^1.3.1",
+    "toformat": "^2.0.0",
     "typescript": "^4.9.5",
+    "uuid": "^9.0.0",
+    "validator": "^13.9.0",
+    "wagmi": "^0.11.5",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
@@ -21,8 +51,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prepare": "!is-ci || husky install",
-    "typecheck": "tsc --project tsconfig.json --noEmit"
+    "prepare": "is-ci || husky install && npm run typechain",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "prettier": "prettier --write --ignore-unknown --cache ./src",
+    "eslint": "eslint ./src",
+    "typechain": "typechain --target ethers-v5 --out-dir ./src/utils/abis/types './src/utils/abis/contracts/*'"
   },
   "eslintConfig": {
     "extends": [
@@ -43,23 +76,41 @@
     ]
   },
   "devDependencies": {
+    "@emotion/react": "^11.11.1",
+    "@typechain/ethers-v5": "^10.2.0",
+    "@types/big.js": "^6.1.6",
+    "@types/lodash": "^4.14.191",
+    "@types/react-calendar": "^3.9.0",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/react-select": "^5.0.1",
+    "@types/uuid": "^9.0.1",
+    "@types/validator": "^13.7.12",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "eslint": "^8.33.0",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": ">=6",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^8.6.0",
     "is-ci": "^3.0.1",
+    "jotai-devtools": "^0.6.0",
     "lint-staged": ">=10",
-    "prettier": "^2.8.3"
+    "prettier": "^2.8.3",
+    "tailwindcss": "^3.2.4",
+    "typechain": "^8.1.1"
+  },
+  "peerDependencies": {
+    "@wagmi/core": "0.9.5"
   },
   "lint-staged": {
     "*.ts?(x)": [
       "eslint --cache --fix --cache-location ./node_modules/.cache",
-      "prettier --write --ignore-unknown"
+      "prettier --write --ignore-unknown --cache"
+    ],
+    "*.css": [
+      "prettier --write --ignore-unknown --cache"
     ]
   }
 }
