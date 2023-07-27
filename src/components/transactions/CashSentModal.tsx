@@ -6,15 +6,18 @@ import { Modals, PageRoutes } from "../../utils/constants"
 import { handleBodyScroll, toTwoDecimalPlaces } from "../../utils/functions"
 import { Button, Modal } from "../general"
 import useExchange from "../../state/exchange/useExchange"
+import useFiatTx from "../../hooks/useFiatTx"
 
 export default function CashSentModal() {
   const navigate = useNavigate()
   const { hideModal, isActive, showModal } = useModal(Modals.CASH_SENT)
+  const { reset } = useFiatTx()
   const [showTransactionDetails, setShowTransactionDetails] = useState(false)
   const { buyAmount } = useExchange()
 
   const onClose = () => {
     hideModal()
+    reset?.()
     navigate(PageRoutes.HOME)
   }
 

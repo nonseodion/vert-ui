@@ -137,8 +137,9 @@ export function ConfirmTransaction({
       toast.error(
         message ?? `${sellAmount && sellAmount?.currency.symbol} swap failed`
       )
+      reset()
     }
-    reset()
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     address,
