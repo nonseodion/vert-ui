@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import clsx from "classnames"
 import { Link, useLocation } from "react-router-dom"
 import { ReactComponent as Logo } from "../../assets/icons/logo.svg"
@@ -19,6 +19,12 @@ export default function TopNav() {
   const [showSlider, setShowSlider] = useState<boolean>(false)
   const { isAuthenticated, user } = useAuth()
   const { showModal } = useModal(Modals.CONNECT_WALLET)
+
+  useEffect(() => {
+    if (isAuthenticated && showSlider) {
+      setShowSlider(false)
+    }
+  }, [isAuthenticated, showSlider])
 
   return (
     <div className="z-[998] fixed left-0  w-full bg-nav">
