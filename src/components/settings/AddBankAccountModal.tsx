@@ -3,7 +3,6 @@ import { SingleValue } from "react-select"
 import { useQuery } from "react-query"
 import { FilterOptionOption } from "react-select/dist/declarations/src/filters"
 import { ReactComponent as Exit } from "../../assets/icons/exit.svg"
-import { useModal } from "../../hooks"
 import { Modals } from "../../utils/constants"
 import { Modal, Button } from "../general"
 import { Input } from "../inputs"
@@ -14,7 +13,7 @@ import {
   getBanks,
   reactQueryWrapper,
 } from "../../services/banks"
-import { checkBanks } from "../../utils"
+import { bankAccountExists as checkBankAccountExists } from "../../services/localStorage"
 
 interface AddBankAccountModalProps {
   adding: boolean
@@ -32,12 +31,10 @@ export default function AddBankAccountModal({
   onConfirm,
   onClose,
 }: AddBankAccountModalProps) {
-  const {
-    modalValues: { modalParams },
-  } = useModal(Modals.BANK_ACCOUNT)
   const [bankAccount, setBankAccount] = useState<BankAccount>({
     ...emptyBankAccount,
   })
+  const [bankAccountExists, setBankAccountExists] = useState<boolean>(false)
   const [buttonActive, setButtonActive] = useState(false)
 
   const { data: banks } = useQuery("banks", getBanks)
@@ -112,21 +109,8 @@ export default function AddBankAccountModal({
   }, [bankAccount])
 
   useEffect(() => {
-    if (modalParams) {
-      setBankAccount({
-        bank: checkBanks(modalParams?.bank?.value || "", banks || []) || {
-          value: "",
-          label: "",
-          code: "",
-          aliases: [],
-        },
-        accountName: modalParams?.accountName,
-        accountNumber: modalParams?.accountNumber,
-      })
-    } else {
-      setBankAccount({ ...emptyBankAccount })
-    }
-  }, [banks, modalParams])
+    setBankAccountExists(checkBankAccountExists(bankAccount))
+  }, [bankAccount])
 
   return (
     <Modal
@@ -143,9 +127,7 @@ export default function AddBankAccountModal({
           <Exit className="fill-[#929AA5]" />
         </button>
         <h3 className="text-black text-25 font-semibold mb-[40px]">
-          {modalParams?.account_name || modalParams?.account_number
-            ? "Edit Bank Account"
-            : "Personal Bank Account"}
+          Personal Bank Account
         </h3>
         <form className="flex flex-col space-y-[30px]">
           <div className="flex flex-col space-y-[10px]">
@@ -175,16 +157,14 @@ export default function AddBankAccountModal({
               value={bankAccount.accountName}
               label="Name of account"
               disabled
+              hasError={bankAccountExists}
+              errorMessage="Account already added."
             />
             <div className="pt-[10px]">
               <Button
                 fullWidth
-                disabled={!buttonActive}
-                text={
-                  modalParams?.account_name || modalParams?.account_number
-                    ? "Edit"
-                    : "Add"
-                }
+                disabled={!buttonActive || bankAccountExists}
+                text="Add"
                 loading={adding}
                 onClick={() => onConfirm(bankAccount)}
                 showLoadingText={false}

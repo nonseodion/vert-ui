@@ -1,25 +1,25 @@
 import React from "react"
 import clsx from "classnames"
 import { ReactComponent as Bank } from "../../assets/icons/bank.svg"
-import { ReactComponent as Pencil } from "../../assets/icons/pencil.svg"
+import { ReactComponent as Trash } from "../../assets/icons/trash.svg"
 import { doNothing } from "../../utils/functions"
-import { useModal } from "../../hooks"
-import { Modals } from "../../utils/constants"
 import { BankAccount } from "../../services/banks"
 
 interface BankAccountProps {
   bankAccount: BankAccount
   className?: string
+  removeAccount?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   onClick?: (_: any) => void
 }
 
 export default function BankAccountComponent({
   bankAccount,
   className,
+  removeAccount,
   onClick,
 }: BankAccountProps) {
   const { accountName, accountNumber, bank } = bankAccount
-  const { showModal } = useModal()
+
   return (
     <div
       role="presentation"
@@ -42,25 +42,9 @@ export default function BankAccountComponent({
         </div>
       </div>
       <div className="flex items-center space-x-[24.72px] flex-shrink-0 ml-3">
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation()
-            showModal({
-              modal: Modals.BANK_ACCOUNT,
-              modalParams: {
-                bank,
-                accountName,
-                accountNumber,
-              },
-            })
-          }}
-        >
-          <Pencil className="fill-black/[.4]" />
-        </button>
-        {/* <button type="button">
+        <button type="button" onClick={removeAccount}>
           <Trash />
-        </button> */}
+        </button>
       </div>
     </div>
   )
@@ -69,4 +53,5 @@ export default function BankAccountComponent({
 BankAccountComponent.defaultProps = {
   className: "",
   onClick: doNothing,
+  removeAccount: () => {},
 }
