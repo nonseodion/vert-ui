@@ -32,4 +32,8 @@ A good place to start from if you want to use the code or contribute is to set i
 
 ## How to Setup Locally
 
-1. 
+1. Open your terminal and clone the github repo to your local machine with `git clone https://github.com/nonseodion/vert-ui.git`.
+2. Change the current directory of the terminal to vert-ui with `cd vert-ui`.
+3. Make sure you have yarn installed and then install all the dependencies with `yarn`.
+4. Add a .env file and set the  `REACT_APP_BACKEND_URL` variable to the Vert backend url. Check the setup section of the Vert backend to set it up.
+5. Run `yarn start` to start the Vert UI locally on your machine.
