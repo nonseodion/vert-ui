@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from "react"
-import { useQuery } from "react-query"
-import { useBalance, useChainId } from "wagmi"
+import { useBalance } from "wagmi"
 import { useNavigate } from "react-router-dom"
 import {
   Currency,
@@ -21,8 +20,6 @@ import { ButtonLoader } from "../general/Loader"
 import useApprove from "../../hooks/transactions.ts/useApprove"
 import { computeTradePriceBreakdown, warningSeverity } from "../../utils/swap"
 import useExchange from "../../state/exchange/useExchange"
-import { getLiquidity, reactQueryWrapper } from "../../services/banks"
-import { SupportedNetworks } from "../../contexts/FiatTx"
 
 interface ConverterButtonProps {
   trade?: Trade<
@@ -63,11 +60,11 @@ export default function ConverterButton(props: ConverterButtonProps) {
   const { trade, sellAmount, buyAmount, sellBalance } = props
   const { showModal } = useModal(Modals.CONNECT_WALLET)
   const { connected, address } = useWallet()
-  const chainId = useChainId()
-  const { data: liquidity } = useQuery({
-    queryKey: ["network", SupportedNetworks[chainId as 56 | 97]],
-    queryFn: reactQueryWrapper(getLiquidity),
-  })
+  // const chainId = useChainId()
+  // const { data: liquidity } = useQuery({
+  //   queryKey: ["network", SupportedNetworks[chainId as 56 | 97]],
+  //   queryFn: reactQueryWrapper(getLiquidity),
+  // })
 
   const { approve, allowance, approving, approvalFee } = useApprove({
     sellBalance,
@@ -157,9 +154,9 @@ export default function ConverterButton(props: ConverterButtonProps) {
       return getButton(`Can't complete swap`)
     }
 
-    if (liquidity && buyAmount.greaterThan(liquidity - 50)) {
-      return getButton("Insufficient Naira Liquidity")
-    }
+    // if (liquidity && buyAmount.greaterThan(liquidity - 50)) {
+    //   return getButton("Insufficient Naira Liquidity")
+    // }
 
     // buy amount cannot exceed #500
     if (+buyAmount.toExact() !== 500) {
@@ -201,7 +198,6 @@ export default function ConverterButton(props: ConverterButtonProps) {
     showModal,
     approve,
     proceed,
-    liquidity,
   ])
 
   return (

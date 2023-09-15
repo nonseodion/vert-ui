@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import clsx from "classnames"
 import { useModal } from "../../hooks"
 import { doNothing } from "../../utils/functions"
@@ -19,13 +19,13 @@ export default function Modal({
 }: ModalProps) {
   const { isActive, hideModal } = useModal(name)
 
-  useEffect(() => {
-    if (!isActive && onClose) {
-      if (typeof onClose === "function") {
-        onClose()
-      }
-    }
-  }, [isActive, onClose])
+  // useEffect(() => {
+  //   if (!isActive && onClose) {
+  //     if (typeof onClose === "function") {
+  //       onClose()
+  //     }
+  //   }
+  // }, [isActive, onClose])
 
   return (
     <>
@@ -34,7 +34,7 @@ export default function Modal({
       )}
       <div
         role="presentation"
-        onClick={() => hideModal()}
+        onClick={() => (onClose || hideModal)()}
         className={clsx(
           "fixed top-0 cursor-pointer overflow-x-hidden z-[999] left-0 h-full w-full overflow-y-auto backdrop-blur-[5px]",
           { "opacity-0 pointer-events-none": !isActive }

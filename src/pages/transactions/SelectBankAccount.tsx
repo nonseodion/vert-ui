@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react"
+import React, { useState, useCallback, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import { ReactComponent as ArrowLeft } from "../../assets/icons/arrow-left.svg"
 import { ReactComponent as Plus } from "../../assets/icons/plus.svg"
@@ -11,6 +11,11 @@ import { AddBankAccountModal } from "../../components/settings"
 import { BankAccount } from "../../services/banks"
 import { BankAccountComponent } from "../../components/transactions"
 import useExchange from "../../state/exchange/useExchange"
+import {
+  addBankAccount,
+  getBankAccounts,
+  removeBankAccount,
+} from "../../services/localStorage"
 
 export default function SelectBankAccount() {
   const [bankAccounts, setBankAccounts] = useState<BankAccount[]>([])
@@ -35,10 +40,25 @@ export default function SelectBankAccount() {
 
   const addNewBank = (bankAccount: BankAccount) => {
     setAddingBank(true)
-    setBankAccounts([...bankAccounts, bankAccount])
+    addBankAccount(bankAccount)
+    setBankAccounts(getBankAccounts())
     setAddingBank(false)
     hideModal(Modals.BANK_ACCOUNT)
   }
+
+  useEffect(() => {
+    setBankAccounts(getBankAccounts())
+  }, [])
+
+  const removeAccount = useCallback(
+    (bankAccount: BankAccount) =>
+      (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.stopPropagation()
+        removeBankAccount(bankAccount)
+        setBankAccounts(getBankAccounts())
+      },
+    []
+  )
 
   return (
     <Wrapper>
@@ -93,6 +113,7 @@ export default function SelectBankAccount() {
                   key={account.accountNumber}
                   onClick={handleClick}
                   className="bg-[#F4FFF2]"
+                  removeAccount={removeAccount(account)}
                   bankAccount={account}
                 />
               ))}
