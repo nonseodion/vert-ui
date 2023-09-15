@@ -35,19 +35,21 @@ export default function TransactionDetailsModal() {
   const date = useMemo(() => new Date(), [])
   const { address } = useWallet()
   const { reset } = useFiatTx()
+  const onClose = () => {
+    hideModal()
+    reset?.()
+    navigate(PageRoutes.HOME)
+  }
 
   return (
     <Modal
       name={Modals.TRANSACTION_DETAILS}
       bodyClassNames="mt-[100px] lg-mt-[150px] px-8 max-w-[436px] pt-9 pb-[30px]"
+      onClose={onClose}
     >
       <button
         type="button"
-        onClick={() => {
-          hideModal()
-          reset?.()
-          navigate(PageRoutes.HOME)
-        }}
+        onClick={onClose}
         className="absolute top-[24.04px] right-[19.84px]"
       >
         <Exit className="h-[14px] w-[14px] fill-[#929AA5]" />

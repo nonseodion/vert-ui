@@ -33,6 +33,7 @@ export default function CashSentModal() {
 
   return (
     <Modal
+      onClose={onClose}
       name={Modals.CASH_SENT}
       bodyClassNames="mt-[100px] px-[30px] max-w-[386px]"
     >
