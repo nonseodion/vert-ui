@@ -17,7 +17,7 @@ From the diagram above, a user selects the token he wants to exchange and enters
 
 ## Tools & Libraries
 
-The frontend was built using Reactjs, [WAGMI](https%3A%2F%2Fwagmi.sh%2F), [socket.io](https%3A%2F%2Fsocket.io), [Typescript](https%3A%2F%2Fwww.typescriptlang.org%2F), Uniswap's [redux-multicall](https%3A%2F%2Fgithub.com%2FUniswap%2Fredux-multicall) and [Jotai](https://jotai.org/). 
+The frontend was built using Reactjs, [WAGMI](https://book.getfoundry.sh/), [socket.io](https://socket.io), [Typescript](https://www.typescriptlang.org), Uniswap's [redux-multicall](https://github.com/Uniswap/redux-multicall) and [Jotai](https://jotai.org/). 
 
 ### Jotai
   Jotai is a state management library like Redux that makes it easy to manage the state easily without much setup, unlike Redux. It uses hooks and can separate each part of the state instead of having a global store. It's used to manage tokens, exchange and balances state. 
