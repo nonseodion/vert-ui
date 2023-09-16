@@ -1,7 +1,7 @@
 # Vert Finance Frontend
 
 ## Welcome
-Hi, thanks for taking a look at the Vert Finance Frontend repository. Vert Finance is a web-based decentralized application that lets you convert almost any cryptocurrency to fiat in your bank account. It's currently built to support only cryptocurrency to the Nigerian Naira conversions. Check out this piece to find out more about Vert Finance.
+Hi, thanks for taking a look at the Vert Finance Frontend repository. Vert Finance is a web-based decentralized application that lets you convert almost any cryptocurrency to fiat in your bank account. It's currently built to support only cryptocurrency to the Nigerian Naira conversions on BNB Smart Chain. Check out this piece to find out more about Vert Finance.
 
 This is the Smart Contract Repo. You can also have a look at the frontend and backend repos.
 
@@ -13,11 +13,11 @@ This is the Smart Contract Repo. You can also have a look at the frontend and ba
 
 ![Frame 7](https://github.com/nonseodion/vert-ui/assets/38128301/15e399bf-2af8-47c4-a02a-464c25aa8b97)
 
-From the diagram above a user selects the token he wants to exchange and enters the amount. He can enter the amount directly in Naira or as the token amount. The exchange rate for any token he picks is fetched from Pancakeswap and the latest USD/NGN rate is fetched from the backend. These are used to generate the adjacent input on the Converter UI. On the next page, he is prompted to enter his account number and bank name. His account name is resolved using the backend. After he confirms the transaction a blockchain transaction is initiated that swaps his token to a stablecoin and sends it to Vert Finance Address. The frontend waits for 7 block confirmations before instructing the backend to send Naira to the user's account. Depending on the validity of the swap transaction and the status of the bank transaction, the backend sends a transaction successful feedback or error to the frontend which is shown to the user.
+From the diagram above, a user selects the token he wants to exchange and enters the amount. He can enter the amount directly in Naira or as the token amount. The exchange rate for any token he picks is fetched from Pancakeswap and the latest USD/NGN rate is fetched from the backend. These are used to generate the adjacent input on the Converter UI. On the next page, he is prompted to enter his account number and bank name. His account name is resolved using the backend. After he confirms the transaction a blockchain transaction is initiated that swaps his token to a stablecoin and sends it to Vert Finance Address. The frontend waits for 7 block confirmations before instructing the backend to send Naira to the user's account. Depending on the validity of the swap transaction and the status of the bank transaction, the backend sends a transaction successful feedback or error to the frontend which is shown to the user.
 
 ## Tools & Libraries
 
-The frontend was built using Reactjs, WAGMI, socket.io, Typescript, Uniswap's redux-multicall and Jotai. 
+The frontend was built using Reactjs, [WAGMI](https://medium.com/r/?url=https%3A%2F%2Fwagmi.sh%2F), [socket.io](https://medium.com/r/?url=https%3A%2F%2Fsocket.io), [Typescript](https://medium.com/r/?url=https%3A%2F%2Fwww.typescriptlang.org%2F), Uniswap's [redux-multicall](https://medium.com/r/?url=https%3A%2F%2Fgithub.com%2FUniswap%2Fredux-multicall) and [Jotai](https://jotai.org/). 
 
 ### Jotai
   Jotai is a state management library like Redux that makes it easy to manage the state easily without much setup, unlike Redux. It uses hooks and can separate each part of the state instead of having a global store. It's used to manage tokens, exchange and balances state. 
