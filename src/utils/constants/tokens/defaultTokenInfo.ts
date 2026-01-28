@@ -8,14 +8,6 @@ export const defaultTokenInfo = [
     logoURI: "https://tokens.pancakeswap.finance/images/symbol/bnb.png",
   },
   {
-    name: "BUSD Token",
-    symbol: "BUSD",
-    address: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
-    chainId: 56,
-    decimals: 18,
-    logoURI: "https://tokens.pancakeswap.finance/images/symbol/busd.png",
-  },
-  {
     name: "Ethereum Token",
     symbol: "ETH",
     address: "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
@@ -23,14 +15,6 @@ export const defaultTokenInfo = [
     decimals: 18,
     logoURI:
       "https://pancakeswap.finance/images/tokens/0x2170Ed0880ac9A755fd29B2688956BD959F933F8.png",
-  },
-  {
-    name: "BTCB Token",
-    symbol: "BTCB",
-    address: "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
-    chainId: 56,
-    decimals: 18,
-    logoURI: "https://tokens.pancakeswap.finance/images/symbol/wbtc.png",
   },
   {
     name: "Tether USD",
@@ -41,85 +25,12 @@ export const defaultTokenInfo = [
     logoURI: "https://tokens.pancakeswap.finance/images/symbol/usdt.png",
   },
   {
-    name: "PancakeSwap Token",
-    symbol: "CAKE",
-    address: "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+    name: "USD Coin",
+    symbol: "USDC",
+    address: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
     chainId: 56,
     decimals: 18,
-    logoURI:
-      "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png",
-  },
-  {
-    name: "Venus",
-    symbol: "XVS",
-    address: "0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63",
-    chainId: 56,
-    decimals: 18,
-    logoURI:
-      "https://pancakeswap.finance/images/tokens/0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63.png",
-  },
-  {
-    name: "VAI Stablecoin",
-    symbol: "VAI",
-    address: "0x4BD17003473389A42DAF6a0a729f6Fdb328BbBd7",
-    chainId: 56,
-    decimals: 18,
-    logoURI:
-      "https://pancakeswap.finance/images/tokens/0x4BD17003473389A42DAF6a0a729f6Fdb328BbBd7.png",
-  },
-  {
-    name: "Alpaca",
-    symbol: "ALPACA",
-    address: "0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F",
-    chainId: 56,
-    decimals: 18,
-    logoURI:
-      "https://pancakeswap.finance/images/tokens/0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F.png",
-  },
-  {
-    name: "Belt",
-    symbol: "BELT",
-    address: "0xE0e514c71282b6f4e823703a39374Cf58dc3eA4f",
-    chainId: 56,
-    decimals: 18,
-    logoURI:
-      "https://pancakeswap.finance/images/tokens/0xE0e514c71282b6f4e823703a39374Cf58dc3eA4f.png",
-  },
-  {
-    name: "TokoCrypto",
-    symbol: "TKO",
-    address: "0x9f589e3eabe42ebC94A44727b3f3531C0c877809",
-    chainId: 56,
-    decimals: 18,
-    logoURI:
-      "https://pancakeswap.finance/images/tokens/0x9f589e3eabe42ebC94A44727b3f3531C0c877809.png",
-  },
-  {
-    name: "Nerve Finance",
-    symbol: "NRV",
-    address: "0x42F6f551ae042cBe50C739158b4f0CAC0Edb9096",
-    chainId: 56,
-    decimals: 18,
-    logoURI:
-      "https://pancakeswap.finance/images/tokens/0x42F6f551ae042cBe50C739158b4f0CAC0Edb9096.png",
-  },
-  {
-    name: "Ellipsis",
-    symbol: "EPS",
-    address: "0xA7f552078dcC247C2684336020c03648500C6d9F",
-    chainId: 56,
-    decimals: 18,
-    logoURI:
-      "https://pancakeswap.finance/images/tokens/0xA7f552078dcC247C2684336020c03648500C6d9F.png",
-  },
-  {
-    name: "PancakeSwap Token",
-    symbol: "CAKE",
-    address: "0xFa60D973F7642B748046464e165A65B7323b0DEE",
-    chainId: 97,
-    decimals: 18,
-    logoURI:
-      "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png",
+    logoURI: "https://tokens.pancakeswap.finance/images/symbol/usdc.png",
   },
   {
     name: "BUSD Token",
@@ -128,6 +39,22 @@ export const defaultTokenInfo = [
     chainId: 97,
     decimals: 18,
     logoURI: "https://tokens.pancakeswap.finance/images/symbol/busd.png",
+  },
+  {
+    name: "USD Coin",
+    symbol: "USDC",
+    address: "0x64544969ed7EBf5f083679233325356EbE738930",
+    chainId: 97,
+    decimals: 18,
+    logoURI: "https://tokens.pancakeswap.finance/images/symbol/usdc.png",
+  },
+  {
+    name: "Tether USD",
+    symbol: "USDT",
+    address: "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd",
+    chainId: 97,
+    decimals: 18,
+    logoURI: "https://tokens.pancakeswap.finance/images/symbol/usdt.png",
   },
   {
     name: "BUSD Token",

@@ -9,7 +9,7 @@ import {
   TradeType,
 } from "@pancakeswap/sdk"
 import { useChainId, useNetwork } from "wagmi"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useAtom } from "jotai"
 import { parseUnits } from "ethers/lib/utils"
 import useTokens from "../../state/tokens/hooks"
@@ -100,6 +100,83 @@ const useConverterInterface = (): ReturnTypes => {
   const [sellAmount, setSellAmount] = useState<
     CurrencyAmount<Currency> | undefined
   >()
+  const buyAmountRef = useRef<FiatAmount | undefined>(buyAmount)
+  const sellAmountRef = useRef<CurrencyAmount<Currency> | undefined>(sellAmount)
+  const buyAmountDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  )
+  const sellAmountDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  )
+  const DEBOUNCE_MS = 200
+
+  useEffect(() => {
+    buyAmountRef.current = buyAmount
+  }, [buyAmount])
+
+  useEffect(() => {
+    sellAmountRef.current = sellAmount
+  }, [sellAmount])
+
+  useEffect(
+    () => () => {
+      if (buyAmountDebounceRef.current) {
+        clearTimeout(buyAmountDebounceRef.current)
+      }
+      if (sellAmountDebounceRef.current) {
+        clearTimeout(sellAmountDebounceRef.current)
+      }
+    },
+    []
+  )
+
+  const scheduleBuyAmountUpdate = useCallback(
+    (nextAmount: FiatAmount | undefined) => {
+      if (
+        nextAmount?.toExact() === buyAmountRef.current?.toExact() ||
+        (!nextAmount && !buyAmountRef.current)
+      ) {
+        return
+      }
+      if (buyAmountDebounceRef.current) {
+        clearTimeout(buyAmountDebounceRef.current)
+      }
+      buyAmountDebounceRef.current = setTimeout(() => {
+        if (
+          nextAmount?.toExact() === buyAmountRef.current?.toExact() ||
+          (!nextAmount && !buyAmountRef.current)
+        ) {
+          return
+        }
+        setBuyAmount(nextAmount)
+      }, DEBOUNCE_MS)
+    },
+    []
+  )
+
+  const scheduleSellAmountUpdate = useCallback(
+    (nextAmount: CurrencyAmount<Currency> | undefined) => {
+      if (
+        nextAmount?.toExact() === sellAmountRef.current?.toExact() ||
+        (!nextAmount && !sellAmountRef.current)
+      ) {
+        return
+      }
+      if (sellAmountDebounceRef.current) {
+        clearTimeout(sellAmountDebounceRef.current)
+      }
+      sellAmountDebounceRef.current = setTimeout(() => {
+        if (
+          nextAmount?.toExact() === sellAmountRef.current?.toExact() ||
+          (!nextAmount && !sellAmountRef.current)
+        ) {
+          return
+        }
+        setSellAmount(nextAmount)
+      }, DEBOUNCE_MS)
+    },
+    []
+  )
 
   const amountToFetchPrice = useMemo(
     () => (sellAmount ? [sellAmount] : undefined),
@@ -164,10 +241,10 @@ const useConverterInterface = (): ReturnTypes => {
                 parseUnits(amount, buyToken.decimals).toString()
               )
 
-        setBuyAmount(newAmount)
+        scheduleBuyAmountUpdate(newAmount)
       }
     },
-    [buyToken]
+    [buyToken, scheduleBuyAmountUpdate]
   )
 
   // validate and format inputted sellAmount before updating state
@@ -185,10 +262,10 @@ const useConverterInterface = (): ReturnTypes => {
                 parseUnits(amount, sellToken.decimals).toString()
               )
 
-        setSellAmount(newAmount)
+        scheduleSellAmountUpdate(newAmount)
       }
     },
-    [sellToken]
+    [sellToken, scheduleSellAmountUpdate]
   )
 
   // get the fiat equivalent of the sellAmount
@@ -227,21 +304,24 @@ const useConverterInterface = (): ReturnTypes => {
   exchangeRate = useMemo(() => {
     if (buyAmount && sellAmount) {
       if (sellAmount.equalTo(0)) return undefined
+      const numerator = buyAmount
+        .toDollarAmount(
+          dollarRates[
+            preferredFiat.fiat.symbol.toLowerCase() === "usd" ? "ngn" : "usd"
+          ] * 100
+        )
+        .multiply(sellAmount.decimalScale)
+        .multiply(100)
+        .divide(buyAmount.decimalScale)
+        .toFixed(0)
+      const denominator = sellAmount
+        .multiply(sellAmount.decimalScale)
+        .divide(buyAmount.decimalScale)
+        .toFixed(0)
+
       return new Fraction(
-        buyAmount
-          .toDollarAmount(
-            dollarRates[
-              preferredFiat.fiat.symbol.toLowerCase() === "usd" ? "ngn" : "usd"
-            ] * 100
-          )
-          .multiply(sellAmount.decimalScale)
-          .multiply(100)
-          .divide(buyAmount.decimalScale)
-          .toFixed(0),
-        sellAmount
-          .multiply(sellAmount.decimalScale)
-          .divide(buyAmount.decimalScale)
-          .toFixed(0)
+        numerator === "0" ? 1 : numerator,
+        denominator === "0" ? 1 : denominator
       )
     }
 
@@ -281,19 +361,32 @@ const useConverterInterface = (): ReturnTypes => {
         const NGNAmount = amountOut
           ? stableCoinAmountToFiat(amountOut, dollarRates.ngn, NGN)
           : undefined
-        setBuyAmount(NGNAmount)
+        if (
+          NGNAmount?.toExact() === buyAmount?.toExact() ||
+          (!NGNAmount && !buyAmount)
+        ) {
+          return
+        }
+        scheduleBuyAmountUpdate(NGNAmount)
       })()
     } else if (
       (!sellAmount || sellAmount.toExact() === "0") &&
       independentField === "sell"
     ) {
-      setBuyAmount(undefined)
+      scheduleBuyAmountUpdate(undefined)
     } else if (independentField !== "sell" && typedValue === "") {
-      setSellAmount(undefined)
+      scheduleSellAmountUpdate(undefined)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sellAmount, tradeIn?.outputAmount, dollarRates.ngn])
+  }, [
+    sellAmount,
+    tradeIn?.outputAmount,
+    dollarRates.ngn,
+    scheduleBuyAmountUpdate,
+    scheduleSellAmountUpdate,
+    typedValue,
+  ])
 
   // update sellAmount when buyAmount changes
   useEffect(() => {
@@ -313,19 +406,25 @@ const useConverterInterface = (): ReturnTypes => {
                 dollarRates.ngn
               )
             : tradeOut?.inputAmount ?? undefined
-        setSellAmount(amountIn)
+        scheduleSellAmountUpdate(amountIn)
       })()
     } else if (
       (!buyAmount || buyAmount.toExact() === "0") &&
       independentField === "buy"
     ) {
-      setSellAmount(undefined)
+      scheduleSellAmountUpdate(undefined)
     } else if (independentField !== "buy" && typedValue === "") {
-      setBuyAmount(undefined)
+      scheduleBuyAmountUpdate(undefined)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [buyAmount, tradeOut?.inputAmount])
+  }, [
+    buyAmount,
+    tradeOut?.inputAmount,
+    scheduleBuyAmountUpdate,
+    scheduleSellAmountUpdate,
+    typedValue,
+  ])
 
   return {
     sellAmount,

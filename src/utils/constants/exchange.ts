@@ -88,8 +88,8 @@ export const pinnedTokens: { [key in ChainId]: [ERC20Token, string][] } = {
 export const BIG_INT_TEN = JSBI.BigInt(10)
 export const BIG_INT_ZERO = JSBI.BigInt(0)
 
-// used to ensure the user doesn't send so much BNB so they end up with <.01
-export const MIN_BNB: JSBI = JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(16)) // .01 BNB
+// used to ensure the user doesn't send so much BNB so they end up with <.0000000000001
+export const MIN_BNB: JSBI = JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(5)) // .0000000000001 BNB
 
 export const BIPS_BASE = JSBI.BigInt(10000)
 export const BETTER_TRADE_LESS_HOPS_THRESHOLD = new Percent(

@@ -50,14 +50,14 @@ export const bscTestnetTokens = {
   ),
   usdc: new ERC20Token(
     ChainId.BSC_TESTNET,
-    "0xCA8eB2dec4Fe3a5abbFDc017dE48E461A936623D",
+    "0x64544969ed7EBf5f083679233325356EbE738930",
     18,
     "USDC",
     "Binance-Peg USD Coin"
   ),
   usdt: new ERC20Token(
     ChainId.BSC_TESTNET,
-    "0x0fB5D7c73FA349A90392f873a4FA1eCf6a3d0a96",
+    "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd",
     18,
     "USDT",
     "Tether USD"

@@ -1,36 +1,29 @@
-import {
-  Dispatch,
-  useContext,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useState,
-} from "react"
+import { useContext, useCallback, useEffect, useState } from "react"
 import { rateSocket } from "../services/socket.setup"
 import RateContext, { RateValues, Rates } from "../contexts/RatesContext"
 
 export function useGetRates(): RateValues {
   const [data, setRates] = useState<undefined | Rates>()
-  const listener = useCallback(
-    (cb: Dispatch<SetStateAction<Rates | undefined>>, _rates?: Rates) =>
-      _rates && cb(_rates),
-    []
-  )
+  const handleRates = useCallback((rates?: Rates) => {
+    if (rates) {
+      setRates(rates)
+    }
+  }, [])
 
-  // eslint-disable-next-line arrow-body-style
   useEffect(() => {
-    rateSocket.on("rates", (__rates) => {
-      listener(setRates, __rates)
-    })
+    rateSocket.on("rates", handleRates)
+    if (!rateSocket.connected) {
+      rateSocket.connect()
+    }
 
     return () => {
-      rateSocket.off("rates", listener)
+      rateSocket.off("rates", handleRates)
     }
-  }, [listener])
+  }, [handleRates])
 
   return {
     data,
-    ngn: data?.data.rates.BUSDNGN.rate,
+    ngn: data?.data.rates.USDTNGN,
     usd: 1,
   }
 }

@@ -33,7 +33,7 @@ export const exchangeAtom = atom<Exchange>({
   dollarRate: 1,
   preferredFiat: supportedFiat.usd,
 
-  dollarRates: { usd: 1, ngn: 745 },
+  dollarRates: { usd: 1, ngn: 1470 },
 
   bankAccount: undefined,
   txHash: "0x",
