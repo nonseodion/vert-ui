@@ -30,7 +30,7 @@ export function useGetRates(): RateValues {
 
   return {
     data,
-    ngn: data?.data.rates.BUSDNGN.rate,
+    ngn: data?.data.rates.USDTNGN,
     usd: 1,
   }
 }
